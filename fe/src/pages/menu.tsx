@@ -1,9 +1,13 @@
-import exp from "constants";
+import { getLayout } from "@/components/layout/Layout";
 
-export default function menu() {
+const Menu = () => {
   return (
     <>
       <h1>hi Menu </h1>
     </>
   );
-}
+};
+
+Menu.getLayout = getLayout;
+
+export default Menu;

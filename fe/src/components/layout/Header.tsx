@@ -98,7 +98,7 @@ export default function Header() {
                   p: 2,
                 }}
               >
-                <Link href="../deliveryRange">Хүргэлтийн бүс</Link>
+                <Link href="/deliveryRange">Хүргэлтийн бүс</Link>
               </Typography>
             </Stack>
           </Box>
