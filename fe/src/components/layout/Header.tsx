@@ -8,7 +8,6 @@ import BlockIcon from "../icons/BlockIcon";
 import BasketIcon from "../icons/BasketIcon";
 import VectorIcon from "../icons/VectorIcon";
 import { Grid, Stack } from "@mui/material";
-import { borderColor } from "@mui/system";
 import Link from "next/link";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -56,7 +55,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function SearchAppBar() {
+export default function Header() {
   return (
     <Box sx={{ p: 2 }}>
       <Box sx={{ px: "107px" }}>
