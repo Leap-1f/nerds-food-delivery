@@ -5,6 +5,7 @@ import {
   Typography,
   TextField,
   Stack,
+  Button,
   Alert,
 } from "@mui/material";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
@@ -13,6 +14,12 @@ import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import RestoreIcon from "@mui/icons-material/Restore";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 
 interface UserData {
   value: string | number;
@@ -34,6 +41,8 @@ export const UserProfile = () => {
     keyof typeof userData | null
   >(null);
   const [save, setSave] = useState(false);
+  const [showSaveButton, setShowSaveButton] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const handleEdit = (field: keyof typeof userData) => {
     setUserData((prevData) => ({
@@ -41,6 +50,21 @@ export const UserProfile = () => {
       [field]: { ...prevData[field], isEditing: true },
     }));
     setFocusedField(field);
+    setShowSaveButton(true);
+    setSave(false);
+  };
+
+  const handleSave = (field: keyof typeof userData) => {
+    setUserData((prevData) => ({
+      ...prevData,
+      [field]: { ...prevData[field], isEditing: false },
+    }));
+    setSave(true);
+    setFocusedField(null);
+    setShowSaveButton(false);
+    setTimeout(() => {
+      setSave(false);
+    }, 2000);
   };
 
   const handleChange = (
@@ -53,31 +77,39 @@ export const UserProfile = () => {
     }));
   };
 
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>,
-    field: keyof typeof userData
-  ) => {
-    if (event.key === "Enter") {
-      setUserData((prevData) => ({
-        ...prevData,
-        [field]: { ...prevData[field], isEditing: false },
-      }));
-      setSave(true);
-      setFocusedField(null);
-    }
+  const handleModalOpen = () => {
+    setOpenModal(true);
+  };
+
+  const handleModalClose = () => {
+    setOpenModal(false);
   };
 
   return (
     <>
-      {save && (
-        <Alert severity="success">Таны мэдээлэл амжилттай шинэчлэгдлээ.</Alert>
-      )}
       <Box
         display="flex"
         flexDirection="column"
         gap={"40px"}
         alignItems="center"
+        position="relative"
       >
+        {save && (
+          <Alert
+            severity="success"
+            sx={{
+              position: "absolute",
+              top: "64%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              transition: "opacity 0.5s ease",
+              opacity: 1,
+              zIndex: 2,
+            }}
+          >
+            Таны мэдээлэл амжилттай шинэчлэгдлээ.
+          </Alert>
+        )}
         <Box mb={2} display="flex" alignItems="center" position={"relative"}>
           <Box
             sx={{
@@ -146,7 +178,6 @@ export const UserProfile = () => {
                 disableUnderline: true,
                 readOnly: !userData.name.isEditing,
                 onChange: (e) => handleChange("name", e.target.value),
-                onKeyDown: (e) => handleKeyDown(e, "name"),
                 onFocus: () => setFocusedField("name"),
                 onBlur: () => setFocusedField(null),
               }}
@@ -205,7 +236,6 @@ export const UserProfile = () => {
                 disableUnderline: true,
                 readOnly: !userData.phone.isEditing,
                 onChange: (e) => handleChange("phone", e.target.value),
-                onKeyDown: (e) => handleKeyDown(e, "phone"),
                 onFocus: () => setFocusedField("phone"),
                 onBlur: () => setFocusedField(null),
               }}
@@ -262,7 +292,6 @@ export const UserProfile = () => {
                 disableUnderline: true,
                 readOnly: !userData.email.isEditing,
                 onChange: (ev) => handleChange("email", ev.target.value),
-                onKeyDown: (ev) => handleKeyDown(ev, "email"),
                 onFocus: () => setFocusedField("email"),
                 onBlur: () => setFocusedField(null),
               }}
@@ -285,6 +314,26 @@ export const UserProfile = () => {
             )}
           </Box>
         </Stack>
+        {/* Save button */}
+        {showSaveButton && (
+          <Button
+            variant="contained"
+            onClick={() => handleSave(focusedField as keyof typeof userData)}
+            sx={{
+              mt: 2,
+              width: "432px",
+              height: "50px",
+              boxShadow: "none",
+              bgcolor: "#18BA51 !important",
+              color: "white",
+              "&:hover": {
+                bgcolor: "primary.dark",
+              },
+            }}
+          >
+            Хадгалах
+          </Button>
+        )}
         <Stack
           direction={"column"}
           width={"432px"}
@@ -309,7 +358,13 @@ export const UserProfile = () => {
             </Box>
             <Typography>Захиалгын түүх</Typography>
           </Box>
-          <Box display={"flex"} gap={1} height={"100%"} alignItems={"center"}>
+          <Box
+            display={"flex"}
+            gap={1}
+            height={"100%"}
+            alignItems={"center"}
+            onClick={handleModalOpen}
+          >
             <Box
               sx={{
                 display: "flex",
@@ -325,6 +380,26 @@ export const UserProfile = () => {
             </Box>
             <Typography>Гарах</Typography>
           </Box>
+          <Dialog
+            open={openModal}
+            onClose={handleModalClose}
+            PaperProps={{
+              sx: {
+                borderRadius: "20px",
+              },
+            }}
+          >
+            <DialogTitle sx={{ borderRadius: "20px", width: "384px" }}>
+              Та pinecone-д сурч байхдаа тарчилж байна уу? 🥹
+            </DialogTitle>
+            <DialogContent></DialogContent>
+            <DialogActions>
+              <Button onClick={handleModalClose}>Үгүй 🤥</Button>
+              <Button onClick={handleModalClose} autoFocus>
+                Тийм 🫂
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Stack>
       </Stack>
     </>
