@@ -386,16 +386,43 @@ export const UserProfile = () => {
             PaperProps={{
               sx: {
                 borderRadius: "20px",
+                pt: "20px",
+                overflow: "hidden",
               },
             }}
           >
-            <DialogTitle sx={{ borderRadius: "20px", width: "384px" }}>
+            <DialogTitle
+              sx={{ borderRadius: "20px", width: "384px", textAlign: "center" }}
+            >
               Та pinecone-д сурч байхдаа тарчилж байна уу? 🥹
             </DialogTitle>
-            <DialogContent></DialogContent>
-            <DialogActions>
-              <Button onClick={handleModalClose}>Үгүй 🤥</Button>
-              <Button onClick={handleModalClose} autoFocus>
+            <DialogActions sx={{ justifyContent: "center", p: 0, mt: "20px" }}>
+              <Button
+                sx={{
+                  flex: 1,
+                  backgroundColor: "rgba(24, 186, 81, 0.20) !important",
+                  color: "#8B8E95",
+                  height: "30%",
+                  borderRadius: 0,
+                  py: "15px",
+                }}
+                onClick={handleModalClose}
+              >
+                Үгүй 🤥
+              </Button>
+              <Button
+                sx={{
+                  flex: 1,
+                  backgroundColor: "#18BA51 !important",
+                  color: "secondary.contrastText",
+                  height: "30%",
+                  borderRadius: 0,
+                  marginLeft: "0 !important",
+                  py: "15px",
+                }}
+                onClick={handleModalClose}
+                autoFocus
+              >
                 Тийм 🫂
               </Button>
             </DialogActions>
