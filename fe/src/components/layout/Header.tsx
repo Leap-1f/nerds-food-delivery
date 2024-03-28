@@ -9,27 +9,18 @@ import BasketIcon from "../icons/BasketIcon";
 import VectorIcon from "../icons/VectorIcon";
 import { Grid, Stack } from "@mui/material";
 import Link from "next/link";
+import { useState } from "react";
+import { Interface } from "readline";
+import { tree } from "next/dist/build/templates/app-page";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
   border: 1,
-  borderColor: "error.main",
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  width: "100%",
-
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto",
-  },
+  width: "220px",
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
-
   height: "100%",
   position: "absolute",
   pointerEvents: "none",
@@ -56,115 +47,188 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
+  const [color, setColor] = useState({
+    nuur: false,
+    hool: false,
+    hurgelt: false,
+    sags: false,
+    newtreg: false,
+  });
+
   return (
-    <Box sx={{ p: 2 }}>
-      <Box sx={{ px: "107px" }}>
-        <Grid container direction={"row"} justifyContent={"space-between"}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
-            <BlockIcon />
-            <Stack direction={"row"} spacing={1}>
+    <Box sx={{ mx: "auto", width: "1248px" }}>
+      <Grid
+        container
+        direction={"row"}
+        justifyContent={"space-between"}
+        sx={{ px: 3, py: 1 }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
+          <BlockIcon />
+          <Stack direction={"row"} spacing={1}>
+            <Link href="/login">
               <Typography
+                onClick={() => {
+                  setColor((prevState) => ({
+                    ...prevState,
+                    nuur: true,
+                    hool: false,
+                    hurgelt: false,
+                    sags: false,
+                    newtreg: false,
+                  })); // Toggle nuur state
+                }}
                 variant="h6"
                 noWrap
                 component="div"
                 sx={{
-                  color: "black",
+                  color: color.nuur ? "green" : "black", // Conditionally set color based on nuur state
                   p: 2,
                 }}
               >
-                <Link href="./login">Нүүр</Link>
+                Нүүр
               </Typography>
+            </Link>
+            <Link href="/menu">
               <Typography
+                onClick={() => {
+                  setColor((prevState) => ({
+                    ...prevState,
+                    nuur: false,
+                    hool: true,
+                    hurgelt: false,
+                    sags: false,
+                    newtreg: false,
+                  }));
+                }}
                 variant="h6"
                 noWrap
                 component="div"
                 sx={{
                   flexGrow: 1,
                   display: { xs: "none", sm: "block" },
-                  color: "black",
+                  color: color.hool ? "green" : "black",
                   p: 2,
                 }}
               >
-                <Link href="/menu">Хоолны цэс</Link>
+                Хоолны цэс
               </Typography>
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{
-                  flexGrow: 1,
-                  display: { xs: "none", sm: "block" },
-                  color: "black",
-                  p: 2,
-                }}
-              >
-                <Link href="/deliveryRange">Хүргэлтийн бүс</Link>
-              </Typography>
-            </Stack>
-          </Box>
-          <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-            <Search sx={{ border: "1px solid black" }}>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Хайх"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </Search>
+            </Link>
 
-            <Box
-              sx={{
-                px: 2,
-                display: "flex",
-                py: 1,
-                gap: "8px",
-                alignItems: "center",
-                p: 2,
-              }}
-            >
-              <BasketIcon />
+            <Link href="/deliveryRange">
               <Typography
+                onClick={() => {
+                  setColor((prevState) => ({
+                    ...prevState,
+                    nuur: false,
+                    hool: false,
+                    hurgelt: true,
+                    sags: false,
+                    newtreg: false,
+                  }));
+                }}
                 variant="h6"
                 noWrap
                 component="div"
                 sx={{
                   flexGrow: 1,
                   display: { xs: "none", sm: "block" },
-                  color: "black",
+                  color: color.hurgelt ? "green" : "black",
+                  p: 2,
                 }}
               >
-                <Link href="./OrderHistory">Сагс</Link>
+                Хүргэлтийн бүс
               </Typography>
-            </Box>
+            </Link>
+          </Stack>
+        </Box>
+        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+          <Search sx={{ border: "1px solid black" }}>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Хайх"
+              inputProps={{ "aria-label": "search" }}
+            />
+          </Search>
 
-            <Box
-              sx={{
-                display: "flex",
-                px: 2,
-                py: 1,
-                gap: "8px",
-                alignItems: "center",
-                p: 2,
-              }}
-            >
-              <VectorIcon />
+          <Box
+            sx={{
+              px: 2,
+              display: "flex",
+              py: 1,
+              gap: "8px",
+              alignItems: "center",
+              p: 2,
+            }}
+          >
+            <BasketIcon />
+
+            <Link href="./OrderHistory">
               <Typography
+                onClick={() => {
+                  setColor((prevState) => ({
+                    ...prevState,
+                    nuur: false,
+                    hool: false,
+                    hurgelt: false,
+                    sags: true,
+                    newtreg: false,
+                  }));
+                }}
                 variant="h6"
                 noWrap
                 component="div"
                 sx={{
                   flexGrow: 1,
                   display: { xs: "none", sm: "block" },
-                  color: "black",
+                  color: color.sags ? "green" : "black",
                 }}
               >
-                <Link href="./login">Нэвтрэх</Link>
+                Сагс
               </Typography>
-            </Box>
+            </Link>
           </Box>
-        </Grid>
-      </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              px: 2,
+              py: 1,
+              gap: "8px",
+              alignItems: "center",
+              p: 2,
+            }}
+          >
+            <VectorIcon />
+            <Link href="./login">
+              <Typography
+                onClick={() => {
+                  setColor((prevState) => ({
+                    ...prevState,
+                    nuur: false,
+                    hool: false,
+                    hurgelt: false,
+                    sags: false,
+                    newtreg: true,
+                  }));
+                }}
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{
+                  flexGrow: 1,
+                  display: { xs: "none", sm: "block" },
+                  color: color.newtreg ? "green" : "black",
+                }}
+              >
+                Нэвтрэх
+              </Typography>
+            </Link>
+          </Box>
+        </Box>
+      </Grid>
     </Box>
   );
 }
