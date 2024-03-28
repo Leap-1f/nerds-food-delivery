@@ -1,8 +1,3 @@
 export const Login = () => {
-  return (
-    <>
-      <h1>hi</h1>
-    </>
-  );
+  return <>test</>;
 };
-export default Login;
