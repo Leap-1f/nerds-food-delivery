@@ -9,101 +9,284 @@ import {
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import LogoutIcon from "@mui/icons-material/Logout";
+import RestoreIcon from "@mui/icons-material/Restore";
+import Fab from '@mui/material/Fab';
 import { useState } from "react";
 
-export const UserProfile = () => {
-  const [userData, setUserData] = useState({
-    name: "УгтахБаяр",
-    phone: 80234566,
-    email: "dashka.bagsh@gmail.com"
-  })
+interface UserData {
+  value: string | number;
+  isEditing: boolean;
+}
 
+export const UserProfile = () => {
+  const [userData, setUserData] = useState<{
+    name: UserData;
+    phone: UserData;
+    email: UserData;
+  }>({
+    name: { value: "УгтахБаяр", isEditing: false },
+    phone: { value: 80234566, isEditing: false },
+    email: { value: "dashka.bagsh@gmail.com", isEditing: false },
+  });
+
+  const handleEdit = (field: keyof typeof userData) => {
+    setUserData((prevData) => ({
+      ...prevData,
+      [field]: { ...prevData[field], isEditing: true },
+    }));
+  };
+
+  const handleChange = (
+    field: keyof typeof userData,
+    value: string | number
+  ) => {
+    setUserData((prevData) => ({
+      ...prevData,
+      [field]: { ...prevData[field], value: value },
+    }));
+  };
+
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    field: keyof typeof userData
+  ) => {
+    if (event.key === "Enter") {
+      setUserData((prevData) => ({
+        ...prevData,
+        [field]: { ...prevData[field], isEditing: false },
+      }));
+    }
+  };
 
   return (
     <>
-    <Box display="flex" flexDirection="column" alignItems="center">
-      <Box mb={2} display="flex" alignItems="center">
-        <Avatar
-          alt="Remy Sharp"
-          src="/profile.jpg"
-          sx={{ width: "120px", height: "120px" }}
-        />
-        <ModeEditOutlineOutlinedIcon color="primary" />
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap={"40px"}
+        alignItems="center"
+      >
+        <Box mb={2} display="flex" alignItems="center" position={"relative"}>
+          <Box
+            sx={{
+              borderRadius: "50%",
+              bgcolor: "white",
+              border: "1px solid #EEEFF2",
+              p: "5px",
+              position: "absolute",
+              bottom: 0,
+              zIndex: 1,
+              right: 0,
+            }}
+          >
+            <ModeEditOutlineOutlinedIcon color="primary" />
+          </Box>
+          <Avatar
+            alt="Remy Sharp"
+            src="/profile.jpg"
+            sx={{ width: "120px", height: "120px" }}
+          />
+        </Box>
+        <Typography variant="h4" sx={{ fontWeight: "bold", mb: 2 }}>
+          {userData.name.value}
+        </Typography>
       </Box>
-      <Typography variant="h4" sx={{ fontWeight: "bold", mb: 2 }}>
-        УгтахБаяр
-      </Typography>
-    </Box>
-    <Stack direction="column" alignItems="center">
+      <Stack direction="column" mt={"40px"} alignItems={"center"}>
         {/* Text input fields */}
-        <Stack direction="column" spacing={2} width="100%">
+        <Stack
+          direction="column"
+          spacing={2}
+          maxWidth="432px"
+          alignItems={"center"}
+        >
           {/* Name */}
-          <TextField
-            label="Таны нэр"
-            variant="standard"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Avatar
-                    sx={{ bgcolor: "white", border: "1px solid #EEEFF2" }}
-                  >
-                    <PersonOutlineOutlinedIcon sx={{ color: "black" }} />
-                  </Avatar>
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <ModeEditOutlineOutlinedIcon color="primary" />
-                </InputAdornment>
-              ),
-              disableUnderline: true
-            }}
-            InputLabelProps={{ shrink: true }} // Ensure label stays at the top
+          <Box
             sx={{
-              backgroundColor: "#F6F6F6",
+              bgcolor: "#F6F6F6",
+              borderRadius: "4px",
+              p: "8px 20px",
+              display: "flex",
+              gap: "8px",
+              width: "432px",
             }}
-            value={userData.name}
-          />
+          >
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "50%",
+                bgcolor: "white",
+                px: "10px",
+                border: "1px solid #EEEFF2",
+              }}
+            >
+              <PersonOutlineOutlinedIcon sx={{ color: "black" }} />
+            </Box>
+            <TextField
+              label="Таны нэр"
+              variant="standard"
+              InputProps={{
+                disableUnderline: true,
+                readOnly: !userData.name.isEditing,
+                onChange: (e) => handleChange("name", e.target.value),
+                onKeyDown: (e) => handleKeyDown(e, "name"),
+              }}
+              value={userData.name.value as string}
+              sx={{ flex: 1 }}
+            />
+            {!userData.name.isEditing && (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <ModeEditOutlineOutlinedIcon
+                  color="primary"
+                  onClick={() => handleEdit("name")}
+                />
+              </Box>
+            )}
+          </Box>
           {/* Phone number */}
-          <TextField
-            label="утасны дугаар"
-            variant="standard"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Avatar
-                    sx={{ bgcolor: "white", border: "1px solid #EEEFF2" }}
-                  >
-                    <PhoneOutlinedIcon sx={{ color: "black" }} />
-                  </Avatar>
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <ModeEditOutlineOutlinedIcon color="primary" />
-                </InputAdornment>
-              ),
-              disableUnderline: true
-            }}
-            InputLabelProps={{ shrink: true }}
+          <Box
             sx={{
-              backgroundColor: "#F6F6F6"
+              bgcolor: "#F6F6F6",
+              borderRadius: "4px",
+              p: "8px 20px",
+              display: "flex",
+              gap: "8px",
+              width: "100%",
             }}
-            value={userData.phone}
-          />
+          >
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "50%",
+                bgcolor: "white",
+                px: "10px",
+                border: "1px solid #EEEFF2",
+              }}
+            >
+              <PhoneOutlinedIcon sx={{ color: "black" }} />
+            </Box>
+            <TextField
+              label="утасны дугаар"
+              variant="standard"
+              InputProps={{
+                disableUnderline: true,
+                readOnly: !userData.phone.isEditing,
+                onChange: (e) => handleChange("phone", e.target.value),
+                onKeyDown: (e) => handleKeyDown(e, "phone"),
+              }}
+              value={userData.phone.value as number}
+              sx={{ flex: 1 }}
+            />
+            {!userData.phone.isEditing && (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <ModeEditOutlineOutlinedIcon
+                  color="primary"
+                  onClick={() => handleEdit("phone")}
+                />
+              </Box>
+            )}
+          </Box>
           {/* Email */}
-          <Box sx={{bgcolor: '#F6F6F6', borderRadius: '4px', p: '8px 20px', display: 'flex'}}>
-            <Box><EmailOutlinedIcon/></Box>
-          <TextField
-            label="Имэйл хаяг"
-            variant="standard"
-            InputProps={{
-              
-              disableUnderline: true
+          <Box
+            sx={{
+              bgcolor: "#F6F6F6",
+              borderRadius: "4px",
+              p: "8px 20px",
+              display: "flex",
+              gap: "8px",
+              width: "100%",
             }}
-            value={userData.email}
-          />
+          >
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "50%",
+                bgcolor: "white",
+                px: "10px",
+                border: "1px solid #EEEFF2",
+              }}
+            >
+              <EmailOutlinedIcon />
+            </Box>
+            <TextField
+              label="Имэйл хаяг"
+              variant="standard"
+              InputProps={{
+                disableUnderline: true,
+                readOnly: !userData.email.isEditing,
+                onChange: (ev) => handleChange("email", ev.target.value),
+                onKeyDown: (ev) => handleKeyDown(ev, "email"),
+              }}
+              value={userData.email.value as string}
+              sx={{ width: "100%" }}
+            />
+            {!userData.email.isEditing && (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <ModeEditOutlineOutlinedIcon
+                  color="primary"
+                  onClick={() => handleEdit("email")}
+                />
+              </Box>
+            )}
+          </Box>
+        </Stack>
+        <Stack direction={"column"} width={"432px"} gap={3} mt={3} pl={"20px"} alignItems={"flex-start"}>
+          <Box display={"flex"} gap={1} height={"100%"} alignItems={"center"}>
+            <Box 
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "50%",
+                bgcolor: "white",
+                p: "10px",
+                border: "1px solid #EEEFF2",
+              }}
+            >
+              <RestoreIcon sx={{ color: "black" }} />
+            </Box>
+            <Typography>Захиалгын түүх</Typography>
+          </Box>
+          <Box display={"flex"} gap={1} height={"100%"} alignItems={"center"}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "50%",
+                bgcolor: "white",
+                p: "10px",
+                border: "1px solid #EEEFF2",
+              }}
+            >
+              <LogoutIcon sx={{ color: "black" }} />
+            </Box>
+            <Typography>Гарах</Typography>
           </Box>
         </Stack>
       </Stack>
