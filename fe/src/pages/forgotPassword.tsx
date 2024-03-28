@@ -19,7 +19,7 @@ export default function ForgotPassword() {
   const [first, setFirst] = useState(true);
   const [second, setSecond] = useState(false);
   const [third, setThird] = useState(false);
-  const [code, setCode] = useState("0");
+  const [code, setCode] = useState("");
   const [pass, setPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -31,7 +31,6 @@ export default function ForgotPassword() {
     event.preventDefault();
   };
   function CheckMailValidity() {
-    var button = document.getElementById("butt");
     if (
       email
         .toLowerCase()

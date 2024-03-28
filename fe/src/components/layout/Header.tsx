@@ -55,9 +55,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Header() {
+export function Header() {
   return (
-    <Box sx={{ p: 2 }}>
+    <Box sx={{ p: 2, position: "absolute", top: 0, width: "100vw" }}>
       <Box sx={{ px: "107px" }}>
         <Grid container direction={"row"} justifyContent={"space-between"}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>

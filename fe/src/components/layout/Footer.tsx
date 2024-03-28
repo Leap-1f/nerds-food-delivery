@@ -2,14 +2,19 @@ import { Box, Stack } from "@mui/material";
 import BlockWhiteIcon from "../icons/BlockWhiteIcon";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
-import Grid from "@mui/material/Grid";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import { BorderColor } from "@mui/icons-material";
 export const Footer = () => {
   return (
-    <Box sx={{ background: "#18BA51" }}>
+    <Box
+      sx={{
+        background: "#18BA51",
+        position: "absolute",
+        bottom: "0",
+        width: "100vw",
+      }}
+    >
       <Box
         sx={{
           px: 15,
@@ -127,4 +132,3 @@ export const Footer = () => {
     </Box>
   );
 };
-export default Footer;
