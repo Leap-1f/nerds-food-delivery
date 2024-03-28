@@ -76,6 +76,7 @@ export function CategoryModal(modalClose: Function, closed: boolean) {
           label="Category name"
           sx={{ backgroundColor: "#F4F4F4" }}
           placeholder="Enter category name"
+          value={categoryName}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setCategoryName(event.target.value);
           }}
