@@ -1,33 +1,111 @@
 import Box from "@mui/material/Box";
 import CardActions from "@mui/material/CardActions";
-import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 
 export const FoodCart = () => {
+  const cart = [
+    {
+      name: "Өглөөний хоол",
+      price: "14,000₮",
+      dsprice: "16,800₮",
+      discount: "20%",
+      img: "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg",
+    },
+    {
+      name: "Зайрмаг",
+      price: "4,000₮",
+      dsprice: "5,800₮",
+      discount: "20%",
+      img: "https://redroserestaurant.softinfinitytechnology.com/wp-content/uploads/2021/10/from-the-us-russia-to-india-an-ice-cream-bowl-has-a-long-political-history.jpg",
+    },
+    {
+      name: "Өглөөний хоол",
+      price: "24,000₮",
+      dsprice: "28,800₮",
+      discount: "20%",
+      img: "https://www.jigsawexplorer.com/puzzles/subjects/skillet-breakfast-436x300.jpg",
+    },
 
+    {
+      name: "Өглөөний хоол",
+      price: "14,000₮",
+      dsprice: "16,800₮",
+      discount: "20%",
+      img: "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg",
+    },
+  ];
   return (
     <Box
       sx={{
-        backgroundColor: "white",
-        gap: "14px",
-        padding: "30px",
+        bgcolor: "white",
+        gap: "24px",
+        padding: "120px",
       }}
     >
-      <Box sx={{ height: 246 }}>
-        <Box sx={{ maxWidth: 282 }}>
-          <CardMedia
-            sx={{ height: 186 }}
-            image="./Image.png"
-            title="green iguana"
-          />
-          <Typography fontSize={16} padding={1} color={"black"}>
-            Өглөөний хоол
-          </Typography>
-          <CardActions sx={{ gap: 2, fontSize: 16 }}>
-            <Typography color="green">14,800₮</Typography>
-            <Typography color="text.secondary">16,800₮</Typography>
-          </CardActions>
-        </Box>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        {cart.map((el) => (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              sx={{
+                position: "relative",
+                width: "282px",
+                height: "186px",
+              }}
+            >
+              <img
+                src={el.img}
+                style={{
+                  objectFit: "cover",
+                  height: "100%",
+                  width: "100%",
+                  maxHeight: "100%",
+                  maxWidth: "100%",
+                  border: "1px",
+                  borderRadius: "10px",
+                }}
+              />
+              <Typography
+                border={1}
+                borderRadius={5}
+                width={60}
+                bgcolor="#18BA51"
+                color={"white"}
+                justifyContent={"center"}
+                align="center"
+                position={"absolute"}
+                top={20}
+                left={200}
+                borderColor={"white"}
+              >
+                {el.discount}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography
+                fontSize={16}
+                color={"black"}
+                fontWeight={600}
+                paddingTop={3}
+              >
+                {el.name}
+              </Typography>
+              <CardActions sx={{ gap: 2, fontSize: 16, padding: 0 }}>
+                <Typography color="green">{el.price}</Typography>
+                <Typography
+                  sx={{ textDecoration: "line-through" }}
+                  color="text.secondary"
+                >
+                  {el.dsprice}
+                </Typography>
+              </CardActions>
+            </Box>
+          </Box>
+        ))}
       </Box>
     </Box>
   );
