@@ -1,10 +1,11 @@
+import React, { useState } from "react";
 import {
   Box,
   Avatar,
   Typography,
   TextField,
-  InputAdornment,
   Stack,
+  Alert,
 } from "@mui/material";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
@@ -12,8 +13,6 @@ import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import RestoreIcon from "@mui/icons-material/Restore";
-import Fab from '@mui/material/Fab';
-import { useState } from "react";
 
 interface UserData {
   value: string | number;
@@ -31,11 +30,17 @@ export const UserProfile = () => {
     email: { value: "dashka.bagsh@gmail.com", isEditing: false },
   });
 
+  const [focusedField, setFocusedField] = useState<
+    keyof typeof userData | null
+  >(null);
+  const [save, setSave] = useState(false);
+
   const handleEdit = (field: keyof typeof userData) => {
     setUserData((prevData) => ({
       ...prevData,
       [field]: { ...prevData[field], isEditing: true },
     }));
+    setFocusedField(field);
   };
 
   const handleChange = (
@@ -57,11 +62,16 @@ export const UserProfile = () => {
         ...prevData,
         [field]: { ...prevData[field], isEditing: false },
       }));
+      setSave(true);
+      setFocusedField(null);
     }
   };
 
   return (
     <>
+      {save && (
+        <Alert severity="success">Таны мэдээлэл амжилттай шинэчлэгдлээ.</Alert>
+      )}
       <Box
         display="flex"
         flexDirection="column"
@@ -110,6 +120,10 @@ export const UserProfile = () => {
               display: "flex",
               gap: "8px",
               width: "432px",
+              border:
+                focusedField === "name"
+                  ? "1px solid #D6D8DB"
+                  : "1px solid #EEEFF2",
             }}
           >
             <Box
@@ -133,9 +147,13 @@ export const UserProfile = () => {
                 readOnly: !userData.name.isEditing,
                 onChange: (e) => handleChange("name", e.target.value),
                 onKeyDown: (e) => handleKeyDown(e, "name"),
+                onFocus: () => setFocusedField("name"),
+                onBlur: () => setFocusedField(null),
               }}
               value={userData.name.value as string}
-              sx={{ flex: 1 }}
+              sx={{
+                flex: 1,
+              }}
             />
             {!userData.name.isEditing && (
               <Box
@@ -161,6 +179,10 @@ export const UserProfile = () => {
               display: "flex",
               gap: "8px",
               width: "100%",
+              border:
+                focusedField === "phone"
+                  ? "1px solid #D6D8DB"
+                  : "1px solid #EEEFF2",
             }}
           >
             <Box
@@ -184,6 +206,8 @@ export const UserProfile = () => {
                 readOnly: !userData.phone.isEditing,
                 onChange: (e) => handleChange("phone", e.target.value),
                 onKeyDown: (e) => handleKeyDown(e, "phone"),
+                onFocus: () => setFocusedField("phone"),
+                onBlur: () => setFocusedField(null),
               }}
               value={userData.phone.value as number}
               sx={{ flex: 1 }}
@@ -212,6 +236,10 @@ export const UserProfile = () => {
               display: "flex",
               gap: "8px",
               width: "100%",
+              border:
+                focusedField === "email"
+                  ? "1px solid #D6D8DB"
+                  : "1px solid #EEEFF2",
             }}
           >
             <Box
@@ -235,6 +263,8 @@ export const UserProfile = () => {
                 readOnly: !userData.email.isEditing,
                 onChange: (ev) => handleChange("email", ev.target.value),
                 onKeyDown: (ev) => handleKeyDown(ev, "email"),
+                onFocus: () => setFocusedField("email"),
+                onBlur: () => setFocusedField(null),
               }}
               value={userData.email.value as string}
               sx={{ width: "100%" }}
@@ -255,9 +285,16 @@ export const UserProfile = () => {
             )}
           </Box>
         </Stack>
-        <Stack direction={"column"} width={"432px"} gap={3} mt={3} pl={"20px"} alignItems={"flex-start"}>
+        <Stack
+          direction={"column"}
+          width={"432px"}
+          gap={3}
+          mt={3}
+          pl={"20px"}
+          alignItems={"flex-start"}
+        >
           <Box display={"flex"} gap={1} height={"100%"} alignItems={"center"}>
-            <Box 
+            <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
