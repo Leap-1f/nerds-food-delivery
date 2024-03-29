@@ -43,6 +43,7 @@ export const UserProfile = () => {
   const [save, setSave] = useState(false);
   const [showSaveButton, setShowSaveButton] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [editedName, setEditedName] = useState<string | number>("");
 
   const handleEdit = (field: keyof typeof userData) => {
     setUserData((prevData) => ({
@@ -58,6 +59,9 @@ export const UserProfile = () => {
     setUserData((prevData) => ({
       ...prevData,
       [field]: { ...prevData[field], isEditing: false },
+      name: { ...prevData.name, isEditing: false, value: prevData.name.value },
+      phone: { ...prevData.phone, isEditing: false },
+      email: { ...prevData.email, isEditing: false },
     }));
     setSave(true);
     setFocusedField(null);
@@ -71,6 +75,9 @@ export const UserProfile = () => {
     field: keyof typeof userData,
     value: string | number
   ) => {
+    if (field === "name") {
+      setEditedName(value);
+    }
     setUserData((prevData) => ({
       ...prevData,
       [field]: { ...prevData[field], value: value },
@@ -83,6 +90,10 @@ export const UserProfile = () => {
 
   const handleModalClose = () => {
     setOpenModal(false);
+  };
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0];
   };
 
   return (
@@ -123,7 +134,16 @@ export const UserProfile = () => {
               right: 0,
             }}
           >
-            <ModeEditOutlineOutlinedIcon color="primary" />
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleImageUpload}
+              id="avatar-upload"
+            />
+            <label htmlFor="avatar-upload">
+              <ModeEditOutlineOutlinedIcon color="primary" />
+            </label>
           </Box>
           <Avatar
             alt="Remy Sharp"
@@ -186,20 +206,18 @@ export const UserProfile = () => {
                 flex: 1,
               }}
             />
-            {!userData.name.isEditing && (
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <ModeEditOutlineOutlinedIcon
-                  color="primary"
-                  onClick={() => handleEdit("name")}
-                />
-              </Box>
-            )}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <ModeEditOutlineOutlinedIcon
+                color="primary"
+                onClick={() => handleEdit("name")}
+              />
+            </Box>
           </Box>
           {/* Phone number */}
           <Box
