@@ -29,7 +29,6 @@ export const LoginModal = () => {
   const formik = useFormik({
     initialValues: {
       email: "",
-
       password: "",
     },
     validationSchema: signSchema,
@@ -59,12 +58,11 @@ export const LoginModal = () => {
         <Typography variant="h5" sx={{ textAlign: "center", fontWeight: 700 }}>
           Нэвтрэх
         </Typography>
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={formik.handleSubmit} className="flex flex-col gap-y-8 ">
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
-              rowGap: "16px",
             }}
           >
             <Box>
@@ -99,6 +97,17 @@ export const LoginModal = () => {
                 }
                 helperText={formik.touched.password && formik.errors.password}
               />
+              <Typography
+                sx={{
+                  display: "flex",
+                  justifyContent: "right",
+                  fontSize: "80%",
+                  color: "#3F4145",
+                  marginTop: "1%",
+                }}
+              >
+                Нууц үг сэргээх
+              </Typography>
             </Box>
           </Box>
           <Box
@@ -110,20 +119,18 @@ export const LoginModal = () => {
             }}
           >
             <Button
-              type="submit"
               sx={{
                 width: "100%",
                 borderRadius: "4px",
                 height: "48px",
-                backgroundColor:'#e0e0e0',
                 color: "#e0e0e0",
-                "&:hover": { color: "white", background: "#18BA51" },
+                "&:hover": { color: "white", backgroundColor: "#18BA51" },
               }}
-              className="flex"
-              variant="contained"
               disableElevation
+              variant="contained"
+              type="submit"
             >
-              Бүртгүүлэх
+              Нэвтрэх
             </Button>
             <Typography>Эсвэл</Typography>
             <Button
@@ -131,7 +138,6 @@ export const LoginModal = () => {
                 width: "100%",
                 borderRadius: "4px",
                 height: "48px",
-
                 border: "1px solid #18BA51",
                 color: "#1C20243D",
                 "&:hover": { color: "white", background: "#18BA51" },
