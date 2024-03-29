@@ -17,7 +17,6 @@ import RestoreIcon from "@mui/icons-material/Restore";
 import {
   Dialog,
   DialogTitle,
-  DialogContent,
   DialogActions,
 } from "@mui/material";
 
