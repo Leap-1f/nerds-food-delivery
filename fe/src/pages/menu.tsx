@@ -1,13 +1,12 @@
-import { getLayout } from "@/components/layout/Layout";
+import React from 'react'
+import OrderModal from '@/components/Modals/OrderModal'
 
-const Menu = () => {
+const menu = () => {
   return (
-    <>
-      <h1>hi Menu </h1>
-    </>
-  );
-};
+    <div>
+      <OrderModal></OrderModal>
+    </div>
+  )
+}
 
-Menu.getLayout = getLayout;
-
-export default Menu;
+export default menu
