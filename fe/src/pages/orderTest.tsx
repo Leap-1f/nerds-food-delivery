@@ -2,20 +2,42 @@ import { OrderDetail } from "@/components/layout/OrderDetail";
 import { Box, Stack, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import { Address } from "@/components/ui/Address";
-import { DisabledByDefault } from "@mui/icons-material";
+import { DisabledByDefault, Info } from "@mui/icons-material";
+import { info } from "console";
 export default function testing() {
   const [orderStatus, setOrderStatus] = useState({
     status: "Хүлээгдэж байна",
     color: "#0468C8",
   });
-  const [btnDisabled, setBtnDisabled] = useState(false);
+  const [infoStatus, setInfoStatus] = useState({
+    status: "Хүлээгдэж байна",
+    color: "#0468C8",
+  });
+  const [btnDisabled, setBtnDisabled] = useState(true);
   const [con, setCon] = useState(false);
   const [district, setDistrict] = useState("");
   const [area, setArea] = useState("");
   const [apartment, setApartment] = useState("");
   const [description, setDescription] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-
+  const [cardOrCredit, setCardOrCredit] = useState("");
+  function validation() {
+    if (
+      phoneNumber.length != 8 ||
+      district === "" ||
+      area === "" ||
+      apartment === "" ||
+      cardOrCredit === ""
+    ) {
+      setBtnDisabled(false);
+    } else {
+      setBtnDisabled(true);
+      setInfoStatus({ status: "Оруулсан", color: "#18BA51" });
+    }
+  }
+  useEffect(() => {
+    validation();
+  }, [apartment, area, district, phoneNumber, cardOrCredit]);
   function getStatus() {
     /* Insert backend code here, maybe should run it every 30 seconds or so and make it apply status to stat.*/
     var stat = "WAITING";
@@ -45,8 +67,8 @@ export default function testing() {
       }}
     >
       {Address(
-        orderStatus.status,
-        orderStatus.color,
+        infoStatus.status,
+        infoStatus.color,
         setDistrict,
         district,
         setArea,
@@ -56,7 +78,9 @@ export default function testing() {
         setDescription,
         description,
         setPhoneNumber,
-        phoneNumber
+        phoneNumber,
+        setCardOrCredit,
+        cardOrCredit
       )}
       {OrderDetail(orderStatus.status, orderStatus.color, !btnDisabled)}
     </Stack>
