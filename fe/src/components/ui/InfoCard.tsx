@@ -8,17 +8,17 @@ export const InfoCard = () => {
       img: "./next.svg",
     },
     {
-      name: "Хүргэлтийн төлөв хянах",
+      name: "Шуурхай хүргэлт",
       text: "Захиалга бэлтгэлийн явцыг хянах",
-      img: "./delivery1.png",
+      img: "./green.svg",
     },
     {
-      name: "Хүргэлтийн төлөв хянах",
+      name: "Эрүүл, баталгаат орц",
       text: "Захиалга бэлтгэлийн явцыг хянах",
-      img: "./tree.png",
+      img: "./delivery.svg",
     },
     {
-      name: "Хүргэлтийн төлөв хянах",
+      name: "Хоолны өргөн сонголт",
       text: "Захиалга бэлтгэлийн явцыг хянах",
       img: "./next.svg",
     },
@@ -39,12 +39,13 @@ export const InfoCard = () => {
           sx={{
             width: "265px",
             height: "155px",
-            border: "1px solid gray",
+            border: "1px solid #D6D8DB ",
             borderRadius: "16px",
             gap: "15px",
             padding: "16px",
             bgcolor: "#FFFFFF",
-            boxShadow: "shadow-inner",
+            objectFit: "cover",
+            boxShadow: "4px 4px 12px rgba(0, 0, 0, 0.1)",
           }}
         >
           <Box
@@ -52,7 +53,12 @@ export const InfoCard = () => {
           >
             <img
               src={Element.img}
-              style={{ width: "30px", height: "30px", lineHeight: "25px" }}
+              style={{
+                width: "30px",
+                height: "30px",
+                lineHeight: "25px",
+                objectFit: "contain",
+              }}
             />
           </Box>
           <Box
@@ -64,7 +70,12 @@ export const InfoCard = () => {
               color: "#272727",
             }}
           >
-            <p style={{ fontSize: "18px", fontWeight: "700px" }}>
+            <p
+              style={{
+                fontSize: "18px",
+                fontWeight: "700",
+              }}
+            >
               {Element.name}
             </p>
             <p
