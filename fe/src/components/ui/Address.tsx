@@ -110,7 +110,16 @@ export function Address(
             <Typography sx={{ fontSize: "14px", fontWeight: "300" }}>
               Хаяг аа оруулна уу
             </Typography>
+
             <Select
+              displayEmpty={true}
+              renderValue={(value) =>
+                value?.length
+                  ? Array.isArray(value)
+                    ? value.join(", ")
+                    : value
+                  : "Дүүрэг сонгоно уу"
+              }
               onSelect={() => {
                 setDistrictOpened(true);
               }}
@@ -169,6 +178,14 @@ export function Address(
               <MenuItem value="Чингэлтэй дүүрэг">Чингэлтэй дүүрэг</MenuItem>
             </Select>
             <Select
+              displayEmpty={true}
+              renderValue={(value) =>
+                value?.length
+                  ? Array.isArray(value)
+                    ? value.join(", ")
+                    : value
+                  : "Хороо сонгоно уу"
+              }
               onSelect={() => {
                 setAreaOpened(true);
               }}
@@ -225,6 +242,14 @@ export function Address(
               <MenuItem value="6-р хороо">7-р хороо</MenuItem>
             </Select>
             <Select
+              displayEmpty={true}
+              renderValue={(value) =>
+                value?.length
+                  ? Array.isArray(value)
+                    ? value.join(", ")
+                    : value
+                  : "Байр гудамж сонгоно уу"
+              }
               onSelect={() => {
                 setApartmentOpened(true);
               }}
