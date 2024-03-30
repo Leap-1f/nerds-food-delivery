@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
@@ -9,8 +9,9 @@ import BasketIcon from "../icons/BasketIcon";
 import VectorIcon from "../icons/VectorIcon";
 import { Grid, Stack } from "@mui/material";
 import Link from "next/link";
-import { useState } from "react";
 import { useGlobalContext } from "../utils/Context";
+import SideBarModal from "../Modals/SidebarModal";
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -33,7 +34,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   width: "100%",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
+
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     [theme.breakpoints.up("sm")]: {
@@ -75,7 +76,7 @@ export default function Header() {
                 noWrap
                 component="div"
                 sx={{
-                  color: color.nuur ? "green" : "black", // Conditionally set color based on nuur state
+                  color: color.nuur ? "green" : "black",
                   p: 2,
                 }}
               >
@@ -157,31 +158,28 @@ export default function Header() {
             }}
           >
             <BasketIcon />
-
-            <Link href="./OrderHistory">
-              <Typography
-                onClick={() => {
-                  setColor((prevState: any) => ({
-                    ...prevState,
-                    nuur: false,
-                    hool: false,
-                    hurgelt: false,
-                    sags: true,
-                    newtreg: false,
-                  }));
-                }}
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{
-                  flexGrow: 1,
-                  display: { xs: "none", sm: "block" },
-                  color: color.sags ? "green" : "black",
-                }}
-              >
-                Сагс
-              </Typography>
-            </Link>
+            <Typography
+              onClick={() => {
+                setColor((prevState: any) => ({
+                  ...prevState,
+                  nuur: false,
+                  hool: false,
+                  hurgelt: false,
+                  sags: true,
+                  newtreg: false,
+                }));
+              }}
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{
+                flexGrow: 1,
+                display: { xs: "none", sm: "block" },
+                color: color.sags ? "green" : "black",
+              }}
+            >
+              <SideBarModal />
+            </Typography>
           </Box>
 
           <Box
@@ -195,7 +193,7 @@ export default function Header() {
             }}
           >
             <VectorIcon />
-            <Link href="./login">
+            <Link href="/login">
               <Typography
                 onClick={() => {
                   setColor((prevState: any) => ({

@@ -5,4 +5,4 @@ export * from "./ErrorModal";
 export * from "./FoodModal";
 export * from "./LoginModal";
 export * from "./OrderModal";
-export * from "./SidebarModal";
+export * from "./SideBarModal";
