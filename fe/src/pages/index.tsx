@@ -1,15 +1,9 @@
-
-import {FoodCart} from "@/components/ui/FoodCart";
-import { InfoCard } from "@/components/ui/InfoCard";
-import Tas from "./tas";
-
+import { FoodCart } from "@/components/ui/FoodCart";
 
 export default function Home() {
   return (
     <>
-      <InfoCard />
       <FoodCart />
-      <Tas />
     </>
   );
 }

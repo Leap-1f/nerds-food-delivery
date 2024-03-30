@@ -57,6 +57,7 @@ export const FoodCart = () => {
               display: "flex",
               flexDirection: "column",
               width: "20%",
+              
             }}
           >
             <Box

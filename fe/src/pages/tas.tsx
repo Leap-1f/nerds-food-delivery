@@ -5,33 +5,29 @@ export default function Tas() {
     <>
       <Box
         sx={{
-       
-          top: "89px",
-          padding: "120px",
-          gap: "24px",
+          margin: "0px auto",
           bgcolor: "#FFFFFF",
           display: "grid",
-          gridTemplateRows: "auto",
+          width: "50%",
         }}
       >
         <Box
           sx={{
-            width: "300px",
-            height: "65px",
+            width: "30%",
+            height: "50%",
             display: "flex",
             justifyContent: "space-between",
-            paddingTop: "16px",
-            paddingBottom: "16px",
+            marginLeft: "7%",
+            marginTop: "10%",
           }}
         >
           <img
             src="./star.svg"
             alt=""
-            style={{ width: "32px", height: "32px" }}
+            style={{ width: "10%", height: "50%" }}
           />
           <p
             style={{
-              height: "33px",
               fontWeight: "700",
               fontSize: "22px",
               lineHeight: "33px",
@@ -49,6 +45,9 @@ export default function Tas() {
             color: "#000000",
             textAlign: "justify",
             textIndent: "50px",
+            marginLeft: "7%",
+            marginRight: "7%",
+            marginTop: "2%",
           }}
         >
           <p>
