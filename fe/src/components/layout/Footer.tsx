@@ -6,7 +6,9 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { Divider } from "@mui/material";
+import { useGlobalContext } from "../utils/Context";
 export const Footer = () => {
+  const { color, setColor } = useGlobalContext();
   return (
     <Box sx={{ background: "#18BA51", pt: "114px", pb: "109px", px: 15 }}>
       <Box
@@ -36,6 +38,16 @@ export const Footer = () => {
         >
           <Link href="/login">
             <Typography
+              onClick={() => {
+                setColor((prevState: any) => ({
+                  ...prevState,
+                  nuur: true,
+                  hool: false,
+                  hurgelt: false,
+                  sags: false,
+                  newtreg: false,
+                }));
+              }}
               variant="h6"
               noWrap
               sx={{
@@ -69,6 +81,16 @@ export const Footer = () => {
           </Link>
           <Link href="/menu">
             <Typography
+              onClick={() => {
+                setColor((prevState: any) => ({
+                  ...prevState,
+                  nuur: false,
+                  hool: true,
+                  hurgelt: false,
+                  sags: false,
+                  newtreg: false,
+                }));
+              }}
               variant="h6"
               noWrap
               component="div"
@@ -102,6 +124,16 @@ export const Footer = () => {
           </Link>
           <Link href="/deliveryRange">
             <Typography
+              onClick={() => {
+                setColor((prevState: any) => ({
+                  ...prevState,
+                  nuur: false,
+                  hool: false,
+                  hurgelt: true,
+                  sags: false,
+                  newtreg: false,
+                }));
+              }}
               variant="h6"
               noWrap
               sx={{

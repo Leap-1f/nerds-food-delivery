@@ -10,8 +10,7 @@ import VectorIcon from "../icons/VectorIcon";
 import { Grid, Stack } from "@mui/material";
 import Link from "next/link";
 import { useState } from "react";
-import { Interface } from "readline";
-import { tree } from "next/dist/build/templates/app-page";
+import { useGlobalContext } from "../utils/Context";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -47,13 +46,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
-  const [color, setColor] = useState({
-    nuur: false,
-    hool: false,
-    hurgelt: false,
-    sags: false,
-    newtreg: false,
-  });
+  const { color, setColor } = useGlobalContext();
 
   return (
     <Box sx={{ mx: "auto", width: "1248px" }}>
@@ -69,14 +62,14 @@ export default function Header() {
             <Link href="/login">
               <Typography
                 onClick={() => {
-                  setColor((prevState) => ({
+                  setColor((prevState: any) => ({
                     ...prevState,
                     nuur: true,
                     hool: false,
                     hurgelt: false,
                     sags: false,
                     newtreg: false,
-                  })); // Toggle nuur state
+                  }));
                 }}
                 variant="h6"
                 noWrap
@@ -92,7 +85,7 @@ export default function Header() {
             <Link href="/menu">
               <Typography
                 onClick={() => {
-                  setColor((prevState) => ({
+                  setColor((prevState: any) => ({
                     ...prevState,
                     nuur: false,
                     hool: true,
@@ -118,7 +111,7 @@ export default function Header() {
             <Link href="/deliveryRange">
               <Typography
                 onClick={() => {
-                  setColor((prevState) => ({
+                  setColor((prevState: any) => ({
                     ...prevState,
                     nuur: false,
                     hool: false,
@@ -168,7 +161,7 @@ export default function Header() {
             <Link href="./OrderHistory">
               <Typography
                 onClick={() => {
-                  setColor((prevState) => ({
+                  setColor((prevState: any) => ({
                     ...prevState,
                     nuur: false,
                     hool: false,
@@ -205,7 +198,7 @@ export default function Header() {
             <Link href="./login">
               <Typography
                 onClick={() => {
-                  setColor((prevState) => ({
+                  setColor((prevState: any) => ({
                     ...prevState,
                     nuur: false,
                     hool: false,
