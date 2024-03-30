@@ -11,7 +11,6 @@ import { Grid, Stack } from "@mui/material";
 import Link from "next/link";
 import { useGlobalContext } from "../utils/Context";
 import SideBarModal from "../Modals/SidebarModal";
-
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
