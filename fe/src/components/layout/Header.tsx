@@ -202,7 +202,7 @@ export default function Header() {
             }}
           >
             <VectorIcon />
-            <Link href="./login">
+            <Link href="/signup">
               <Typography
                 onClick={() => {
                   setColor((prevState) => ({

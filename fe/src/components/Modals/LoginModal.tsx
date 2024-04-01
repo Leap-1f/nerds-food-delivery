@@ -41,7 +41,7 @@ export const LoginModal = () => {
       sx={{
         display: "flex",
         justifyContent: "center",
-        my: "10%",
+        my: "5%",
       }}
     >
       <Box
@@ -51,11 +51,12 @@ export const LoginModal = () => {
           p: 4,
           display: "flex",
           flexDirection: "column",
-          rowGap: "7%",
-          border: "2px solid blue",
         }}
       >
-        <Typography variant="h5" sx={{ textAlign: "center", fontWeight: 700 }}>
+        <Typography
+          variant="h5"
+          sx={{ textAlign: "center", fontWeight: 700, mb: "9%" }}
+        >
           Нэвтрэх
         </Typography>
         <form onSubmit={formik.handleSubmit} className="flex flex-col gap-y-8 ">
@@ -65,7 +66,7 @@ export const LoginModal = () => {
               flexDirection: "column",
             }}
           >
-            <Box>
+            <Box sx={{ fontSize: "14px", fontWeight: 300, mb: "5%" }}>
               <Typography sx={{ fontSize: "14px", fontWeight: 300 }}>
                 И-мэйл
               </Typography>
@@ -135,12 +136,15 @@ export const LoginModal = () => {
             <Typography>Эсвэл</Typography>
             <Button
               sx={{
-                width: "100%",
-                borderRadius: "4px",
-                height: "48px",
-                border: "1px solid #18BA51",
-                color: "#1C20243D",
-                "&:hover": { color: "white", background: "#18BA51" },
+                "&.MuiButton-contained": {
+                  width: "100%",
+                  borderRadius: "4px",
+                  height: "48px",
+                  border: "1px solid #18BA51",
+                  backgroundColor: "#EEEFF2",
+                  color: "#1C20243D",
+                  "&:hover": { color: "white", background: "#18BA51" },
+                },
               }}
               className="flex"
               variant="contained"
