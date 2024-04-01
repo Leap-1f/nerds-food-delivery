@@ -29,20 +29,21 @@ export const InfoCard = () => {
         margin: "0px auto",
         width: "100%",
         bgcolor: "white",
+        maxWidth: "1250px"
       }}
     >
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          marginLeft: "120px",
-          marginRight: "120px",
+          marginLeft: "auto",
+          marginRight: "auto",
         }}
       >
         {card.map((Element) => (
           <Box
             sx={{
-              width: "15%",
+              width: "20%",
               height: "100%",
               border: "1px solid #D6D8DB ",
               borderRadius: "16px",

@@ -165,7 +165,7 @@ export default function Header() {
           >
             <BasketIcon />
 
-            <Link href="./OrderHistory">
+            <Link href="/orderTest">
               <Typography
                 onClick={() => {
                   setColor((prevState) => ({

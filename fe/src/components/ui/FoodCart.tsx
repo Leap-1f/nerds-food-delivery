@@ -41,14 +41,15 @@ export const FoodCart = () => {
         gap: "24px",
         margin: "0px auto",
         width: "100%",
+        maxWidth: "1250px"
       }}
     >
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          marginLeft: "120px",
-          marginRight: "120px"
+          marginLeft: "auto",
+          marginRight: "auto"
         }}
       >
         {cart.map((el) => (
