@@ -39,22 +39,32 @@ export const FoodCart = () => {
       sx={{
         bgcolor: "white",
         gap: "24px",
-        padding: "120px",
+        margin: "0px auto",
+        width: "100%",
       }}
     >
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginLeft: "120px",
+          marginRight: "120px"
+        }}
+      >
         {cart.map((el) => (
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
+              width: "20%",
+              
             }}
           >
             <Box
               sx={{
                 position: "relative",
-                width: "282px",
-                height: "186px",
+                width: "100%",
+                height: "60%",
               }}
             >
               <img
@@ -78,8 +88,8 @@ export const FoodCart = () => {
                 justifyContent={"center"}
                 align="center"
                 position={"absolute"}
-                top={20}
-                left={200}
+                top="10%"
+                right="5%"
                 borderColor={"white"}
               >
                 {el.discount}
