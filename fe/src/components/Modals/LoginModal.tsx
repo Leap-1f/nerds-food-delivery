@@ -20,10 +20,10 @@ export const LoginModal = () => {
       fontWeight: 300,
     },
     "&:hover .MuiOutlinedInput-notchedOutline": {
-      border: "none", // Hide the outline border on hover
+      border: "none",
     },
     "& .MuiOutlinedInput-notchedOutline": {
-      border: "none", // Hide the outline border
+      border: "none",
     },
   };
   const formik = useFormik({
