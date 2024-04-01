@@ -125,9 +125,11 @@ export function FoodModal(modalClose: Function, closed: boolean) {
   useEffect(() => {
     checkFilledIn();
   }, [price, foodDescription, foodName, category]);
+
   const handleSaleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setOnSale(event.target.checked);
   };
+  
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
     clipPath: "inset(50%)",

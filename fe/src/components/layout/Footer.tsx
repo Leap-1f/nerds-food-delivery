@@ -84,7 +84,7 @@ export const Footer = () => {
               ></Divider>
             </Typography>
           </Link>
-          <Link href="/delivery">
+          <Link href="/tas">
             <Typography
               variant="h6"
               noWrap

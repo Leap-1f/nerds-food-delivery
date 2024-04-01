@@ -39,7 +39,6 @@ export default function testing() {
     validation();
   }, [apartment, area, district, phoneNumber, cardOrCredit]);
   function getStatus() {
-    /* Insert backend code here, maybe should run it every 30 seconds or so and make it apply status to stat.*/
     var stat = "WAITING";
     if (stat === "WAITING") {
       setOrderStatus({ status: "Хүлээгдэж байна", color: "#0468C8" });
