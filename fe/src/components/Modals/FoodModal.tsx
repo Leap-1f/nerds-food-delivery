@@ -246,13 +246,12 @@ export function FoodModal(modalClose: Function, closed: boolean) {
             />
             <Stack spacing={0.5}>
               <FormControlLabel
-                control={<IOSSwitch sx={{ m: 1 }} />}
+                control={
+                  <IOSSwitch sx={{ m: 1 }} onChange={handleSaleChange} />
+                }
                 label="Хямдралтай эсэх"
-                sx={{ width: "fit-content" }}
                 checked={onSale}
-                onChange={(e) => {
-                  handleSaleChange(e);
-                }}
+                sx={{ width: "fit-content" }}
               />
               <TextField
                 type="number"
