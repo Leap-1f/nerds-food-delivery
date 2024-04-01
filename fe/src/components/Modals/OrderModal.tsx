@@ -150,6 +150,7 @@ const OrderModal = () => {
               variant="contained"
               disableElevation
               sx={{ bgcolor: "#18BA51 !important", color: "white" }}
+              onClick={handleClose}
             >
               Сагслах
             </Button>

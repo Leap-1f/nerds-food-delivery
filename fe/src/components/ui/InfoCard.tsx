@@ -3,7 +3,7 @@ import { Box, colors } from "@mui/material";
 export const InfoCard = () => {
   const card = [
     {
-      name: "Хүргэлтийн төлөв хянах",
+      name: "Хүргэлтийн төлөв",
       text: "Захиалга бэлтгэлийн явцыг хянах",
       img: "./next.svg",
     },
