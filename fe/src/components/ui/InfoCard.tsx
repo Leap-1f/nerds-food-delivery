@@ -29,7 +29,8 @@ export const InfoCard = () => {
         margin: "0px auto",
         width: "100%",
         bgcolor: "white",
-        maxWidth: "1250px"
+        maxWidth: "1250px",
+        marginTop: "2%",
       }}
     >
       <Box
