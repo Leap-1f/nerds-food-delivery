@@ -81,13 +81,18 @@ export default function SideBarModal() {
                 width: "50%",
               }}
             >
-              <Stack direction={"row"}>
+              <Stack
+                direction={"row"}
+                style={{
+                  justifyContent: "space-between",
+                }}
+              >
                 <Box sx={{ gap: "2px" }}>
                   <Typography variant="h6">Main Pizza</Typography>
                   <Box sx={{ color: "green" }}>34,800₮</Box>
                 </Box>
-                <Box sx={{ p: "5px" }}>
-                  <CloseIcon />
+                <Box sx={{ p: "5px", alignContent: "center" }}>
+                  <CloseIcon sx={{ height: "30px", width: "30px" }} />
                 </Box>
               </Stack>
               <Box>Хулуу, төмс, лууван , сонгино, цөцгийн тос, самрын үр </Box>

@@ -35,6 +35,7 @@ export const MyGlobalContextProvider = ({ children }: ContainerProps) => {
     sags: false,
     newtreg: false,
   });
+  const [modal, setModal] = useState<Boolean>(false);
 
   return (
     <MyGlobalContext.Provider value={{ color, setColor }}>
