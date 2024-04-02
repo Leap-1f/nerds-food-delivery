@@ -17,8 +17,7 @@ export default function PrivacyPolicy() {
             height: "50%",
             display: "flex",
             justifyContent: "space-between",
-            marginLeft: "7%",
-            marginTop: "10%",
+            margin: "10% auto",
           }}
         >
           <img

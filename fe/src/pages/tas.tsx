@@ -45,8 +45,8 @@ export default function Tas() {
             color: "#000000",
             textAlign: "justify",
             textIndent: "50px",
-            marginLeft: "7%",
-            marginRight: "7%",
+            marginLeft: "auto",
+            marginRight: "auto",
             marginTop: "2%",
           }}
         >
