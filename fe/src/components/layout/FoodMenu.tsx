@@ -44,10 +44,11 @@ export const FoodMenu = () => {
             px: 2,
             border: "1px solid #D6D8DB",
             borderRadius: 1,
+            color: `${color.Breakfast ? "white" : "false"}`,
           }}
         >
           <Box>Breakfast</Box>
-          <Box sx={{ color: "black" }}>
+          <Box>
             <img src="FoodMenuButton.svg" alt="FoodMenuButton" />
           </Box>
         </Box>
@@ -71,6 +72,7 @@ export const FoodMenu = () => {
             px: 2,
             border: "1px solid #D6D8DB",
             borderRadius: 1,
+            color: `${color.Soup ? "white" : "false"}`,
           }}
         >
           <Box>Soup</Box>
@@ -98,6 +100,7 @@ export const FoodMenu = () => {
           px: 2,
           border: "1px solid #D6D8DB",
           borderRadius: 1,
+          color: `${color.MainCourse ? "white" : "false"}`,
         }}
       >
         <Box>Maini course</Box>
@@ -124,6 +127,7 @@ export const FoodMenu = () => {
           px: 2,
           border: "1px solid #D6D8DB",
           borderRadius: 1,
+          color: `${color.Desserts ? "white" : "false"}`,
         }}
       >
         <Box>Desserts</Box>
