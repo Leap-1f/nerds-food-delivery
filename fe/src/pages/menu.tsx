@@ -1,30 +1,33 @@
 import React from "react";
 import OrderModal from "@/components/Modals/OrderModal";
-import { FoodCart, } from "@/components/ui/index";
 import { Box, Stack } from "@mui/material";
+import { MockData } from "../../mockdata/mockData";
+import { useState } from "react";
 
 export default function Menu() {
+  const [selectedCategory, setSelectedCategory] = useState("");
+
   const saleMeals = [
     {
-     
       category: "Breakfast",
     },
     {
-      
       category: "Soup",
     },
     {
-     
       category: "MainFood",
     },
     {
-    
       category: "Dessert",
     },
   ];
-  const category = "Dessert";
-  const filteredMeals = saleMeals.filter((meal) => meal.category === category);
-  console.log(filteredMeals);
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+  };
+
+  const filteredMeals = saleMeals.filter((MockData) =>
+    selectedCategory ? MockData.category === selectedCategory : true
+  );
   return (
     <Box>
       <Box
@@ -49,7 +52,11 @@ export default function Menu() {
               borderColor: "#D6D8DB",
               textAlign: "center",
               alignContent: "center",
+              cursor: "pointer",
+              backgroundColor:
+                selectedCategory === el.category ? "#ccc" : "transparent",
             }}
+            onClick={() => handleCategorySelect(el.category)}
           >
             <button
               style={{
@@ -63,7 +70,23 @@ export default function Menu() {
           </Box>
         ))}
       </Box>
-      <Box>
+      <Box
+        sx={{
+          maxWidth: "1250px",
+          width: "1616px",
+          margin: "0px, auto",
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginTop: "2%",
+          display: "flex",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+        }}
+      >
+        {filteredMeals.map((el, ) => (
+          <Box>{MockData.category}</Box>
+        ))}
+        <MockData></MockData>
       </Box>
       <Stack direction={"row"} justifyContent={"center"}>
         <OrderModal></OrderModal>
