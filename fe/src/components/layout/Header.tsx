@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
@@ -9,11 +9,16 @@ import BasketIcon from "../icons/BasketIcon";
 import VectorIcon from "../icons/VectorIcon";
 import { Grid, Stack } from "@mui/material";
 import Link from "next/link";
+<<<<<<< HEAD
 import { useState } from "react";
 import { Interface } from "readline";
 import { tree } from "next/dist/build/templates/app-page";
 
 
+=======
+import { useGlobalContext } from "../utils/Context";
+import SideBarModal from "../Modals/SidebarModal";
+>>>>>>> footer
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -36,7 +41,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   width: "100%",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
+
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     [theme.breakpoints.up("sm")]: {
@@ -49,13 +54,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
-  const [color, setColor] = useState({
-    nuur: false,
-    hool: false,
-    hurgelt: false,
-    sags: false,
-    newtreg: false,
-  });
+  const { color, setColor } = useGlobalContext();
 
   return (
     <Box sx={{ mx: "auto", width: "1248px" }}>
@@ -71,20 +70,20 @@ export default function Header() {
             <Link href="/login">
               <Typography
                 onClick={() => {
-                  setColor((prevState) => ({
+                  setColor((prevState: any) => ({
                     ...prevState,
                     nuur: true,
                     hool: false,
                     hurgelt: false,
                     sags: false,
                     newtreg: false,
-                  })); // Toggle nuur state
+                  }));
                 }}
                 variant="h6"
                 noWrap
                 component="div"
                 sx={{
-                  color: color.nuur ? "green" : "black", // Conditionally set color based on nuur state
+                  color: color.nuur ? "green" : "black",
                   p: 2,
                 }}
               >
@@ -94,7 +93,7 @@ export default function Header() {
             <Link href="/menu">
               <Typography
                 onClick={() => {
-                  setColor((prevState) => ({
+                  setColor((prevState: any) => ({
                     ...prevState,
                     nuur: false,
                     hool: true,
@@ -120,7 +119,7 @@ export default function Header() {
             <Link href="/deliveryRange">
               <Typography
                 onClick={() => {
-                  setColor((prevState) => ({
+                  setColor((prevState: any) => ({
                     ...prevState,
                     nuur: false,
                     hool: false,
@@ -166,6 +165,7 @@ export default function Header() {
             }}
           >
             <BasketIcon />
+<<<<<<< HEAD
 
             <Link href="/orderTest">
               <Typography
@@ -191,6 +191,30 @@ export default function Header() {
                 Сагс
               </Typography>
             </Link>
+=======
+            <Typography
+              onClick={() => {
+                setColor((prevState: any) => ({
+                  ...prevState,
+                  nuur: false,
+                  hool: false,
+                  hurgelt: false,
+                  sags: true,
+                  newtreg: false,
+                }));
+              }}
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{
+                flexGrow: 1,
+                display: { xs: "none", sm: "block" },
+                color: color.sags ? "green" : "black",
+              }}
+            >
+              <SideBarModal />
+            </Typography>
+>>>>>>> footer
           </Box>
 
           <Box
@@ -204,10 +228,10 @@ export default function Header() {
             }}
           >
             <VectorIcon />
-            <Link href="./login">
+            <Link href="/login">
               <Typography
                 onClick={() => {
-                  setColor((prevState) => ({
+                  setColor((prevState: any) => ({
                     ...prevState,
                     nuur: false,
                     hool: false,
