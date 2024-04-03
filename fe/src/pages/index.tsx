@@ -1,4 +1,11 @@
-import FoodMenu from "@/components/layout/FoodMenu";
+import { InfoCard } from "@/components/ui/index";
+import Menu from "./menu";
+
 export default function Home() {
-  return;
+  return (
+    <>
+      <InfoCard />
+      <Menu />
+    </>
+  );
 }
