@@ -9,16 +9,13 @@ import BasketIcon from "../icons/BasketIcon";
 import VectorIcon from "../icons/VectorIcon";
 import { Grid, Stack } from "@mui/material";
 import Link from "next/link";
-<<<<<<< HEAD
 import { useState } from "react";
 import { Interface } from "readline";
 import { tree } from "next/dist/build/templates/app-page";
 
 
-=======
 import { useGlobalContext } from "../utils/Context";
 import SideBarModal from "../Modals/SidebarModal";
->>>>>>> footer
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -165,7 +162,6 @@ export default function Header() {
             }}
           >
             <BasketIcon />
-<<<<<<< HEAD
 
             <Link href="/orderTest">
               <Typography
@@ -191,7 +187,6 @@ export default function Header() {
                 Сагс
               </Typography>
             </Link>
-=======
             <Typography
               onClick={() => {
                 setColor((prevState: any) => ({
@@ -214,7 +209,6 @@ export default function Header() {
             >
               <SideBarModal />
             </Typography>
->>>>>>> footer
           </Box>
 
           <Box
