@@ -6,7 +6,7 @@ const categorySchema = new mongoose.Schema({
         required: true
     },
     foodId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: [mongoose.Schema.Types.ObjectId],
         ref: 'Food'
     }
 });
