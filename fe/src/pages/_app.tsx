@@ -24,18 +24,12 @@ const theme = createTheme({
 });
 export default function App({ Component, pageProps }: AppProps) {
   return (
-<<<<<<< HEAD
-    <ThemeProvider theme={theme}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </ThemeProvider>
-=======
     <MyGlobalContextProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <ThemeProvider theme={theme}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ThemeProvider>
     </MyGlobalContextProvider>
->>>>>>> footer
   );
 }
