@@ -13,7 +13,6 @@ import { useState } from "react";
 import { Interface } from "readline";
 import { tree } from "next/dist/build/templates/app-page";
 
-
 import { useGlobalContext } from "../utils/Context";
 import SideBarModal from "../Modals/SidebarModal";
 const Search = styled("div")(({ theme }) => ({
@@ -163,30 +162,6 @@ export default function Header() {
           >
             <BasketIcon />
 
-            <Link href="/orderTest">
-              <Typography
-                onClick={() => {
-                  setColor((prevState) => ({
-                    ...prevState,
-                    nuur: false,
-                    hool: false,
-                    hurgelt: false,
-                    sags: true,
-                    newtreg: false,
-                  }));
-                }}
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{
-                  flexGrow: 1,
-                  display: { xs: "none", sm: "block" },
-                  color: color.sags ? "green" : "black",
-                }}
-              >
-                Сагс
-              </Typography>
-            </Link>
             <Typography
               onClick={() => {
                 setColor((prevState: any) => ({
