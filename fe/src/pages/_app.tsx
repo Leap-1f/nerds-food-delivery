@@ -25,6 +25,7 @@ const theme = createTheme({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <MyGlobalContextProvider>
+      <meta name="viewport" content="initial-scale=1, width=device-width" />
       <ThemeProvider theme={theme}>
         <Layout>
           <Component {...pageProps} />

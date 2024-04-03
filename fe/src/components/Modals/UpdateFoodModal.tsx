@@ -15,9 +15,8 @@ import {
   FormControlLabel,
   styled,
 } from "@mui/material";
-import { useField } from "formik";
 import { useState, useEffect } from "react";
-export function FoodModal(modalClose: Function, closed: boolean) {
+export function UpdateFoodModal(modalClose: Function, closed: boolean) {
   const [category, setCategory] = useState("");
   const [filledIn, setFilledIn] = useState(false);
   const [categories, setCategories] = useState([]);
