@@ -14,7 +14,7 @@ import { Interface } from "readline";
 import { tree } from "next/dist/build/templates/app-page";
 
 import { useGlobalContext } from "../utils/Context";
-import SideBarModal from "../Modals/SidebarModal";
+import SideBarModal from "../modals/SidebarModal";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,

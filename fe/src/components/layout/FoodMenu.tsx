@@ -1,6 +1,6 @@
 import { Box, Typography, Modal, Backdrop } from "@mui/material";
 import { useState } from "react";
-import { FoodModal } from "../Modals";
+import { FoodModal } from "../modals";
 export const FoodMenu = () => {
   const [modal, setModal] = useState(false);
   const [color, setColor] = useState({

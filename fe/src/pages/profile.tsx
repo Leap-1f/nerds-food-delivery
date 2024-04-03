@@ -1,7 +1,9 @@
-import { UserProfile } from "@/components/Modals/index";
+import { UserProfile } from "@/components/modals/index";
 
 export default function Profile() {
-    return <div>
-        <UserProfile></UserProfile>
+  return (
+    <div>
+      <UserProfile></UserProfile>
     </div>
+  );
 }

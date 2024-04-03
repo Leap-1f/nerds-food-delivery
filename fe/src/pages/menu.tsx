@@ -1,5 +1,5 @@
 import React from "react";
-import OrderModal from "@/components/Modals/OrderModal";
+import OrderModal from "@/components/modals/OrderModal";
 import { FoodCart, InfoCard } from "@/components/ui/index";
 import { Box, Stack } from "@mui/material";
 
@@ -46,7 +46,6 @@ export default function Menu() {
           marginTop: "2%",
           display: "flex",
           justifyContent: "space-between",
-        
         }}
       >
         {saleMeals.map((el) => (
@@ -65,7 +64,6 @@ export default function Menu() {
               style={{
                 fontSize: "18",
                 fontWeight: "500",
-                lineHeight: "27",
                 color: "#000000",
               }}
             >
