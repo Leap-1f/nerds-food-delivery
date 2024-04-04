@@ -1,8 +1,8 @@
+import React, { useState } from "react";
 import {
   Container,
   Typography,
   Box,
-  Checkbox,
   Button,
   TextField,
 } from "@mui/material";
@@ -10,7 +10,14 @@ import { useFormik } from "formik";
 import { signSchema } from "../utils/validation";
 import Link from "next/link";
 
-export const LoginModal = () => {
+interface FormValues {
+  email: string;
+  password: string;
+}
+
+export const LoginModal: React.FC = () => {
+  const [error, setError] = useState<string>("");
+
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   const StyleText = {
     width: "100%",
@@ -27,16 +34,40 @@ export const LoginModal = () => {
       border: "none",
     },
   };
-  const formik = useFormik({
+
+  const formik = useFormik<FormValues>({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: signSchema,
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      // console.log(values, "hi");
+      console.log("hi");
+      
+
+      // try {
+      //   const response = await fetch("http://localhost:8080/user/login", {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify(values),
+      //   });
+
+      //   const data = await response.json();
+      //   if (response.ok) {
+      //     console.log("Login successful: ", data);
+      //   } else {
+      //     setError(data.error || "Failed to login");
+      //   }
+      // } catch (err) {
+      //   console.error("Error logging in: ", err);
+      //   setError("Failed to login");
+      // }
     },
   });
+
   return (
     <Container
       sx={{

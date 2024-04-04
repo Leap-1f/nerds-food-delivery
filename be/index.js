@@ -22,7 +22,11 @@ cloudinary.config({
   api_secret: API_SECRET,
 });
 
-const MONGO_CONNECTION_STRING = `mongodb+srv://${USERNAME}:${PASSWORD}@free.7gtcecr.mongodb.net/`;
+// const MONGO_CONNECTION_STRING = `mongodb+srv://${USERNAME}:${PASSWORD}@free.7gtcecr.mongodb.net/`;
+
+const MONGO_CONNECTION_STRING = `mongodb+srv://haliukaaqua:${PASSWORD}@free.7gtcecr.mongodb.net/`;
+
+
 
 mongoose
   .connect(MONGO_CONNECTION_STRING)
@@ -67,26 +71,15 @@ app.get("/", (request, response) => {
   response.send("Hello World!");
 });
 
-app.get("/food", async (req, res) => {
-  try {
-    const foods = await Food.findById();
-  res.status(200).json(foods);
-  } catch (error) {
-    console.error('Error fetching food items: ', error);
-    res.status(500).json({err: 'Internal server error'})
-  }
-})
-
-
-app.get("/food", async (req, res) => {
-  try {
-    const foods = await Food.find();
-  res.status(200).json(foods);
-  } catch (error) {
-    console.error('Error fetching food items: ', error);
-    res.status(500).json({err: 'Internal server error'})
-  }
-})
+// app.get("/food", async (req, res) => {
+//   try {
+//     const foods = await Food.findById();
+//   res.status(200).json(foods);
+//   } catch (error) {
+//     console.error('Error fetching food items: ', error);
+//     res.status(500).json({err: 'Internal server error'})
+//   }
+// })
 
 
 
@@ -107,17 +100,39 @@ app.post("/food", async (req, res) => {
 });
 
 //user
-app.post("/user", async (req, res) => {
-  // const password = "Aa12345";
-  const user = await User.create({
-    name: "билгүүндөл",
-    email: "duluubagsh@gmail.com",
-    password: await hashPassword(password),
-    phoneNumber: 98765432
-  });
+// app.post("/user", async (req, res) => {
+//   // const password = "Aa12345";
+//   const user = await User.create({
+//     name: "билгүүндөл",
+//     email: "duluubagsh@gmail.com",
+//     password: await hashPassword(password),
+//     phoneNumber: 98765432
+//   });
 
-  res.send(user);
-});
+//   res.send(user);
+// });
+
+app.post("/user/login", async (req, res) =>{
+  const {email, password} = req.body;
+  try {
+    const user = await User.findOne({email});
+    if (!user) {
+      return res.status(404).json({error: 'User not found'})
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if(!passwordMatch) {
+      return res.status(401).json({error: 'Invalid password'})
+    }
+
+    return res.status(200).json({message: 'Login successful', user: {id: user._id, email: user.eemail}})
+  } catch(err) {
+    console.error('Error finding user: ', err);
+    return res.status(500).json({error: 'Internal server error'})
+  }
+})
+
+
 
 
 app.post('/category/add', async (req, res) => {
