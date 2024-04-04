@@ -1,5 +1,5 @@
 import React from "react";
-import OrderModal from "@/components/modals/OrderModal";
+import OrderModal from "@/components/Modals/OrderModal";
 import { Box, Stack } from "@mui/material";
 import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
@@ -33,13 +33,6 @@ export default function Menu() {
   interface FoodItem {
     category: string;
   }
-
-
-
-
-
-
-
 
   // const data = [
   //   {
