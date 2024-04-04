@@ -152,7 +152,7 @@ export default function Menu() {
       category: "Dessert",
     },
   ];
-  const handleCategorySelect = (category) => {
+  const handleCategorySelect = (category: any) => {
     setSelectedCategory(category);
   };
 
