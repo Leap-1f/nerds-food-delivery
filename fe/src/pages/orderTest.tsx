@@ -59,9 +59,9 @@ export default function testing() {
       direction="row"
       sx={{
         height: "100vh",
-        width: "100vw",
+        gap: "4vw",
         display: "flex",
-        justifyContent: "space-around",
+        justifyContent: "center",
         alignItems: "center",
       }}
     >

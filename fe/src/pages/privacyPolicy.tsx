@@ -8,7 +8,7 @@ export default function PrivacyPolicy() {
           margin: "0px auto",
           bgcolor: "#FFFFFF",
           display: "grid",
-          width: "50%",
+          maxWidth: "1240px",
         }}
       >
         <Box
@@ -17,7 +17,6 @@ export default function PrivacyPolicy() {
             height: "50%",
             display: "flex",
             justifyContent: "space-between",
-            marginLeft: "7%",
             marginTop: "10%",
           }}
         >
@@ -45,8 +44,6 @@ export default function PrivacyPolicy() {
             color: "#000000",
             textAlign: "justify",
             textIndent: "50px",
-            marginLeft: "7%",
-            marginRight: "7%",
             marginTop: "2%",
           }}
         >

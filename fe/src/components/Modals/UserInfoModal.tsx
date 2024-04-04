@@ -14,11 +14,7 @@ import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import RestoreIcon from "@mui/icons-material/Restore";
-import {
-  Dialog,
-  DialogTitle,
-  DialogActions,
-} from "@mui/material";
+import { Dialog, DialogTitle, DialogActions } from "@mui/material";
 
 interface UserData {
   value: string | number;
