@@ -188,7 +188,7 @@ app.post("/createCategory", async (request, response) => {
 app.post("/deleteCategory", async (request, response) => {
   const stringified = JSON.stringify(request.body);
   const parsed = JSON.parse(stringified);
-  if (parsed.name != "") {
+  if (parsed.id != "") {
     const deleteCategory = await Category.deleteOne({ _id: parsed.id });
     response.status(200);
     response.send("Category Deleted.");
