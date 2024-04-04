@@ -8,7 +8,7 @@ export default function Tas() {
           margin: "0px auto",
           bgcolor: "#FFFFFF",
           display: "grid",
-          width: "50%",
+          maxWidth: "1240px",
         }}
       >
         <Box
@@ -17,7 +17,6 @@ export default function Tas() {
             height: "50%",
             display: "flex",
             justifyContent: "space-between",
-            marginLeft: "7%",
             marginTop: "10%",
           }}
         >
@@ -45,8 +44,6 @@ export default function Tas() {
             color: "#000000",
             textAlign: "justify",
             textIndent: "50px",
-            marginLeft: "auto",
-            marginRight: "auto",
             marginTop: "2%",
           }}
         >
