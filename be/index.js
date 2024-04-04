@@ -1,10 +1,8 @@
-import express, { response } from "express";
+import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import categoryConstant from "./constant/categoryConstant.js";
 import { Category } from "./model/Category.js";
-import { Food, foodSchema } from "./model/Food.js";
-import { parse } from "path";
+import { Food } from "./model/Food.js";
 
 const port = 8080;
 const app = express();
@@ -74,9 +72,31 @@ app.post("/deleteFood", async (request, response) => {
   }
 });
 // add edit food modal
-app.post("/updateFood", async (request, response) => {});
+app.patch("/updateFood", async (request, response) => {
+  const stringified = JSON.stringify(request.body);
+  const parsed = JSON.parse(stringified);
+  const food = Food.findOneAndUpdate(
+    { _id: parsed.id },
+    {
+      name: parsed.name,
+      img: parsed.img,
+      ingredient: parsed.desc,
+      price: parsed.price,
+    }
+  );
+  (await food).save().then(async (a) => {
+    const findAndDelete = await Category.findOneAndUpdate(
+      { _id: parsed.catId },
+      { $pull: { foodId: a.id } }
+    );
+    const updateCategoryItems = await Category.findOneAndUpdate(
+      { _id: parsed.newCatId },
+      { $push: { foodId: a.id } }
+    );
+  });
+});
 app.get("/getAllFood", async (request, response) => {
-  const food = Food.find({});
+  const food = await Food.find({});
   response.status(200);
   response.send(food);
 });
@@ -87,9 +107,33 @@ app.get("/searchFood", async (request, response) => {
   response.status(200);
   response.send(food);
 });
-app.get("/getCategoryFood", async (request, response) => {
+app.post("/getFoodById", async (request, response) => {
+  const stringified = JSON.stringify(request.body);
+  const parsed = JSON.parse(stringified);
+  const food = await Food.find(
+    { _id: parsed.id },
+    {
+      _id: 1,
+      name: 1,
+      image: 1,
+      ingredient: 1,
+      price: 1,
+    }
+  );
+  let names = food.map((o) => ({
+    name: o.name,
+    id: o._id,
+    ingredient: o.ingredient,
+    price: o.price,
+  }));
+  response.status(200);
+  response.send(food);
+});
+app.post("/getCategoryFood", async (request, response) => {
+  const stringified = JSON.stringify(request.body);
+  const parsed = JSON.parse(stringified);
   const categories = await Category.find(
-    {},
+    { _id: parsed.id },
     {
       _id: 1,
       name: 1,
@@ -99,14 +143,26 @@ app.get("/getCategoryFood", async (request, response) => {
   response.status(200);
   response.send(categories);
 });
-
+app.post("/getFoodCategory", async (request, response) => {
+  const stringified = JSON.stringify(request.body);
+  const parsed = JSON.parse(stringified);
+  const category = await Category.find({
+    foodId: { $in: [parsed.foodId] },
+  });
+  let names = category.map((o) => ({
+    name: o.name,
+    id: o.id,
+  }));
+  response.status(200);
+  response.send(names);
+});
 app.get("/getCategories", async (request, response) => {
   const categories = await Category.find(
     {},
     {
       _id: 1,
       name: 1,
-      foodId: 0,
+      foodId: 1,
     }
   );
   let names = categories.map((o) => ({ name: o.name, id: o.id }));

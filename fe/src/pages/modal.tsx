@@ -1,16 +1,38 @@
-import { Box, Stack, Button, Modal, Backdrop } from "@mui/material";
-import { useState } from "react";
+import { Box, Stack, Button, Modal, Backdrop, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
 import { FoodModal } from "@/components/Modals/FoodModal";
 import { CategoryModal } from "@/components/Modals/CategoryModal";
+import { UpdateFoodModal } from "@/components/Modals/UpdateFoodModal";
 export default function testing() {
   const [catopen, setcatopen] = useState(false);
   const [foodopen, setfoodopen] = useState(false);
+  const [updateopen, setupdateopen] = useState(false);
+  const [foods, setFoods] = useState([]);
+  const [currentId, setCurrentId] = useState("");
   function handleOpening(whatOpen: any) {
     whatOpen(true);
   }
   function handleClose(whatClose: any) {
     whatClose(false);
   }
+  async function getFood() {
+    const getAllFood = await fetch("http://localhost:8080/getAllFood", {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        return response;
+      });
+    setFoods(getAllFood);
+  }
+
+  useEffect(() => {
+    getFood();
+  }, []);
   return (
     <Box
       sx={{
@@ -35,6 +57,26 @@ export default function testing() {
         >
           Open Food Modal
         </Button>
+      </Stack>
+      <Stack direction="row" spacing={3}>
+        {foods.map((fart) => (
+          <Stack spacing={2} direction="column">
+            <Typography>{fart.name}</Typography>
+            <Typography>{fart.ingredient}</Typography>
+            <Typography>{fart.image}</Typography>
+            <Typography>{fart._id}</Typography>
+
+            <Typography>{fart.price}</Typography>
+            <Button
+              onClick={() => {
+                handleOpening(setupdateopen);
+                setCurrentId(fart._id);
+              }}
+            >
+              Open Update Modal
+            </Button>
+          </Stack>
+        ))}
       </Stack>
       <Modal
         open={catopen}
@@ -69,6 +111,27 @@ export default function testing() {
         {FoodModal(() => {
           handleClose(setfoodopen);
         }, foodopen)}
+      </Modal>
+      <Modal
+        open={updateopen}
+        onClose={() => {
+          handleClose(setupdateopen);
+        }}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 300,
+          },
+        }}
+      >
+        {UpdateFoodModal(
+          () => {
+            handleClose(setupdateopen);
+          },
+          updateopen,
+          currentId
+        )}
       </Modal>
     </Box>
   );
