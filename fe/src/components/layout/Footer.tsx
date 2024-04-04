@@ -18,7 +18,7 @@ export const Footer = () => {
           alignItems: "center",
           justifyContent: "center",
           gap: 5,
-          width: "1200px",
+          maxWidth: "1200px",
           mx: "auto",
         }}
       >
@@ -32,6 +32,7 @@ export const Footer = () => {
         <Box
           sx={{
             display: "flex",
+            flexWrap:'wrap',
             justifyContent: "space-between",
             width: "100%",
           }}

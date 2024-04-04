@@ -9,7 +9,7 @@ import {
 import { useFormik } from "formik";
 import { signSchema } from "../utils/validation";
 
-export const Signup = () => {
+export const SignupPage = () => {
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   const StyleText = {
     width: "100%",
@@ -44,17 +44,15 @@ export const Signup = () => {
       sx={{
         display: "flex",
         justifyContent: "center",
-        my:'10%'
+        my: "2%",
       }}
     >
       <Box
         sx={{
           width: 448,
-          height: 778,
-          p: 4,
+          maxHeight: 778,
           display: "flex",
           flexDirection: "column",
-          rowGap: "7%",
         }}
       >
         <Typography variant="h5" sx={{ textAlign: "center", fontWeight: 700 }}>
@@ -155,13 +153,18 @@ export const Signup = () => {
             <Button
               type="submit"
               sx={{
-                width: "100%",
-                borderRadius: "4px",
-                height: "48px",
-                border: "none",
-                bgcolor: "#EEEFF2",
-                color: "#1C20243D",
-                "&:hover": { color: "white", background: "#18BA51" },
+                "&.MuiButton-contained": {
+                  width: "100%",
+                  borderRadius: "4px",
+                  height: "48px",
+                  backgroundColor: "#EEEFF2",
+                  background: "#EEEFF2",
+                  color: "#1C20243D",
+                  "&:hover": {
+                    color: "white",
+                    background: "#18BA51",
+                  },
+                },
               }}
               className="flex"
               variant="contained"
