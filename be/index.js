@@ -47,6 +47,16 @@ app.get("/", (request, response) => {
   response.send("Hello World!");
 });
 
+app.get("/food", async (req, res) => {
+  try {
+    const foods = await Food.find();
+  res.status(200).json(foods);
+  } catch (error) {
+    console.error('Error fetching food items: ', error);
+    res.status(500).json({err: 'Internal server error'})
+  }
+})
+
 // POST REQUESTS
 
 // food
@@ -71,6 +81,8 @@ app.post("/category", async (req, res) => {
 
   res.send(category);
 });
+
+// 
 
 app.listen(port, () => {
   console.log(`Your server is on on the port "http:localhost:${8080}"`);
