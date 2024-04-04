@@ -226,7 +226,7 @@ export default function Header() {
             }}
           >
             <VectorIcon />
-            <Button
+            <Typography
               onClick={() => {
                 handleOpen();
 
@@ -239,16 +239,21 @@ export default function Header() {
                   newtreg: true,
                 }));
               }}
+              variant="h6"
+              noWrap
               component="div"
               sx={{
                 flexGrow: 1,
                 display: { xs: "none", sm: "block" },
                 color: color.newtreg ? "green" : "black",
+                '&:hover': {
+                  cursor:'pointer'
+                },
               }}
             >
               {" "}
               Нэвтрэх
-            </Button>
+            </Typography>
             <Modal
               aria-labelledby="transition-modal-title"
               aria-describedby="transition-modal-description"
