@@ -58,6 +58,7 @@ export const Banner = () => {
             <Box
               sx={{
                 width: "100%",
+                mt: "10%",
                 position: "relative",
                 display: "flex",
                 justifyContent: "center",
