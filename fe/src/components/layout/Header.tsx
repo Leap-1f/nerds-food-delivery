@@ -80,7 +80,7 @@ export default function Header() {
   });
 
   return (
-    <Box sx={{ mx: "auto", width: "1248px" }}>
+    <Box sx={{ mx: "auto", maxWidth: "1248px" }}>
       <Grid
         container
         direction={"row"}
