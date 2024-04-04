@@ -19,6 +19,11 @@ import VectorIcon from "../icons/VectorIcon";
 import Link from "next/link";
 import { useState } from "react";
 import { LoginModal } from "../Modals";
+import { Interface } from "readline";
+import { tree } from "next/dist/build/templates/app-page";
+
+import { useGlobalContext } from "../utils/Context";
+import SideBarModal from "../Modals/SidebarModal";
 
 const style = {
   position: "absolute" as "absolute",
@@ -54,7 +59,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   width: "100%",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
+
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     [theme.breakpoints.up("sm")]: {
@@ -78,6 +83,7 @@ export default function Header() {
     sags: false,
     newtreg: false,
   });
+  const { color, setColor } = useGlobalContext();
 
   return (
     <Box sx={{ mx: "auto", maxWidth: "1248px" }}>
@@ -90,23 +96,23 @@ export default function Header() {
         <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
           <BlockIcon />
           <Stack direction={"row"} spacing={1}>
-            <Link href="/login">
+            <Link href="/">
               <Typography
                 onClick={() => {
-                  setColor((prevState) => ({
+                  setColor((prevState: any) => ({
                     ...prevState,
                     nuur: true,
                     hool: false,
                     hurgelt: false,
                     sags: false,
                     newtreg: false,
-                  })); // Toggle nuur state
+                  }));
                 }}
                 variant="h6"
                 noWrap
                 component="div"
                 sx={{
-                  color: color.nuur ? "green" : "black", // Conditionally set color based on nuur state
+                  color: color.nuur ? "green" : "black",
                   p: 2,
                 }}
               >
@@ -116,7 +122,7 @@ export default function Header() {
             <Link href="/menu">
               <Typography
                 onClick={() => {
-                  setColor((prevState) => ({
+                  setColor((prevState: any) => ({
                     ...prevState,
                     nuur: false,
                     hool: true,
@@ -142,7 +148,7 @@ export default function Header() {
             <Link href="/deliveryRange">
               <Typography
                 onClick={() => {
-                  setColor((prevState) => ({
+                  setColor((prevState: any) => ({
                     ...prevState,
                     nuur: false,
                     hool: false,
@@ -189,30 +195,28 @@ export default function Header() {
           >
             <BasketIcon />
 
-            <Link href="/orderTest">
-              <Typography
-                onClick={() => {
-                  setColor((prevState) => ({
-                    ...prevState,
-                    nuur: false,
-                    hool: false,
-                    hurgelt: false,
-                    sags: true,
-                    newtreg: false,
-                  }));
-                }}
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{
-                  flexGrow: 1,
-                  display: { xs: "none", sm: "block" },
-                  color: color.sags ? "green" : "black",
-                }}
-              >
-                Сагс
-              </Typography>
-            </Link>
+            <Typography
+              onClick={() => {
+                setColor((prevState: any) => ({
+                  ...prevState,
+                  nuur: false,
+                  hool: false,
+                  hurgelt: false,
+                  sags: true,
+                  newtreg: false,
+                }));
+              }}
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{
+                flexGrow: 1,
+                display: { xs: "none", sm: "block" },
+                color: color.sags ? "green" : "black",
+              }}
+            >
+              <SideBarModal />
+            </Typography>
           </Box>
 
           <Box

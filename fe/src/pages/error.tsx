@@ -1,9 +1,9 @@
-import { ErrorModal } from "@/components/Modals/index";
+import { ErrorModal } from "@/components/modals/index";
 
 export default function Delivery() {
   return (
     <>
-      test<ErrorModal></ErrorModal>
+      <ErrorModal></ErrorModal>
     </>
   );
 }

@@ -1,5 +1,4 @@
 export * from "./Address";
-export * from "./Bill";
 export * from "./FoodCart";
 export * from "./InfoCard";
 export * from "./NotFound";

@@ -5,3 +5,4 @@ export * from "./Layout";
 export * from "./MenuSideBar";
 export * from "./OrderDetail";
 export * from "./OrderHistory";
+export * from "./Banner";

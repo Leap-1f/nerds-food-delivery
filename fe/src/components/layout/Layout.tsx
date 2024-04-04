@@ -1,13 +1,24 @@
 import Header from "./Header";
 import Footer from "./Footer";
-import { Box } from "@mui/material";
-export const Layout = ({ children }: any) => {
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import { Banner } from "./Banner";
+
+export const Layout = ({ children, showBanner }: any) => {
   return (
     <>
       <Header />
-      <main>{children}</main>
+      {showBanner && (
+        <Box bgcolor="primary">
+          <Banner/>
+        </Box>
+      )}
+      <Container maxWidth="lg">
+        <main>{children}</main>
+      </Container>
       <Footer />
     </>
   );
 };
+
 export default Layout;
