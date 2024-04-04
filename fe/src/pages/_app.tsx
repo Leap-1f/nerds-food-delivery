@@ -3,6 +3,9 @@ import type { AppProps } from "next/app";
 import { Layout } from "../components/layout/Layout";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { MyGlobalContextProvider } from "@/components/utils/Context";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+
 const theme = createTheme({
   typography: {
     fontFamily: [
@@ -37,14 +40,24 @@ const theme = createTheme({
     },
   },
 });
+
+
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  const [showBanner, setShowBanner] = useState(false);
+
+  useEffect(() => {
+    setShowBanner(router.pathname === "/");
+  }, [router.pathname]);
+
   return (
     <MyGlobalContextProvider>
       <ThemeProvider theme={theme}>
-        <Layout>
+        <Layout showBanner={showBanner}>
           <Component {...pageProps} />
         </Layout>
       </ThemeProvider>
     </MyGlobalContextProvider>
   );
 }
+

@@ -63,7 +63,7 @@ export default function Header() {
         <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
           <BlockIcon />
           <Stack direction={"row"} spacing={1}>
-            <Link href="/login">
+            <Link href="/">
               <Typography
                 onClick={() => {
                   setColor((prevState: any) => ({
