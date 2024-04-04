@@ -1,17 +1,37 @@
-import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
+import React from "react";
+import {
+  Typography,
+  InputBase,
+  Box,
+  styled,
+  alpha,
+  Grid,
+  Stack,
+  Modal,
+  Fade,
+  Button,
+  Backdrop,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import BlockIcon from "../icons/BlockIcon";
 import BasketIcon from "../icons/BasketIcon";
 import VectorIcon from "../icons/VectorIcon";
-import { Grid, Stack } from "@mui/material";
 import Link from "next/link";
 import { useState } from "react";
-import { Interface } from "readline";
-import { tree } from "next/dist/build/templates/app-page";
+import { LoginModal } from "../Modals";
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "40%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  maxWidth: 450,
+  maxHeight: 550,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  borderRadius: "12px",
+};
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -47,6 +67,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const [color, setColor] = useState({
     nuur: false,
     hool: false,
@@ -202,30 +226,48 @@ export default function Header() {
             }}
           >
             <VectorIcon />
-            <Link href="/signup">
-              <Typography
-                onClick={() => {
-                  setColor((prevState) => ({
-                    ...prevState,
-                    nuur: false,
-                    hool: false,
-                    hurgelt: false,
-                    sags: false,
-                    newtreg: true,
-                  }));
-                }}
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{
-                  flexGrow: 1,
-                  display: { xs: "none", sm: "block" },
-                  color: color.newtreg ? "green" : "black",
-                }}
-              >
-                Нэвтрэх
-              </Typography>
-            </Link>
+            <Button
+              onClick={() => {
+                handleOpen();
+
+                setColor((prevState) => ({
+                  ...prevState,
+                  nuur: false,
+                  hool: false,
+                  hurgelt: false,
+                  sags: false,
+                  newtreg: true,
+                }));
+              }}
+              component="div"
+              sx={{
+                flexGrow: 1,
+                display: { xs: "none", sm: "block" },
+                color: color.newtreg ? "green" : "black",
+              }}
+            >
+              {" "}
+              Нэвтрэх
+            </Button>
+            <Modal
+              aria-labelledby="transition-modal-title"
+              aria-describedby="transition-modal-description"
+              open={open}
+              onClose={handleClose}
+              closeAfterTransition
+              slots={{ backdrop: Backdrop }}
+              slotProps={{
+                backdrop: {
+                  timeout: 500,
+                },
+              }}
+            >
+              <Fade in={open}>
+                <Box sx={style}>
+                  <LoginModal></LoginModal>
+                </Box>
+              </Fade>
+            </Modal>
           </Box>
         </Box>
       </Grid>

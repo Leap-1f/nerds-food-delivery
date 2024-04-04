@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import { signSchema } from "../utils/validation";
+import Link from "next/link";
 
 export const LoginModal = () => {
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -41,7 +42,8 @@ export const LoginModal = () => {
       sx={{
         display: "flex",
         justifyContent: "center",
-        my: "5%",
+        mt: "4%",
+        mb: "5%",
       }}
     >
       <Box
@@ -116,16 +118,19 @@ export const LoginModal = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              rowGap: "11px",
+              rowGap: "20px",
             }}
           >
             <Button
               sx={{
-                width: "100%",
-                borderRadius: "4px",
-                height: "48px",
-                color: "#e0e0e0",
-                "&:hover": { color: "white", backgroundColor: "#18BA51" },
+                "&.MuiButton-contained": {
+                  width: "100%",
+                  borderRadius: "4px",
+                  height: "48px",
+                  backgroundColor: "#EEEFF2",
+                  color: "#1C20243D",
+                  "&:hover": { color: "white", backgroundColor: "#18BA51" },
+                },
               }}
               disableElevation
               variant="contained"
@@ -134,24 +139,23 @@ export const LoginModal = () => {
               Нэвтрэх
             </Button>
             <Typography>Эсвэл</Typography>
-            <Button
-              sx={{
-                "&.MuiButton-contained": {
-                  width: "100%",
+            <Link href="./signup">
+              <Button
+                sx={{
+                  width: "380px",
                   borderRadius: "4px",
                   height: "48px",
                   border: "1px solid #18BA51",
-                  backgroundColor: "#EEEFF2",
-                  color: "#1C20243D",
+                  color: "black",
                   "&:hover": { color: "white", background: "#18BA51" },
-                },
-              }}
-              className="flex"
-              variant="contained"
-              disableElevation
-            >
-              Бүртгүүлэх
-            </Button>
+                }}
+                className="flex"
+                variant="contained"
+                disableElevation
+              >
+                Бүртгүүлэх
+              </Button>
+            </Link>
           </Box>
         </form>
       </Box>
