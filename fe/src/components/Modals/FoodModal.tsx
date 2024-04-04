@@ -15,7 +15,6 @@ import {
   FormControlLabel,
   styled,
 } from "@mui/material";
-import { useField } from "formik";
 import { useState, useEffect } from "react";
 export function FoodModal(modalClose: Function, closed: boolean) {
   const [category, setCategory] = useState("");
@@ -120,6 +119,7 @@ export function FoodModal(modalClose: Function, closed: boolean) {
       }
     });
   }
+
   function clearInfo() {
     setPrice("");
     setSalePrice("");
@@ -368,6 +368,7 @@ export function FoodModal(modalClose: Function, closed: boolean) {
               disabled={!filledIn}
               onClick={() => {
                 sendFoodItem();
+                modalClose();
               }}
             >
               Continue

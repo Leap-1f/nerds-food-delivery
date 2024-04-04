@@ -156,6 +156,7 @@ app.post("/getFoodCategory", async (request, response) => {
   response.status(200);
   response.send(names);
 });
+// category section
 app.get("/getCategories", async (request, response) => {
   const categories = await Category.find(
     {},
@@ -168,6 +169,45 @@ app.get("/getCategories", async (request, response) => {
   let names = categories.map((o) => ({ name: o.name, id: o.id }));
   response.status(200);
   response.send(names);
+});
+app.post("/createCategory", async (request, response) => {
+  const stringified = JSON.stringify(request.body);
+  const parsed = JSON.parse(stringified);
+  if (parsed.name != "") {
+    const category = await Category.create({
+      name: parsed.name,
+      foodId: [],
+    });
+    response.status(200);
+    response.send("Category Created.");
+  } else {
+    response.status(400);
+    response.send("Bad request.");
+  }
+});
+app.post("/deleteCategory", async (request, response) => {
+  const stringified = JSON.stringify(request.body);
+  const parsed = JSON.parse(stringified);
+  if (parsed.name != "") {
+    const deleteCategory = await Category.deleteOne({ _id: parsed.id });
+    response.status(200);
+    response.send("Category Deleted.");
+  } else {
+    response.status(400);
+    response.send("Bad request.");
+  }
+});
+app.post("/getCatName", async (request, response) => {
+  const stringified = JSON.stringify(request.body);
+  const parsed = JSON.parse(stringified);
+  if (parsed.id != "") {
+    const findCategory = await Category.find({ _id: parsed.id }, { name: 1 });
+    response.status(200);
+    response.send(findCategory);
+  } else {
+    response.status(400);
+    response.send("Bad request.");
+  }
 });
 app.listen(port, () => {
   console.log(`Your server is on on the port "http:localhost:${8080}"`);

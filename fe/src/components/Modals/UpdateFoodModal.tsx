@@ -421,6 +421,7 @@ export function UpdateFoodModal(
               disabled={!filledIn}
               onClick={() => {
                 updateFoodItem();
+                modalClose();
               }}
             >
               Continue
