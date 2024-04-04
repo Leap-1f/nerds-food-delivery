@@ -4,6 +4,21 @@ import { Layout } from "../components/layout/Layout";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { MyGlobalContextProvider } from "@/components/utils/Context";
 const theme = createTheme({
+  typography: {
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+      "Comfortaa",
+    ].join(","),
+  },
   palette: {
     primary: {
       main: "#18BA51",
