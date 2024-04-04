@@ -190,6 +190,7 @@ app.post("/deleteCategory", async (request, response) => {
   const parsed = JSON.parse(stringified);
   if (parsed.id != "") {
     const deleteCategory = await Category.deleteOne({ _id: parsed.id });
+
     response.status(200);
     response.send("Category Deleted.");
   } else {
@@ -202,8 +203,24 @@ app.post("/getCatName", async (request, response) => {
   const parsed = JSON.parse(stringified);
   if (parsed.id != "") {
     const findCategory = await Category.find({ _id: parsed.id }, { name: 1 });
+    let names = findCategory.map((o) => o.name);
     response.status(200);
-    response.send(findCategory);
+    response.send(names);
+  } else {
+    response.status(400);
+    response.send("Bad request.");
+  }
+});
+app.post("/updateCategory", async (request, response) => {
+  const stringified = JSON.stringify(request.body);
+  const parsed = JSON.parse(stringified);
+  if (parsed.id != "") {
+    const updateCategory = await Category.findOneAndUpdate(
+      { _id: parsed.id },
+      { name: parsed.name }
+    );
+    response.status(200);
+    response.send("Updated.");
   } else {
     response.status(400);
     response.send("Bad request.");

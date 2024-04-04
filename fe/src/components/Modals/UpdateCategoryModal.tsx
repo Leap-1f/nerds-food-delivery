@@ -1,6 +1,6 @@
 import { Box, Stack, TextField, Button, Typography, Fade } from "@mui/material";
 import { useState, useEffect } from "react";
-export function CategoryModal(
+export function UpdateCategoryModal(
   modalClose: Function,
   closed: boolean,
   catId: string
@@ -31,11 +31,13 @@ export function CategoryModal(
     })
       .then((response) => response.json())
       .then((response) => {
-        setCategoryName(response.name);
+        return response;
       });
+    console.log(categoryName);
+    setCategoryName(categoryName);
   }
   async function sendCategoryInfo() {
-    let createCategory = await fetch("http://localhost:8080/createCategory", {
+    let createCategory = await fetch("http://localhost:8080/updateCategory", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -49,7 +51,7 @@ export function CategoryModal(
   }
   useEffect(() => {
     getCategoryName();
-  }, [catId]);
+  }, [closed]);
   useEffect(() => {
     validateName();
   }, [categoryName]);
