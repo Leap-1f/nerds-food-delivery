@@ -98,7 +98,6 @@ export const FoodCart = () => {
                   display: "flex",
                   justifyContent: "space-between",
                   maxWidth: "1250px",
-                  width: "1616px",
                   marginLeft: "auto",
                   marginRight: "auto",
                   marginTop: "2%",
