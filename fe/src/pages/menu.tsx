@@ -4,42 +4,33 @@ import { Box, Stack } from "@mui/material";
 import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
 
-
 import { useState, useEffect } from "react";
 
 export default function Menu() {
-
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  useEffect(() => {
-    const fetchFoodItems = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/food");
-        if (!response.ok) {
-          throw new Error("Failed to fetch food items on frontend");
-        }
-        const data = await response.json();
-        setFoodItems(data);
-      } catch (error) {
-        console.error("Error fetching food items:", error.message);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchFoodItems = async () => {
+  //     try {
+  //       const response = await fetch("http://localhost:8080/food");
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch food items on frontend");
+  //       }
+  //       const data = await response.json();
+  //       setFoodItems(data);
+  //     } catch (error) {
+  //       console.error("Error fetching food items:", error.message);
+  //     }
+  //   };
 
-    fetchFoodItems();
-  }, []);
+  //   fetchFoodItems();
+  // }, []);
 
   // const saleMeals = ["Breakfast", "Soup", "MainFood", "Dessert"];
   interface FoodItem {
     category: string;
   }
-
-
-
-
-
-
-
 
   // const data = [
   //   {
@@ -192,9 +183,6 @@ export default function Menu() {
   const filteredData = foodItems.filter(
     (el) => selectedCategory === "" || el.category === selectedCategory
   );
-  
-
-
 
   return (
     <Box>

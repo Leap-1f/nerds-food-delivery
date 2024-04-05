@@ -58,7 +58,8 @@ export const Banner = () => {
             <Box
               sx={{
                 width: "100%",
-                mt: "10%",
+                // mt: "10%",
+                height: "100%",
                 position: "relative",
                 display: "flex",
                 justifyContent: "center",
@@ -68,7 +69,7 @@ export const Banner = () => {
               <img
                 src="/coverImg.png"
                 alt="Food delivery image"
-                className="w-3/4"
+                className="w-2/3"
               />
               <img
                 src="/coverImg2.png"

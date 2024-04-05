@@ -18,12 +18,12 @@ import BasketIcon from "../icons/BasketIcon";
 import VectorIcon from "../icons/VectorIcon";
 import Link from "next/link";
 import { useState } from "react";
-import { LoginModal } from "../Modals";
+import { LoginModal } from "../modals";
 import { Interface } from "readline";
 import { tree } from "next/dist/build/templates/app-page";
 
 import { useGlobalContext } from "../utils/Context";
-import SideBarModal from "../Modals/SidebarModal";
+import SideBarModal from "../modals/SidebarModal";
 
 const style = {
   position: "absolute" as "absolute",

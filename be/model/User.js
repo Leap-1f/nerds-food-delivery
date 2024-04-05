@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-
-import { USER_ROLE } from "../constant/userConstant";
+import {USER_ROLE} from "../constant/userConstant.js";
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -27,4 +26,4 @@ const UserSchema = new mongoose.Schema({
     },
 });
 
-const User = mongoose.model('User', UserSchema);
+export const User = mongoose.model('User', UserSchema);
