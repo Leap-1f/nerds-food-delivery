@@ -24,6 +24,7 @@ import { tree } from "next/dist/build/templates/app-page";
 
 import { useGlobalContext } from "../utils/Context";
 import SideBarModal from "../modals/SidebarModal";
+import { useRouter } from "next/router";
 
 const style = {
   position: "absolute" as "absolute",
@@ -75,6 +76,7 @@ export default function Header() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const router = useRouter();
 
   // const [color, setColor] = useState({
   //   nuur: false,
@@ -83,7 +85,7 @@ export default function Header() {
   //   sags: false,
   //   newtreg: false,
   // });
-  const { color, setColor } = useGlobalContext();
+  const { color, setColor, auth } = useGlobalContext();
 
   return (
     <Box sx={{ mx: "auto", maxWidth: "1248px" }}>
@@ -232,8 +234,7 @@ export default function Header() {
             <VectorIcon />
             <Typography
               onClick={() => {
-                handleOpen();
-
+                auth.isLoggedIn ? (router.push("/profile")) : (handleOpen());
                 setColor((prevState) => ({
                   ...prevState,
                   nuur: false,
@@ -255,8 +256,7 @@ export default function Header() {
                 },
               }}
             >
-              {" "}
-              Нэвтрэх
+              {auth.isLoggedIn ? "Профайл" : "Нэвтрэх"}
             </Typography>
             <Modal
               aria-labelledby="transition-modal-title"
