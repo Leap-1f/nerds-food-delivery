@@ -135,6 +135,7 @@ export function UpdateCategoryModal(
           >
             Clear
           </Button>
+
           <Button
             sx={{
               backgroundColor: "#393939",

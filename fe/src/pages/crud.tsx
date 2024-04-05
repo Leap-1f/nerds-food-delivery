@@ -13,7 +13,6 @@ import {
   Backdrop,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { number } from "yup";
 export default function crud() {
   const [categories, setCategories] = useState([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -22,7 +21,7 @@ export default function crud() {
   const [currnetId, setCurrentId] = useState("");
   const [catId, setCatId] = useState("");
   const [foodOpen, setFoodOpen] = useState(false);
-  const [catName, setCatName] = useState("");
+  const [catName, setCatName] = useState("All Foods.");
   const [catOpen, setCatOpen] = useState(false);
   const [catItems, setCatItems] = useState([]);
   function numberWithCommas(x: number) {
@@ -91,6 +90,25 @@ export default function crud() {
         }
       });
   }
+  async function getFood() {
+    const getAllFood = await fetch("http://localhost:8080/getAllFood", {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        return response;
+      });
+    console.log(getAllFood);
+    setCatItems(getAllFood);
+  }
+
+  useEffect(() => {
+    getFood();
+  }, []);
   useEffect(() => {
     getCategories();
   }, []);
@@ -101,10 +119,12 @@ export default function crud() {
   }, [catId]);
   return (
     <Stack direction="row" sx={{ height: "100vh" }} spacing={3}>
+      {/* category section */}
       <Stack direction="column" spacing={5} sx={{ width: "33%" }}>
         <Typography variant="h5" sx={{ fontWeight: "700" }}>
           Food Menu
         </Typography>
+        {/* category map */}
         <Stack spacing={3} direction="column">
           {categories.map((el) => (
             <Button
@@ -247,11 +267,14 @@ export default function crud() {
           </Button>
         </Stack>
       </Stack>
+      {/* food section */}
+
       <Stack
         direction="column"
         spacing={6}
         sx={{ width: "80vw", bgcolor: "#ECEDF0" }}
       >
+        {/* top section with category name and add food button */}
         <Box
           sx={{
             display: "flex",
@@ -284,6 +307,7 @@ export default function crud() {
             Add new food
           </Button>
         </Box>
+        {/* food map */}
         <Box
           sx={{
             display: "grid",

@@ -86,6 +86,18 @@ export function UpdateFoodModal(
       }),
     },
   }));
+  async function deleteFood() {
+    const getAllFood = await fetch("http://localhost:8080/deleteFood", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: foodId,
+      }),
+    });
+  }
   const handleCatChange = (event: SelectChangeEvent) => {
     setCategory(event.target.value as string);
   };
@@ -102,8 +114,12 @@ export function UpdateFoodModal(
     })
       .then((response) => response.json())
       .then((response) => {
-        setOldCat(response[0].id);
-        setCategory(response[0].id);
+        if (response[0].id === undefined) {
+          return "Napoe";
+        } else {
+          setOldCat(response[0].id);
+          setCategory(response[0].id);
+        }
       });
     return getCategories;
   }
@@ -403,6 +419,18 @@ export function UpdateFoodModal(
               }}
             >
               Clear
+            </Button>
+            <Button
+              sx={{
+                color: "red",
+                fontWeight: "700",
+              }}
+              onClick={() => {
+                deleteFood();
+                modalClose();
+              }}
+            >
+              Delete Food Item.
             </Button>
             <Button
               sx={{

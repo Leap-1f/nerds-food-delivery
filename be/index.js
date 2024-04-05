@@ -63,13 +63,15 @@ app.post("/deleteFood", async (request, response) => {
   const stringified = JSON.stringify(request.body);
   const parsed = JSON.parse(stringified);
   if (parsed.id != "") {
-    const deleteFood = Food.deleteOne({ _id: parsed.id });
+    const deleteFood = await Food.findByIdAndDelete(parsed.id);
     response.status(200);
     response.send("deleted");
     const category = await Category.find({
       foodId: { $in: [parsed.id] },
     });
   } else {
+    console.log("failed.");
+
     response.status(400);
     response.send("Malformed Data");
   }
@@ -100,8 +102,15 @@ app.patch("/updateFood", async (request, response) => {
 });
 app.get("/getAllFood", async (request, response) => {
   const food = await Food.find({});
+  const data = food.map((item) => ({
+    name: item.name,
+    price: item.price,
+    id: item._id,
+    img: item.image,
+    ingredient: item.ingredient,
+  }));
   response.status(200);
-  response.send(food);
+  response.send(data);
 });
 app.get("/searchFood", async (request, response) => {
   const stringified = JSON.stringify(request.body);
