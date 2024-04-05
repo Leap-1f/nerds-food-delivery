@@ -15,6 +15,7 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import LogoutIcon from "@mui/icons-material/Logout";
 import RestoreIcon from "@mui/icons-material/Restore";
 import { Dialog, DialogTitle, DialogActions } from "@mui/material";
+import { jwtDecode } from "jwt-decode";
 import { useGlobalContext } from "../utils/Context";
 
 interface UserData {
@@ -78,6 +79,30 @@ export const UserProfile = () => {
   const [showSaveButton, setShowSaveButton] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [editedName, setEditedName] = useState<string | number>("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token: any = localStorage.getItem("token");
+        const decodedToken: any = jwtDecode(token);
+        const userId = decodedToken.userId;
+        const response = await fetch(`http://localhost:8080/user/${userId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+
+        const userData = await response.json();
+        setUserData({
+          name: { value: userData.name, isEditing: false },
+          phone: { value: userData.phone, isEditing: false },
+          email: { value: userData.email, isEditing: false },
+        });
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleEdit = (field: keyof typeof userData) => {
     setUserData((prevData) => ({

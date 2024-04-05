@@ -100,6 +100,21 @@ app.post("/getFoodById", async (request, response) => {
   response.send(food);
 });
 
+app.get("/user/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findById(id);
+    res.send(user);
+  } catch (err) {
+    console.error("Error fetching user from backend: ", err);
+    res.status(500).send("Error fetching user");
+  }
+});
+
+
+
+
 app.post("/getFoodCategory", async (request, response) => {
   const stringified = JSON.stringify(request.body);
   const parsed = JSON.parse(stringified);
