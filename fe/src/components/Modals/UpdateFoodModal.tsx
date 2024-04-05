@@ -14,12 +14,18 @@ import {
   SwitchProps,
   FormControlLabel,
   styled,
+  responsiveFontSizes,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import XIcon from "../icons/Xicon";
-export function FoodModal(modalClose: Function, closed: boolean) {
+export function UpdateFoodModal(
+  modalClose: Function,
+  closed: boolean,
+  foodId: string
+) {
   const [category, setCategory] = useState("");
-  const [filledIn, setFilledIn] = useState(false);
+  const [oldCat, setOldCat] = useState("");
+  const [filledIn, setFilledIn] = useState(true);
   const [categories, setCategories] = useState([]);
   const [foodName, setFoodName] = useState("");
   const [foodDescription, setFoodDescription] = useState("");
@@ -81,9 +87,62 @@ export function FoodModal(modalClose: Function, closed: boolean) {
       }),
     },
   }));
+  async function deleteFood() {
+    const getAllFood = await fetch("http://localhost:8080/deleteFood", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: foodId,
+      }),
+    });
+  }
   const handleCatChange = (event: SelectChangeEvent) => {
     setCategory(event.target.value as string);
   };
+  async function getFoodCategory() {
+    const getCategories = await fetch("http://localhost:8080/getFoodCategory", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        foodId: foodId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response[0].id === undefined) {
+          return "Napoe";
+        } else {
+          setOldCat(response[0].id);
+          setCategory(response[0].id);
+        }
+      });
+    return getCategories;
+  }
+  async function getFoodById() {
+    const getFoodById = await fetch("http://localhost:8080/getFoodById", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: foodId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setFoodName(response[0].name);
+        setFoodDescription(response[0].name);
+        setPrice(response[0].price);
+        return response;
+      });
+  }
   async function getCategories() {
     const getCategories = await fetch("http://localhost:8080/getCategories", {
       method: "GET",
@@ -98,19 +157,21 @@ export function FoodModal(modalClose: Function, closed: boolean) {
       });
     setCategories(getCategories);
   }
-  async function sendFoodItem() {
-    let sendFoodItem = await fetch("http://localhost:8080/createFood", {
-      method: "POST",
+  async function updateFoodItem() {
+    let updateFoodItem = await fetch("http://localhost:8080/updateFood", {
+      method: "PATCH",
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        id: foodId,
         name: foodName,
         img: "Not implemented yet.",
         ingredient: foodDescription,
         price: parseInt(price),
-        catId: category,
+        catId: oldCat,
+        newCatId: category,
       }),
     }).then(async (response) => {
       if (response.status === 400) {
@@ -120,7 +181,13 @@ export function FoodModal(modalClose: Function, closed: boolean) {
       }
     });
   }
-
+  function selectedIf(key: string) {
+    if (key === oldCat) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   function clearInfo() {
     setPrice("");
     setSalePrice("");
@@ -144,6 +211,12 @@ export function FoodModal(modalClose: Function, closed: boolean) {
   useEffect(() => {
     getCategories();
   }, []);
+  useEffect(() => {
+    if (foodId != "") {
+      getFoodById();
+      getFoodCategory();
+    }
+  }, [foodId]);
   useEffect(() => {
     checkFilledIn();
   }, [price, foodDescription, foodName, category]);
@@ -199,7 +272,7 @@ export function FoodModal(modalClose: Function, closed: boolean) {
               {XIcon()}
             </Button>
             <Typography sx={{ fontWeight: 700, fontSize: "24px" }} variant="h2">
-              Create Food
+              Update Food
             </Typography>
             <Button disabled></Button>
           </Box>
@@ -336,6 +409,18 @@ export function FoodModal(modalClose: Function, closed: boolean) {
             </Button>
             <Button
               sx={{
+                color: "red",
+                fontWeight: "700",
+              }}
+              onClick={() => {
+                deleteFood();
+                modalClose();
+              }}
+            >
+              Delete Food Item.
+            </Button>
+            <Button
+              sx={{
                 backgroundColor: "#393939",
                 color: "white",
 
@@ -348,7 +433,7 @@ export function FoodModal(modalClose: Function, closed: boolean) {
               component="label"
               disabled={!filledIn}
               onClick={() => {
-                sendFoodItem();
+                updateFoodItem();
                 modalClose();
               }}
             >
