@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import { Category } from "./model/Category.js";
@@ -155,6 +155,26 @@ app.post("/getFoodCategory", async (request, response) => {
   }));
   response.status(200);
   response.send(names);
+});
+app.post("/getFoodItemsByCategory", async (request, response) => {
+  const stringified = JSON.stringify(request.body);
+  const parsed = JSON.parse(stringified);
+  const foods = await Category.findById(parsed.id).populate("foodId");
+  var empty = [];
+  if (foods.foodId != undefined) {
+    const data = foods.foodId.map((item) => ({
+      name: item.name,
+      price: item.price,
+      id: item._id,
+      img: item.image,
+      ingredient: item.ingredient,
+    }));
+    response.status(200);
+    response.send(data);
+  } else if (foods.foodId === empty) {
+    response.status(400);
+    response.send({ status: 400 });
+  }
 });
 // category section
 app.get("/getCategories", async (request, response) => {

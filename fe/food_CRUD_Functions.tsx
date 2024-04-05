@@ -109,3 +109,19 @@ async function getFoodById(/* foodId: string */) {
       return response;
     });
 }
+//get food items within a category.
+async function getFoodItemsByCategory() {
+  const getFoodItemsByCategory = await fetch(
+    "http://localhost:8080/getFoodItemsByCategory",
+    {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        // id: catId,
+      }),
+    }
+  );
+}

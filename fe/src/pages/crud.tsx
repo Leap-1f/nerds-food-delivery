@@ -1,4 +1,7 @@
 import { UpdateCategoryModal } from "@/components/Modals/UpdateCategoryModal";
+import { CategoryModal } from "@/components/modals";
+import { FoodCart } from "@/components/ui";
+import { FoodModal } from "@/components/modals";
 import {
   Box,
   Stack,
@@ -15,6 +18,10 @@ export default function crud() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [updateCat, setUpdateCat] = useState(false);
   const [catId, setCatId] = useState("");
+  const [foodOpen, setFoodOpen] = useState(false);
+  const [catName, setCatName] = useState("");
+  const [catOpen, setCatOpen] = useState(false);
+  const [catItems, setCatItems] = useState([]);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -54,19 +61,47 @@ export default function crud() {
       });
     setCategories(getCategories);
   }
+
+  async function getFoodItemsByCategory() {
+    const getFoodItemsByCategory = await fetch(
+      "http://localhost:8080/getFoodItemsByCategory",
+      {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: catId,
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.status != 400 && response.length != 0) {
+          setCatItems(response);
+        } else {
+          setCatItems([{ name: "Уучлаарай, Таны меню хоосон байна." }]);
+        }
+      });
+  }
   useEffect(() => {
     getCategories();
   }, []);
   useEffect(() => {
-    console.log(catId);
+    if (catId != "") {
+      getFoodItemsByCategory();
+    }
   }, [catId]);
   return (
-    <Stack direction="row">
-      <Stack direction="column" spacing={5}>
-        <Typography>Food Menu</Typography>
+    <Stack direction="row" sx={{ height: "100vh" }} spacing={3}>
+      <Stack direction="column" spacing={5} sx={{ width: "33%" }}>
+        <Typography variant="h5" sx={{ fontWeight: "700" }}>
+          Food Menu
+        </Typography>
         <Stack spacing={3} direction="column">
           {categories.map((el) => (
-            <Box
+            <Button
               sx={{
                 width: "14vw",
                 display: "flex",
@@ -76,15 +111,24 @@ export default function crud() {
                 padding: "8px 16px",
                 border: "1px solid var(--Stroke-01, #D6D8DB)",
                 borderRadius: "8px",
+                color: "black",
+              }}
+              onClick={() => {
+                setCatId(el.id);
+                setCatName(el.name);
               }}
             >
               <Typography>{el.name}</Typography>
+
               <Button
                 sx={{ width: "fit-content" }}
                 aria-controls={open ? "basic-menu" : undefined}
                 aria-haspopup="true"
                 aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
+                onClick={(e) => {
+                  handleClick(e);
+                  setCatId(el.id);
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -123,10 +167,8 @@ export default function crud() {
               >
                 <MenuItem
                   onClick={() => {
-                    setCatId(el.id);
                     handleModelOpening(setUpdateCat);
                     handleClose();
-                    console.log(el.id);
                   }}
                 >
                   Edit Name
@@ -134,17 +176,123 @@ export default function crud() {
                 <MenuItem
                   onClick={() => {
                     handleClose();
-                    deleteCategory(el.id);
+                    deleteCategory(catId);
                   }}
                 >
                   Delete Category
                 </MenuItem>
               </Menu>
-            </Box>
+            </Button>
           ))}
+          <Button
+            sx={{
+              width: "14vw",
+              display: "flex",
+              height: "5vh",
+              justifyContent: "space-around",
+              alignItems: "center",
+              padding: "8px 16px",
+              border: "1px solid var(--Stroke-01, #D6D8DB)",
+              borderRadius: "8px",
+              color: "black",
+            }}
+            onClick={() => {
+              handleModelOpening(setCatOpen);
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <mask
+                id="mask0_73_4991"
+                style={{ maskType: "alpha" }}
+                maskUnits="userSpaceOnUse"
+                x="0"
+                y="0"
+                width="24"
+                height="24"
+              >
+                <rect width="24" height="24" fill="#D9D9D9" />
+              </mask>
+              <g mask="url(#mask0_73_4991)">
+                <path
+                  d="M11 13H5V11H11V5H13V11H19V13H13V19H11V13Z"
+                  fill="#5E6166"
+                />
+              </g>
+            </svg>
+            <Typography
+              sx={{
+                color: "var(--Text-TextHelper, #5E6166)",
+                fontFamily: "Inter",
+                fontSize: "16px",
+                fontStyle: "normal",
+                fontWeight: "400",
+                lineHeight: "150%",
+                letterSpacing: "-0.396px",
+              }}
+            >
+              Create new category
+            </Typography>
+          </Button>
         </Stack>
       </Stack>
-      <Box></Box>
+      <Stack
+        direction="column"
+        spacing={6}
+        sx={{ width: "80vw", bgcolor: "#ECEDF0" }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "24px 12px",
+          }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: "600" }}>
+            {catName}
+          </Typography>
+          <Button
+            sx={{
+              color: "white",
+              width: "5vw",
+              height: "4vh",
+              bgcolor: "green ",
+              transition: "200ms linear 50ms",
+              fontSize: "12px",
+              ":hover": {
+                bgcolor: "green",
+                width: "5.5vw",
+                height: "4.5vh",
+              },
+            }}
+            component="label"
+            onClick={() => {
+              handleModelOpening(setFoodOpen);
+            }}
+          >
+            Add new food
+          </Button>
+        </Box>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gridTemplateRows: "repeat(3, 1fr)",
+            gridColumnGap: "24px",
+            gridRowGap: "60px",
+            padding: "24px",
+          }}
+        >
+          {catItems.map((item) => (
+            <Box>{item.name}</Box>
+          ))}
+        </Box>
+      </Stack>
       <Modal
         open={updateCat}
         onClose={() => {
@@ -165,6 +313,40 @@ export default function crud() {
           updateCat,
           catId
         )}
+      </Modal>
+      <Modal
+        open={catOpen}
+        onClose={() => {
+          handleModelClose(setCatOpen);
+        }}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 300,
+          },
+        }}
+      >
+        {CategoryModal(() => {
+          handleModelClose(setCatOpen);
+        }, catOpen)}
+      </Modal>
+      <Modal
+        open={foodOpen}
+        onClose={() => {
+          handleModelClose(setFoodOpen);
+        }}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 300,
+          },
+        }}
+      >
+        {FoodModal(() => {
+          handleModelClose(setFoodOpen);
+        }, foodOpen)}
       </Modal>
     </Stack>
   );
