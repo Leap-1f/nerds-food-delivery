@@ -16,6 +16,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import RestoreIcon from "@mui/icons-material/Restore";
 import { Dialog, DialogTitle, DialogActions } from "@mui/material";
 import { useGlobalContext } from "../utils/Context";
+import { jwtDecode } from "jwt-decode";
+import { useEffect } from "react";
 
 interface UserData {
   value: string | number;
@@ -29,9 +31,9 @@ export const UserProfile = () => {
     phone: UserData;
     email: UserData;
   }>({
-    name: { value: "УгтахБаяр", isEditing: false },
-    phone: { value: 80234566, isEditing: false },
-    email: { value: "dashka.bagsh@gmail.com", isEditing: false },
+    name: { value: "", isEditing: false },
+    phone: { value: "", isEditing: false },
+    email: { value: "", isEditing: false },
   });
 
   const [focusedField, setFocusedField] = useState<
@@ -41,6 +43,30 @@ export const UserProfile = () => {
   const [showSaveButton, setShowSaveButton] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [editedName, setEditedName] = useState<string | number>("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token: any = localStorage.getItem("token");
+        const decodedToken: any = jwtDecode(token);
+        const userId = decodedToken.userId;
+        const response = await fetch(`http://localhost:8080/user/${userId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+
+        const userData = await response.json();
+        setUserData({
+          name: { value: userData.name, isEditing: false },
+          phone: { value: userData.phone, isEditing: false },
+          email: { value: userData.email, isEditing: false },
+        });
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleEdit = (field: keyof typeof userData) => {
     setUserData((prevData) => ({

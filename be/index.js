@@ -83,6 +83,19 @@ app.get("/", (request, response) => {
 //   }
 // })
 
+app.get("/user/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findById(id);
+    res.send(user);
+  } catch (err) {
+    console.error("Error fetching user from backend: ", err);
+    res.status(500).send("Error fetching user");
+  }
+});
+
+
 
 
 
