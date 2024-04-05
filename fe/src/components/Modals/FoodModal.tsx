@@ -141,12 +141,6 @@ export function FoodModal(modalClose: Function, closed: boolean) {
     }
   }
   useEffect(() => {
-    console.log(category);
-  }, [category]);
-  useEffect(() => {
-    console.log(onSale);
-  }, [onSale]);
-  useEffect(() => {
     getCategories();
   }, []);
   useEffect(() => {

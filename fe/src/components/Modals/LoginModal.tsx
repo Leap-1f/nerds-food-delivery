@@ -32,9 +32,7 @@ export const LoginModal = () => {
       password: "",
     },
     validationSchema: signSchema,
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
-    },
+    onSubmit: (values) => {},
   });
   return (
     <Container

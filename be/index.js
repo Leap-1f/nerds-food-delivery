@@ -156,7 +156,6 @@ app.post("/getFoodCategory", async (request, response) => {
     name: o.name,
     id: o.id,
   }));
-  console.log(parsed.foodId);
   response.status(200);
   response.send(names);
 });

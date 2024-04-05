@@ -102,7 +102,6 @@ export function UpdateFoodModal(
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
         setOldCat(response[0].id);
         setCategory(response[0].id);
       });
@@ -137,7 +136,6 @@ export function UpdateFoodModal(
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
         return response;
       });
     setCategories(getCategories);

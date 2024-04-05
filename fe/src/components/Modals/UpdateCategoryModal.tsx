@@ -33,7 +33,6 @@ export function UpdateCategoryModal(
       .then((response) => {
         return response;
       });
-    console.log(categoryName);
     setCategoryName(categoryName);
   }
   async function sendCategoryInfo() {

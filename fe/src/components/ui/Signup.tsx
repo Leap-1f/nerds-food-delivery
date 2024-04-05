@@ -20,7 +20,7 @@ export const Signup = () => {
       fontWeight: 300,
     },
     "&:hover .MuiOutlinedInput-notchedOutline": {
-      border: "none", 
+      border: "none",
     },
     "& .MuiOutlinedInput-notchedOutline": {
       border: "none",
@@ -35,16 +35,14 @@ export const Signup = () => {
       rePassword: "",
     },
     validationSchema: signSchema,
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
-    },
+    onSubmit: (values) => {},
   });
   return (
     <Container
       sx={{
         display: "flex",
         justifyContent: "center",
-        my:'10%'
+        my: "10%",
       }}
     >
       <Box
