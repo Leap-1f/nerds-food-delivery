@@ -1,6 +1,6 @@
 import { UpdateCategoryModal } from "@/components/Modals/UpdateCategoryModal";
+import { UpdateFoodModal } from "@/components/Modals/UpdateFoodModal";
 import { CategoryModal } from "@/components/modals";
-import { FoodCart } from "@/components/ui";
 import { FoodModal } from "@/components/modals";
 import {
   Box,
@@ -13,15 +13,21 @@ import {
   Backdrop,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import { number } from "yup";
 export default function crud() {
   const [categories, setCategories] = useState([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [updateCat, setUpdateCat] = useState(false);
+  const [updateMod, setUpdateMod] = useState(false);
+  const [currnetId, setCurrentId] = useState("");
   const [catId, setCatId] = useState("");
   const [foodOpen, setFoodOpen] = useState(false);
   const [catName, setCatName] = useState("");
   const [catOpen, setCatOpen] = useState(false);
   const [catItems, setCatItems] = useState([]);
+  function numberWithCommas(x: number) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -289,65 +295,109 @@ export default function crud() {
           }}
         >
           {catItems.map((item) => (
-            <Box>{item.name}</Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              {item.id && (
+                <Button
+                  onClick={() => {
+                    handleModelOpening(setUpdateMod);
+                    setCurrentId(item.id);
+                  }}
+                >
+                  Open Update Modal
+                </Button>
+              )}
+              {item.id && (
+                <Typography>{numberWithCommas(item.price)}₮</Typography>
+              )}
+              <Typography>{item.name}</Typography>
+            </Box>
           ))}
         </Box>
       </Stack>
-      <Modal
-        open={updateCat}
-        onClose={() => {
-          handleModelClose(setUpdateCat);
-        }}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 300,
-          },
-        }}
-      >
-        {UpdateCategoryModal(
-          () => {
+      <Box>
+        <Modal
+          open={updateCat}
+          onClose={() => {
             handleModelClose(setUpdateCat);
-          },
-          updateCat,
-          catId
-        )}
-      </Modal>
-      <Modal
-        open={catOpen}
-        onClose={() => {
-          handleModelClose(setCatOpen);
-        }}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 300,
-          },
-        }}
-      >
-        {CategoryModal(() => {
-          handleModelClose(setCatOpen);
-        }, catOpen)}
-      </Modal>
-      <Modal
-        open={foodOpen}
-        onClose={() => {
-          handleModelClose(setFoodOpen);
-        }}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 300,
-          },
-        }}
-      >
-        {FoodModal(() => {
-          handleModelClose(setFoodOpen);
-        }, foodOpen)}
-      </Modal>
+          }}
+          closeAfterTransition
+          slots={{ backdrop: Backdrop }}
+          slotProps={{
+            backdrop: {
+              timeout: 300,
+            },
+          }}
+        >
+          {UpdateCategoryModal(
+            () => {
+              handleModelClose(setUpdateCat);
+            },
+            updateCat,
+            catId
+          )}
+        </Modal>
+        <Modal
+          open={catOpen}
+          onClose={() => {
+            handleModelClose(setCatOpen);
+          }}
+          closeAfterTransition
+          slots={{ backdrop: Backdrop }}
+          slotProps={{
+            backdrop: {
+              timeout: 300,
+            },
+          }}
+        >
+          {CategoryModal(() => {
+            handleModelClose(setCatOpen);
+          }, catOpen)}
+        </Modal>
+        <Modal
+          open={foodOpen}
+          onClose={() => {
+            handleModelClose(setFoodOpen);
+          }}
+          closeAfterTransition
+          slots={{ backdrop: Backdrop }}
+          slotProps={{
+            backdrop: {
+              timeout: 300,
+            },
+          }}
+        >
+          {FoodModal(() => {
+            handleModelClose(setFoodOpen);
+          }, foodOpen)}
+        </Modal>
+        <Modal
+          open={updateMod}
+          onClose={() => {
+            handleModelClose(setUpdateMod);
+          }}
+          closeAfterTransition
+          slots={{ backdrop: Backdrop }}
+          slotProps={{
+            backdrop: {
+              timeout: 300,
+            },
+          }}
+        >
+          {UpdateFoodModal(
+            () => {
+              handleModelClose(setUpdateMod);
+            },
+            updateMod,
+            currnetId
+          )}
+        </Modal>
+      </Box>
     </Stack>
   );
 }

@@ -66,6 +66,9 @@ app.post("/deleteFood", async (request, response) => {
     const deleteFood = Food.deleteOne({ _id: parsed.id });
     response.status(200);
     response.send("deleted");
+    const category = await Category.find({
+      foodId: { $in: [parsed.id] },
+    });
   } else {
     response.status(400);
     response.send("Malformed Data");
@@ -153,6 +156,7 @@ app.post("/getFoodCategory", async (request, response) => {
     name: o.name,
     id: o.id,
   }));
+  console.log(parsed.foodId);
   response.status(200);
   response.send(names);
 });
