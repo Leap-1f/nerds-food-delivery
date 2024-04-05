@@ -16,6 +16,7 @@ import {
   styled,
 } from "@mui/material";
 import { useState, useEffect } from "react";
+import XIcon from "../icons/Xicon";
 export function FoodModal(modalClose: Function, closed: boolean) {
   const [category, setCategory] = useState("");
   const [filledIn, setFilledIn] = useState(false);
@@ -195,21 +196,7 @@ export function FoodModal(modalClose: Function, closed: boolean) {
                 modalClose();
               }}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <path
-                  d="M18 6L6 18M6 6L18 18"
-                  stroke="#161616"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+              {XIcon()}
             </Button>
             <Typography sx={{ fontWeight: 700, fontSize: "24px" }} variant="h2">
               Create Food

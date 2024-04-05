@@ -1,5 +1,6 @@
 import { Box, Stack, TextField, Button, Typography, Fade } from "@mui/material";
 import { useState, useEffect } from "react";
+import XIcon from "../icons/Xicon";
 export function UpdateCategoryModal(
   modalClose: Function,
   closed: boolean,
@@ -83,21 +84,7 @@ export function UpdateCategoryModal(
               modalClose();
             }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                d="M18 6L6 18M6 6L18 18"
-                stroke="#161616"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+            {XIcon()}
           </Button>
           <Typography variant="h4" sx={{ fontWeight: 700, fontSize: "24px" }}>
             Update category
