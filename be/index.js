@@ -7,6 +7,8 @@ import {User} from "./model/User.js";
 import dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
 
 const port = 8080;
 const app = express();
@@ -125,7 +127,13 @@ app.post("/user/login", async (req, res) =>{
       return res.status(401).json({error: 'Invalid password'})
     }
 
-    return res.status(200).json({message: 'Login successful', user: {id: user._id, email: user.eemail}})
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' } 
+    );
+
+    return res.status(200).json({message: 'Login successful', token})
   } catch(err) {
     console.error('Error finding user: ', err);
     return res.status(500).json({error: 'Internal server error'})

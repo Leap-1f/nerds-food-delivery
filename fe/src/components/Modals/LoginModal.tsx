@@ -7,8 +7,11 @@ import {
   TextField,
 } from "@mui/material";
 import { useFormik } from "formik";
-import { signSchema } from "../utils/validation";
+import { loginSchema } from "../utils/validation";
 import Link from "next/link";
+import { useRouter } from "next/router";
+
+
 
 interface FormValues {
   email: string;
@@ -16,7 +19,18 @@ interface FormValues {
 }
 
 export const LoginModal: React.FC = () => {
+  const router = useRouter();
+
   const [error, setError] = useState<string>("");
+  const [showModal, setShowModal] = useState(true);
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
 
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   const StyleText = {
@@ -40,31 +54,33 @@ export const LoginModal: React.FC = () => {
       email: "",
       password: "",
     },
-    validationSchema: signSchema,
+    validationSchema: loginSchema,
     onSubmit: async (values) => {
-      // console.log(values, "hi");
       console.log("hi");
       
 
-      // try {
-      //   const response = await fetch("http://localhost:8080/user/login", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(values),
-      //   });
+      try {
+        const response = await fetch("http://localhost:8080/user/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        });
 
-      //   const data = await response.json();
-      //   if (response.ok) {
-      //     console.log("Login successful: ", data);
-      //   } else {
-      //     setError(data.error || "Failed to login");
-      //   }
-      // } catch (err) {
-      //   console.error("Error logging in: ", err);
-      //   setError("Failed to login");
-      // }
+        const data = await response.json();
+        if (response.ok) {
+          console.log("Login successful: ", data);
+          router.push("/");
+          setShowModal(false);
+          localStorage.setItem("token", data.token);
+        } else {
+          setError(data.error || "Failed to login");
+        }
+      } catch (err) {
+        console.error("Error logging in: ", err);
+        setError("Failed to login");
+      }
     },
   });
 
