@@ -3,35 +3,39 @@ import OrderModal from "@/components/modals/OrderModal";
 import { Box, Stack } from "@mui/material";
 import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
-
-
 import { useState, useEffect } from "react";
 
-export default function Menu() {
+interface FoodItem {
+  name: string;
+  price: number;
+  discountedPrice?: number;
+  image: string;
+  category: string;
+}
 
+export default function Menu() {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [breakfast, setBreakfast] = useState<FoodItem[]>([]);
 
   useEffect(() => {
-    const fetchFoodItems = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/food");
-        if (!response.ok) {
-          throw new Error("Failed to fetch food items on frontend");
-        }
-        const data = await response.json();
-        setFoodItems(data);
+        const foodResponse = await fetch("http://localhost:8080/food");
+        const foodData: FoodItem[] = await foodResponse.json();
+        setFoodItems(foodData);
+        console.log("testing: ", foodData);
+
+        const res = await fetch("http://localhost:8080/category/breakfast");
+        const data: any = await res.json();
+        setBreakfast(data.foodId);
       } catch (error) {
-        console.error("Error fetching food items:", error.message);
+        console.error("Error fetching data:", error.message);
       }
     };
-
-    fetchFoodItems();
+    fetchData();
   }, []);
 
-  interface FoodItem {
-    category: string;
-  }
   const saleMeals = [
     {
       category: "Breakfast",
@@ -46,21 +50,24 @@ export default function Menu() {
       category: "Dessert",
     },
   ];
-  const handleCategorySelect = (category: any) => {
-    setSelectedCategory(category);
+  const handleCategorySelect = (foodId: any) => {
+    setSelectedCategory(foodId);
   };
 
-  const filteredData = foodItems.filter(
-    (el) => selectedCategory === "" || el.category === selectedCategory
-  );
-  
+  const filteredData = foodItems
+    .concat(selectedCategory === "Breakfast" ? breakfast : [])
+    .filter(
+      (el) => selectedCategory === "" || el.category === selectedCategory
+    );
+  console.log(breakfast);
+
   return (
     <Box>
+      {/* Updated maxWidth value */}
       <Box
         sx={{
-          maxWidth: "1250px",
-          width: "1616px",
-          margin: "0px, auto",
+          maxWidth: "1248px",
+          margin: "0px auto",
           marginLeft: "auto",
           marginRight: "auto",
           marginTop: "2%",
@@ -98,16 +105,15 @@ export default function Menu() {
       </Box>
       <Box
         sx={{
-          maxWidth: "1250px",
-          width: "1616px",
-          margin: "0px, auto",
+          maxWidth: "1248px",
           marginLeft: "auto",
           marginRight: "auto",
-          marginTop: "2%",
+          marginTop: "7%",
           display: "flex",
           justifyContent: "space-between",
           gap: "5px",
           flexWrap: "wrap",
+          rowGap: "35px",
         }}
       >
         {filteredData.map((el) => (
@@ -115,14 +121,15 @@ export default function Menu() {
             sx={{
               display: "flex",
               flexDirection: "column",
-              width: "20%",
+              width: "23%",
+              height: "270px",
             }}
           >
             <Box
               sx={{
                 position: "relative",
                 width: "100%",
-                height: "60%",
+                height: "70%",
               }}
             >
               <img
@@ -131,8 +138,6 @@ export default function Menu() {
                   objectFit: "cover",
                   height: "100%",
                   width: "100%",
-                  maxHeight: "100%",
-                  maxWidth: "100%",
                   border: "1px",
                   borderRadius: "10px",
                 }}
@@ -153,13 +158,15 @@ export default function Menu() {
                 {el.discountedPrice}
               </Typography>
             </Box>
-            <Box>
-              <Typography
-                fontSize={16}
-                color={"black"}
-                fontWeight={600}
-                paddingTop={3}
-              >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                height: "30%",
+              }}
+            >
+              <Typography fontSize={16} color={"black"} fontWeight={600}>
                 {el.name}
               </Typography>
               <CardActions sx={{ gap: 2, fontSize: 16, padding: 0 }}>
