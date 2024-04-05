@@ -76,13 +76,13 @@ export default function Header() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [color, setColor] = useState({
-    nuur: false,
-    hool: false,
-    hurgelt: false,
-    sags: false,
-    newtreg: false,
-  });
+  // const [color, setColor] = useState({
+  //   nuur: false,
+  //   hool: false,
+  //   hurgelt: false,
+  //   sags: false,
+  //   newtreg: false,
+  // });
   const { color, setColor } = useGlobalContext();
 
   return (

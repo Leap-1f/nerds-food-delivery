@@ -7,7 +7,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useFormik } from "formik";
-import { signSchema } from "../utils/validation";
+import { loginSchema } from "../utils/validation";
 import Link from "next/link";
 
 export const LoginModal = () => {
@@ -32,7 +32,7 @@ export const LoginModal = () => {
       email: "",
       password: "",
     },
-    validationSchema: signSchema,
+    validationSchema: loginSchema,
     onSubmit: (values) => {
       console.log(JSON.stringify(values, null, 2));
     },
