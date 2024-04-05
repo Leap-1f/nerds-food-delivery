@@ -3,7 +3,8 @@ const categoryConstant = {
         {name: 'Breakfast'},
         {name: 'Main course'},
         {name: 'Dessert'},
-        {name: 'Soup'}
+        {name: 'Soup'},
+        {name: 'Snack'}
     ]
 }
 

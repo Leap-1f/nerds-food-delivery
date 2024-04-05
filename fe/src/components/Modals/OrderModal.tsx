@@ -62,9 +62,9 @@ const OrderModal = () => {
             bgcolor: "white",
             p: "2rem",
             display: "flex",
-            gap: "2rem",
+            gap: "1.5rem",
             flexDirection: "row",
-            maxWidth: "45% !important",
+            maxWidth: "60% !important",
             margin: "0px auto",
           },
         }}
@@ -84,7 +84,7 @@ const OrderModal = () => {
               <CloseIcon />
             </IconButton>
           </Box>
-          <Stack sx={{ gap: "32px" }}>
+          <Stack sx={{ gap: "1rem" }}>
             <Box>
               <DialogTitle variant="h4" sx={{ fontWeight: "bold", p: 0 }}>
                 {meal[0].name}
