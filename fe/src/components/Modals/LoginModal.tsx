@@ -10,6 +10,7 @@ import { useFormik } from "formik";
 import { loginSchema } from "../utils/validation";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useGlobalContext } from "../utils/Context";
 
 
 
@@ -20,7 +21,7 @@ interface FormValues {
 
 export const LoginModal: React.FC = () => {
   const router = useRouter();
-
+  const { auth } = useGlobalContext();
   const [error, setError] = useState<string>("");
   const [showModal, setShowModal] = useState(true);
 
@@ -73,6 +74,7 @@ export const LoginModal: React.FC = () => {
           console.log("Login successful: ", data);
           router.push("/");
           setShowModal(false);
+          auth.setIsLoggedIn(true);
           localStorage.setItem("token", data.token);
         } else {
           setError(data.error || "Failed to login");

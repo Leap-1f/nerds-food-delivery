@@ -15,6 +15,7 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import LogoutIcon from "@mui/icons-material/Logout";
 import RestoreIcon from "@mui/icons-material/Restore";
 import { Dialog, DialogTitle, DialogActions } from "@mui/material";
+import { useGlobalContext } from "../utils/Context";
 
 interface UserData {
   value: string | number;
@@ -22,6 +23,7 @@ interface UserData {
 }
 
 export const UserProfile = () => {
+  const { auth } = useGlobalContext();
   const [userData, setUserData] = useState<{
     name: UserData;
     phone: UserData;
@@ -433,7 +435,10 @@ export const UserProfile = () => {
                   marginLeft: "0 !important",
                   py: "15px",
                 }}
-                onClick={handleModalClose}
+                onClick={() => {
+                  handleModalClose();
+                  auth.logout();
+                }}
                 autoFocus
               >
                 Тийм 🫂
