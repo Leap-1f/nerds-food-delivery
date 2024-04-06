@@ -110,6 +110,7 @@ export function FoodModal(modalClose: Function, closed: boolean) {
         img: "Not implemented yet.",
         ingredient: foodDescription,
         price: parseInt(price),
+        discountedPrice: parseInt(salePrice),
         catId: category,
       }),
     }).then(async (response) => {
