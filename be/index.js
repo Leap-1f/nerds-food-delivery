@@ -1,13 +1,12 @@
 import express, { response } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import { Category } from "./model/Category.js";
-import { Food } from "./model/Food.js";
-import {User} from "./model/User.js";
+import { Food } from "./model/Food.Model.js";
+import { Category } from "./model/Category.Model.js";
 import dotenv from "dotenv";
+import { user } from "./src/router/user.js";
 import { v2 as cloudinary } from "cloudinary";
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import { category } from "./src/router/category.js";
 
 
 const port = 8080;
@@ -16,6 +15,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 dotenv.config();
+
+app.use("/user", user);
+app.use("/category", category)
 
 let { USERNAME, PASSWORD, API_SECRET, API_KEY, CLOUD_NAME } = process.env;
 cloudinary.config({
@@ -190,20 +192,7 @@ app.post("/getFoodById", async (request, response) => {
   response.status(200);
   response.send(food);
 });
-app.post("/getCategoryFood", async (request, response) => {
-  const stringified = JSON.stringify(request.body);
-  const parsed = JSON.parse(stringified);
-  const categories = await Category.find(
-    { _id: parsed.id },
-    {
-      _id: 1,
-      name: 1,
-      foodId: 1,
-    }
-  ).populate("foodId");
-  response.status(200);
-  response.send(categories);
-});
+
 app.post("/getFoodCategory", async (request, response) => {
   const stringified = JSON.stringify(request.body);
   const parsed = JSON.parse(stringified);
@@ -266,19 +255,22 @@ app.post("/createCategory", async (request, response) => {
     response.send("Bad request.");
   }
 });
-app.post("/deleteCategory", async (request, response) => {
-  const stringified = JSON.stringify(request.body);
-  const parsed = JSON.parse(stringified);
-  if (parsed.id != "") {
-    const deleteCategory = await Category.deleteOne({ _id: parsed.id });
 
-    response.status(200);
-    response.send("Category Deleted.");
-  } else {
-    response.status(400);
-    response.send("Bad request.");
-  }
-});
+
+//added to router & controller, can delete
+// app.post("/deleteCategory", async (request, response) => {
+//   const stringified = JSON.stringify(request.body);
+//   const parsed = JSON.parse(stringified);
+//   if (parsed.id != "") {
+//     const deleteCategory = await Category.deleteOne({ _id: parsed.id });
+
+//     response.status(200);
+//     response.send("Category Deleted.");
+//   } else {
+//     response.status(400);
+//     response.send("Bad request.");
+//   }
+// });
 app.post("/getCatName", async (request, response) => {
   const stringified = JSON.stringify(request.body);
   const parsed = JSON.parse(stringified);
@@ -336,43 +328,7 @@ app.post("/food", async (req, res) => {
 });
 
 //user
-// app.post("/user", async (req, res) => {
-//   // const password = "Aa12345";
-//   const user = await User.create({
-//     name: "билгүүндөл",
-//     email: "duluubagsh@gmail.com",
-//     password: await hashPassword(password),
-//     phoneNumber: 98765432
-//   });
 
-//   res.send(user);
-// });
-
-app.post("/user/login", async (req, res) =>{
-  const {email, password} = req.body;
-  try {
-    const user = await User.findOne({email});
-    if (!user) {
-      return res.status(404).json({error: 'User not found'})
-    }
-
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if(!passwordMatch) {
-      return res.status(401).json({error: 'Invalid password'})
-    }
-
-    const token = jwt.sign(
-      { userId: user._id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' } 
-    );
-
-    return res.status(200).json({message: 'Login successful', token})
-  } catch(err) {
-    console.error('Error finding user: ', err);
-    return res.status(500).json({error: 'Internal server error'})
-  }
-})
 
 
 
@@ -429,8 +385,6 @@ app.post("/category", async (req, res) => {
 
   res.send(category);
 });
-
-// 
 
 app.listen(port, () => {
   console.log(`Your server is on on the port "http:localhost:${8080}"`);

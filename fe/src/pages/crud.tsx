@@ -41,7 +41,7 @@ export default function crud() {
     whatClose(false);
   }
   async function deleteCategory(catId: string) {
-    const getCategories = await fetch("http://localhost:8080/deleteCategory", {
+    const getCategories = await fetch("http://localhost:8080/category/delete", {
       method: "POST",
       mode: "cors",
       headers: {
