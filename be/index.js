@@ -1,9 +1,9 @@
 import express, { response } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import { Category } from "./model/Category.js";
-import { Food } from "./model/Food.js";
-import { User } from "./model/User.js";
+import { Category } from "./model/Category.Model.js";
+import { Food } from "./model/Food.Model.js";
+import { User } from "./model/User.Model.js";
 import dotenv from "dotenv";
 import { user } from "./src/router/user.js";
 import { v2 as cloudinary } from "cloudinary";
@@ -259,21 +259,6 @@ app.post("/createCategory", async (request, response) => {
   }
 });
 
-
-//added to router & controller, can delete
-// app.post("/deleteCategory", async (request, response) => {
-//   const stringified = JSON.stringify(request.body);
-//   const parsed = JSON.parse(stringified);
-//   if (parsed.id != "") {
-//     const deleteCategory = await Category.deleteOne({ _id: parsed.id });
-
-//     response.status(200);
-//     response.send("Category Deleted.");
-//   } else {
-//     response.status(400);
-//     response.send("Bad request.");
-//   }
-// });
 app.post("/getCatName", async (request, response) => {
   const stringified = JSON.stringify(request.body);
   const parsed = JSON.parse(stringified);
@@ -302,15 +287,6 @@ app.post("/updateCategory", async (request, response) => {
     response.send("Bad request.");
   }
 });
-// app.get("/food", async (req, res) => {
-//   try {
-//     const foods = await Food.findById();
-//   res.status(200).json(foods);
-//   } catch (error) {
-//     console.error('Error fetching food items: ', error);
-//     res.status(500).json({err: 'Internal server error'})
-//   }
-// })
 
 // POST REQUESTS
 
@@ -327,33 +303,6 @@ app.post("/food", async (req, res) => {
   res.send(food);
 });
 
-//user
-
-app.post("/user/login", async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
-      return res.status(401).json({ error: "Invalid password" });
-    }
-
-    const token = jwt.sign(
-      { userId: user._id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
-
-    return res.status(200).json({ message: "Login successful", token });
-  } catch (err) {
-    console.error("Error finding user: ", err);
-    return res.status(500).json({ error: "Internal server error" });
-  }
-});
 
 app.post("/category/add", async (req, res) => {
   const { categoryId } = req.params;
