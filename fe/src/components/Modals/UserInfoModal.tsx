@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Avatar,
@@ -23,16 +23,53 @@ interface UserData {
 }
 
 export const UserProfile = () => {
-  const { auth } = useGlobalContext();
+  const { auth, userId } = useGlobalContext();
   const [userData, setUserData] = useState<{
     name: UserData;
     phone: UserData;
     email: UserData;
   }>({
-    name: { value: "УгтахБаяр", isEditing: false },
-    phone: { value: 80234566, isEditing: false },
-    email: { value: "dashka.bagsh@gmail.com", isEditing: false },
+    name: { value: "", isEditing: false },
+    phone: { value: "", isEditing: false },
+    email: { value: "", isEditing: false },
   });
+
+  console.log(userId);
+  
+  useEffect(() => {
+    const userInfo = async () => {
+      if (userId) {
+        try {
+          const response = await fetch(`http://localhost:8080/user/info`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({userId})
+          });
+  
+          if (response.ok) {
+            const data = await response.json();
+            setUserData({
+              name: { value: data.name, isEditing: false },
+              phone: { value: data.phoneNumber, isEditing: false },
+              email: { value: data.email, isEditing: false },
+            });
+            console.log(data.name);
+            
+          } else {
+            console.error("Error parsing user info:", response.status);
+          }
+        } catch (error) {
+          console.error("Error fetching user info:", error);
+        }
+      }
+    };
+  
+    userInfo();
+  }, [userId]); 
+
+ 
 
   const [focusedField, setFocusedField] = useState<
     keyof typeof userData | null
@@ -93,21 +130,7 @@ export const UserProfile = () => {
     const file = event.target.files && event.target.files[0];
   };
 
-
-
-
-
-  
-
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      height="93vh"
-      margin="auto"
-    >
       <>
         <Box
           display="flex"
@@ -166,7 +189,7 @@ export const UserProfile = () => {
             {userData.name.value}
           </Typography>
         </Box>
-        <Stack direction="column" mt={"40px"} alignItems={"center"}>
+        <Stack direction="column" my={"40px"} alignItems={"center"}>
           {/* Text input fields */}
           <Stack
             direction="column"
@@ -468,6 +491,5 @@ export const UserProfile = () => {
           </Stack>
         </Stack>
       </>
-    </Box>
   );
 };
