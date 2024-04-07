@@ -14,7 +14,6 @@ import {
   SwitchProps,
   FormControlLabel,
   styled,
-  responsiveFontSizes,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import XIcon from "../icons/Xicon";
@@ -88,7 +87,7 @@ export function UpdateFoodModal(
     },
   }));
   async function deleteFood() {
-    const getAllFood = await fetch("http://localhost:8080/deleteFood", {
+    const deleteFood = await fetch("http://localhost:8080/deleteFood", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -116,7 +115,7 @@ export function UpdateFoodModal(
       .then((response) => response.json())
       .then((response) => {
         if (response[0].id === undefined) {
-          return "Napoe";
+          return "No results.";
         } else {
           setOldCat(response[0].id);
           setCategory(response[0].id);
@@ -140,6 +139,10 @@ export function UpdateFoodModal(
         setFoodName(response[0].name);
         setFoodDescription(response[0].name);
         setPrice(response[0].price);
+        if (response[0].discountedPrice != 0) {
+          setOnSale(true);
+          setSalePrice(response[0].discountedPrice);
+        }
         return response;
       });
   }
@@ -170,6 +173,7 @@ export function UpdateFoodModal(
         img: "Not implemented yet.",
         ingredient: foodDescription,
         price: parseInt(price),
+        discountedPrice: parseInt(salePrice),
         catId: oldCat,
         newCatId: category,
       }),

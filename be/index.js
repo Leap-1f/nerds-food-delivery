@@ -1,13 +1,15 @@
 import express, { response } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import { Food } from "./model/Food.Model.js";
-import { Category } from "./model/Category.Model.js";
+import { Category } from "./model/Category.js";
+import { Food } from "./model/Food.js";
+import { User } from "./model/User.js";
 import dotenv from "dotenv";
 import { user } from "./src/router/user.js";
 import { v2 as cloudinary } from "cloudinary";
 import { category } from "./src/router/category.js";
-
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const port = 8080;
 const app = express();
@@ -29,7 +31,6 @@ cloudinary.config({
 // const MONGO_CONNECTION_STRING = `mongodb+srv://${USERNAME}:${PASSWORD}@free.7gtcecr.mongodb.net/`;
 
 const MONGO_CONNECTION_STRING = `mongodb+srv://haliukaaqua:${PASSWORD}@free.7gtcecr.mongodb.net/`;
-
 
 // const MONGO_CONNECTION_STRING =
 //   "mongodb+srv://zedv:zed@foodapp.pk3ugl6.mongodb.net/";
@@ -62,14 +63,9 @@ const hashPassword = async () => {
     const hashedPassword = await bcrypt.hash(password, salt);
     return hashedPassword;
   } catch (err) {
-    throw new Error('Error hashing password');
+    throw new Error("Error hashing password");
   }
-}
-
-
-
-
-
+};
 
 // GET REQUESTS
 
@@ -91,6 +87,7 @@ app.post("/createFood", async (request, response) => {
       image: parsed.img,
       ingredient: parsed.ingredient,
       price: parsed.price,
+      discountedPrice: parsed.discountedPrice,
     });
 
     (await createFood).save().then(async (a) => {
@@ -117,12 +114,13 @@ app.post("/deleteFood", async (request, response) => {
     const deleteFood = await Food.findByIdAndDelete(parsed.id);
     response.status(200);
     response.send("deleted");
-    const category = await Category.find({
-      foodId: { $in: [parsed.id] },
-    });
+    const category = await Category.updateMany(
+      {
+        foodId: { $in: [parsed.id] },
+      },
+      { $pull: { foodId: parsed.id } }
+    );
   } else {
-    console.log("failed.");
-
     response.status(400);
     response.send("Malformed Data");
   }
@@ -138,6 +136,7 @@ app.patch("/updateFood", async (request, response) => {
       img: parsed.img,
       ingredient: parsed.desc,
       price: parsed.price,
+      discountedPrice: parsed.discountedPrice,
     }
   );
   (await food).save().then(async (a) => {
@@ -156,6 +155,7 @@ app.get("/getAllFood", async (request, response) => {
   const data = food.map((item) => ({
     name: item.name,
     price: item.price,
+    discountedPrice: item.discountedPrice,
     id: item._id,
     img: item.image,
     ingredient: item.ingredient,
@@ -181,6 +181,7 @@ app.post("/getFoodById", async (request, response) => {
       image: 1,
       ingredient: 1,
       price: 1,
+      discountedPrice: 1,
     }
   );
   let names = food.map((o) => ({
@@ -188,6 +189,7 @@ app.post("/getFoodById", async (request, response) => {
     id: o._id,
     ingredient: o.ingredient,
     price: o.price,
+    discountedPrice: o.discountedPrice,
   }));
   response.status(200);
   response.send(food);
@@ -215,6 +217,7 @@ app.post("/getFoodItemsByCategory", async (request, response) => {
     const data = foods.foodId.map((item) => ({
       name: item.name,
       price: item.price,
+      discountedPrice: item.discountedPrice,
       id: item._id,
       img: item.image,
       ingredient: item.ingredient,
@@ -309,9 +312,6 @@ app.post("/updateCategory", async (request, response) => {
 //   }
 // })
 
-
-
-
 // POST REQUESTS
 
 // food
@@ -329,36 +329,54 @@ app.post("/food", async (req, res) => {
 
 //user
 
+app.post("/user/login", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ error: "Invalid password" });
+    }
 
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
 
+    return res.status(200).json({ message: "Login successful", token });
+  } catch (err) {
+    console.error("Error finding user: ", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
 
-app.post('/category/add', async (req, res) => {
+app.post("/category/add", async (req, res) => {
   const { categoryId } = req.params;
   const { name } = req.body;
 
   try {
-      const category = await Category.findById('660bebf2d003489b7ed68c65');
-      if (!category) {
-          return res.status(404).json({ error: 'Category not found' });
-      }
-      category.foodId.push('660d3fb1eb6846f68fe86cfc');
+    const category = await Category.findById("660bebf2d003489b7ed68c65");
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+    category.foodId.push("660d3fb1eb6846f68fe86cfc");
 
-      const updatedCategory = await category.save();
-      return res.status(200).json(updatedCategory);
+    const updatedCategory = await category.save();
+    return res.status(200).json(updatedCategory);
   } catch (error) {
-      console.error('Error updating category:', error);
-      return res.status(500).json({ error: 'Internal server error' });
+    console.error("Error updating category:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 
-
-
 app.get("/category", async (request, response) => {
   try {
-    const data = await Category.findById(
-      "660bebf2d003489b7ed68c65"
-    ).populate({
+    const data = await Category.findById("660bebf2d003489b7ed68c65").populate({
       path: "foodId",
       model: "Food",
     });
@@ -369,12 +387,6 @@ app.get("/category", async (request, response) => {
     response.status(500).send("Internal Server Error");
   }
 });
-
-
-
-
-
-
 
 // category
 app.post("/category", async (req, res) => {
