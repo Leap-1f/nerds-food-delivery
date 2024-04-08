@@ -85,7 +85,7 @@ export function FoodModal(modalClose: Function, closed: boolean) {
     setCategory(event.target.value as string);
   };
   async function getCategories() {
-    const getCategories = await fetch("http://localhost:8080/getCategories", {
+    const getCategories = await fetch("http://localhost:8080/category", {
       method: "GET",
       mode: "cors",
       headers: {
@@ -99,7 +99,7 @@ export function FoodModal(modalClose: Function, closed: boolean) {
     setCategories(getCategories);
   }
   async function sendFoodItem() {
-    let sendFoodItem = await fetch("http://localhost:8080/createFood", {
+    let sendFoodItem = await fetch("http://localhost:8080/food/create", {
       method: "POST",
       mode: "cors",
       headers: {

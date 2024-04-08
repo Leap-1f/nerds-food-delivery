@@ -53,7 +53,7 @@ export default function crud() {
     });
   }
   async function getCategories() {
-    const getCategories = await fetch("http://localhost:8080/getCategories", {
+    const getCategories = await fetch("http://localhost:8080/category", {
       method: "GET",
       mode: "cors",
       headers: {
@@ -69,7 +69,7 @@ export default function crud() {
 
   async function getFoodItemsByCategory() {
     const getFoodItemsByCategory = await fetch(
-      "http://localhost:8080/getFoodItemsByCategory",
+      "http://localhost:8080/food",
       {
         method: "POST",
         mode: "cors",
@@ -91,7 +91,7 @@ export default function crud() {
       });
   }
   async function getFood() {
-    const getAllFood = await fetch("http://localhost:8080/getAllFood", {
+    const getAllFood = await fetch("http://localhost:8080/food", {
       method: "GET",
       mode: "cors",
       headers: {

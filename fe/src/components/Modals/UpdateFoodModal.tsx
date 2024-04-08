@@ -87,7 +87,7 @@ export function UpdateFoodModal(
     },
   }));
   async function deleteFood() {
-    const deleteFood = await fetch("http://localhost:8080/deleteFood", {
+    const deleteFood = await fetch("http://localhost:8080/food/delete", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -147,7 +147,7 @@ export function UpdateFoodModal(
       });
   }
   async function getCategories() {
-    const getCategories = await fetch("http://localhost:8080/getCategories", {
+    const getCategories = await fetch("http://localhost:8080/category", {
       method: "GET",
       mode: "cors",
       headers: {
@@ -161,7 +161,7 @@ export function UpdateFoodModal(
     setCategories(getCategories);
   }
   async function updateFoodItem() {
-    let updateFoodItem = await fetch("http://localhost:8080/updateFood", {
+    let updateFoodItem = await fetch("http://localhost:8080/food/update", {
       method: "PATCH",
       mode: "cors",
       headers: {
