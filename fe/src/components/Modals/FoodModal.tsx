@@ -11,21 +11,28 @@ import {
   MenuItem,
   SelectChangeEvent,
   Switch,
-  SwitchProps,
   FormControlLabel,
   styled,
 } from "@mui/material";
 import { useState, useEffect } from "react";
+import { SwitchProps } from "@mui/material/Switch";
 import XIcon from "../icons/Xicon";
 export function FoodModal(modalClose: Function, closed: boolean) {
   const [category, setCategory] = useState("");
   const [filledIn, setFilledIn] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [foodName, setFoodName] = useState("");
   const [foodDescription, setFoodDescription] = useState("");
   const [price, setPrice] = useState("");
   const [onSale, setOnSale] = useState(false);
   const [salePrice, setSalePrice] = useState("");
+
+  
+  interface Category {
+    id: string;
+    name: string;
+  }
+  
   const IOSSwitch = styled((props: SwitchProps) => (
     <Switch
       focusVisibleClassName=".Mui-focusVisible"

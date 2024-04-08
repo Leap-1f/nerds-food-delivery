@@ -27,7 +27,7 @@
     "react-dom": "^18",
     "react-imask": "^7.5.0",
     "styled-components": "^6.1.8",
-    "vercel": "^33.6.3",
+    "vercel": "^33.7.0",
     "yup": "^1.4.0"
   },
   "devDependencies": {
