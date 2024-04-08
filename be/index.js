@@ -1,14 +1,15 @@
-import express from "express";
+import express, { request, response } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import { Category } from "./model/Category.Model.js";
 import { Food } from "./model/Food.Model.js";
-import { User } from "./model/User.Model.js";
+
 import dotenv from "dotenv";
 import { user } from "./src/router/user.js";
 import { v2 as cloudinary } from "cloudinary";
 import { category } from "./src/router/category.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const port = 8080;
 const app = express();
@@ -18,7 +19,7 @@ app.use(express.json());
 dotenv.config();
 
 app.use("/user", user);
-app.use("/category", category)
+app.use("/category", category);
 
 let { USERNAME, PASSWORD, API_SECRET, API_KEY, CLOUD_NAME } = process.env;
 cloudinary.config({
@@ -27,7 +28,12 @@ cloudinary.config({
   api_secret: API_SECRET,
 });
 
-const MONGO_CONNECTION_STRING = `mongodb+srv://${USERNAME}:${PASSWORD}@free.7gtcecr.mongodb.net/`;
+// const MONGO_CONNECTION_STRING = `mongodb+srv://${USERNAME}:${PASSWORD}@free.7gtcecr.mongodb.net/`;
+
+const MONGO_CONNECTION_STRING = `mongodb+srv://haliukaaqua:${PASSWORD}@free.7gtcecr.mongodb.net/`;
+
+// const MONGO_CONNECTION_STRING =
+//   "mongodb+srv://zedv:zed@foodapp.pk3ugl6.mongodb.net/";
 
 mongoose
   .connect(MONGO_CONNECTION_STRING)
@@ -44,7 +50,6 @@ cloudinary.api.resources(function (error, result) {
     console.error("Error retrieving Cloudinary resources:", error);
   } else {
     const imageUrls = result.resources.map((resource) => resource.secure_url);
-    console.log("Image URLs:", imageUrls);
   }
 });
 
@@ -67,6 +72,24 @@ const hashPassword = async () => {
 app.get("/", (request, response) => {
   response.send("Hello World!");
 });
+// food section V IMPORTANT: Add authentication verification.
+app.post("/createFood", async (request, response) => {
+  const stringified = JSON.stringify(request.body);
+  const parsed = JSON.parse(stringified);
+  if (
+    parsed.name != "" ||
+    parsed.img != "" ||
+    parsed.ingredient != "" ||
+    parsed.price != 0
+  ) {
+    const createFood = Food.create({
+      name: parsed.name,
+      image: parsed.img,
+      ingredient: parsed.ingredient,
+      category: breakFast,
+      price: parsed.price,
+      discountedPrice: parsed.discountedPrice,
+    });
 
     (await createFood).save().then(async (a) => {
       const updateCategoryItems = await Category.findOneAndUpdate(
@@ -221,6 +244,7 @@ app.get("/getCategories", async (request, response) => {
   response.status(200);
   response.send(names);
 });
+
 app.post("/createCategory", async (request, response) => {
   const stringified = JSON.stringify(request.body);
   const parsed = JSON.parse(stringified);
@@ -269,20 +293,20 @@ app.post("/updateCategory", async (request, response) => {
 // POST REQUESTS
 
 // food
-app.post("/food", async (req, res) => {
+app.post("/", async (req, res) => {
   const food = await Food.create({
-    name: "Ногоотой шөл",
+    name: "Жимстэй йогурт",
     image:
-      "https://res.cloudinary.com/dqjwd8g6x/image/upload/v1712312694/food%20image/wildricesoup.jpg",
-    ingredient: "мөөг, лууван, бууцай, будаа, лаврын навч, кокосын сүү, давс, перец",
-    price: 18800,
+      "https://res.cloudinary.com/dqjwd8g6x/image/upload/v1712143220/food%20image/yogurt.jpg",
+    ingredient: "гүзээлзгэнэ, нэрс, бөөрөлзгөнө, ванилтай зайрмаг",
+    price: 14800,
+    category: "660bebf2d003489b7ed68c67",
   });
 
   res.send(food);
 });
 
-
-app.post("/categories", async (req, res) => {
+app.post("/category/add", async (req, res) => {
   const { categoryId } = req.params;
   const { name } = req.body;
 
@@ -291,7 +315,7 @@ app.post("/categories", async (req, res) => {
     if (!category) {
       return res.status(404).json({ error: "Category not found" });
     }
-    category.foodId.push("660d3f54cfa8c40044754fc8");
+    category.foodId.push("660d3fb1eb6846f68fe86cfc");
 
     const updatedCategory = await category.save();
     return res.status(200).json(updatedCategory);
@@ -301,13 +325,13 @@ app.post("/categories", async (req, res) => {
   }
 });
 
-// get breakfast category
-app.get("/category/breakfast", async (request, response) => {
+app.get("/category", async (request, response) => {
   try {
     const data = await Category.findById("660bebf2d003489b7ed68c65").populate({
       path: "foodId",
       model: "Food",
     });
+    console.log(data);
     response.send(data);
   } catch (error) {
     console.error(error);

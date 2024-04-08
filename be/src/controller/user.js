@@ -1,6 +1,6 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { User } from '../../model/User.Model.js';
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { User } from "../../model/User.Model.js";
 
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -27,8 +27,6 @@ export const loginUser = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
 
 // app.post("/user", async (req, res) => {
 //   // const password = "Aa12345";

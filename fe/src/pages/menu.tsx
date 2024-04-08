@@ -4,6 +4,7 @@ import { Box, Stack } from "@mui/material";
 import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
 import { useState, useEffect } from "react";
+import { log } from "console";
 
 interface FoodItem {
   name: string;
@@ -21,16 +22,11 @@ export default function Menu() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const foodResponse = await fetch("http://localhost:8080/food");
-        const foodData: FoodItem[] = await foodResponse.json();
-        setFoodItems(foodData);
-        console.log("testing: ", foodData);
-
-        const res = await fetch("http://localhost:8080/category/breakfast");
-        const data: any = await res.json();
-        setBreakfast(data.foodId);
-      } catch (error) {
-        console.error("Error fetching data:", error.message);
+        const foodResponse = await fetch("http://localhost:8080/getAllFood");
+        const data = await foodResponse.json();
+        console.log(data);
+      } catch (error: any) {
+        console.error("Error fetching data:", error);
       }
     };
     fetchData();

@@ -16,6 +16,7 @@ async function sendFoodItem() {
       img: "Not implemented yet.",
       ingredient: foodDescription,
       price: parseInt(price),
+
       catId: category,
     }),
   }).then(async (response) => {
