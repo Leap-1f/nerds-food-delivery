@@ -1,4 +1,30 @@
-import { model, Schema }  from "mongoose";
+import mongoose from "mongoose";
 
+import { USER_ROLE } from "../constant/userConstant";
 
-export const UserModel = model("Zaya", new Schema({age: String}));
+const UserSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  phoneNumber: {
+    type: Number,
+    required: true,
+  },
+  role: {
+    type: String,
+    enum: Object.values(USER_ROLE),
+    default: USER_ROLE.USER,
+  },
+});
+
+const User = mongoose.model('User', UserSchema);
