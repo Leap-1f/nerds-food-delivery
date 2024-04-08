@@ -1,5 +1,5 @@
-import { UpdateCategoryModal } from "@/components/Modals/UpdateCategoryModal";
-import { UpdateFoodModal } from "@/components/Modals/UpdateFoodModal";
+import { UpdateCategoryModal } from "@/components/modals/UpdateCategoryModal";
+import { UpdateFoodModal } from "../components/modals/UpdateFoodModal";
 import { CategoryModal } from "@/components/modals";
 import { FoodModal } from "@/components/modals";
 import {
@@ -13,17 +13,39 @@ import {
   Backdrop,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+
+type Category = {
+  id: string;
+  name: string;
+};
+
+type FoodItem = {
+  id?: string;
+  name: string;
+  price?: number;
+};
+
+type ModalToggleFunction = React.Dispatch<React.SetStateAction<boolean>>;
+function handleModelOpening(whatOpen: ModalToggleFunction) {
+  whatOpen(true);
+}
+function handleModelClose(whatClose: ModalToggleFunction) {
+  whatClose(false);
+}
+
+type SetCatItems = React.Dispatch<React.SetStateAction<FoodItem[]>>;
+
 export default function crud() {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [updateCat, setUpdateCat] = useState(false);
   const [updateMod, setUpdateMod] = useState(false);
-  const [currnetId, setCurrentId] = useState("");
+  const [currentId, setCurrentId] = useState("");
   const [catId, setCatId] = useState("");
   const [foodOpen, setFoodOpen] = useState(false);
   const [catName, setCatName] = useState("All Foods.");
   const [catOpen, setCatOpen] = useState(false);
-  const [catItems, setCatItems] = useState([]);
+  const [catItems, setCatItems] = useState<FoodItem[]>([]);
   function numberWithCommas(x: number) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
@@ -68,19 +90,16 @@ export default function crud() {
   }
 
   async function getFoodItemsByCategory() {
-    const getFoodItemsByCategory = await fetch(
-      "http://localhost:8080/food",
-      {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: catId,
-        }),
-      }
-    )
+    const getFoodItemsByCategory = await fetch("http://localhost:8080/food", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: catId,
+      }),
+    })
       .then((response) => response.json())
       .then((response) => {
         if (response.status != 400 && response.length != 0) {
@@ -320,27 +339,28 @@ export default function crud() {
         >
           {catItems.map((item) => (
             <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-              }}
-            >
-              {item.id && (
-                <Button
-                  onClick={() => {
-                    handleModelOpening(setUpdateMod);
-                    setCurrentId(item.id);
-                  }}
-                >
-                  Open Update Modal
-                </Button>
-              )}
-              {item.id && (
-                <Typography>{numberWithCommas(item.price)}₮</Typography>
-              )}
-              <Typography>{item.name}</Typography>
-            </Box>
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            {item.id && (
+              <Button
+                onClick={() => {
+                  handleModelOpening(setUpdateMod);
+                  setCurrentId(item.id ?? ""); 
+                }}
+              >
+                Open Update Modal
+              </Button>
+            )}
+            {item.price !== undefined && (
+              <Typography>{numberWithCommas(item.price)}₮</Typography>
+            )}
+            <Typography>{item.name}</Typography>
+          </Box>
+          
           ))}
         </Box>
       </Stack>
@@ -418,7 +438,7 @@ export default function crud() {
               handleModelClose(setUpdateMod);
             },
             updateMod,
-            currnetId
+            currentId
           )}
         </Modal>
       </Box>

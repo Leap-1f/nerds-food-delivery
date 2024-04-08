@@ -25,12 +25,17 @@ export function UpdateFoodModal(
   const [category, setCategory] = useState("");
   const [oldCat, setOldCat] = useState("");
   const [filledIn, setFilledIn] = useState(true);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [foodName, setFoodName] = useState("");
   const [foodDescription, setFoodDescription] = useState("");
   const [price, setPrice] = useState("");
   const [onSale, setOnSale] = useState(false);
   const [salePrice, setSalePrice] = useState("");
+
+  interface Category {
+    id: string;
+    name: string;
+  }
   const IOSSwitch = styled((props: SwitchProps) => (
     <Switch
       focusVisibleClassName=".Mui-focusVisible"

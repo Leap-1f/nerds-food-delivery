@@ -1,17 +1,28 @@
 import { Box, Stack, Button, Modal, Backdrop, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
-import { FoodModal } from "@/components/Modals/FoodModal";
-import { CategoryModal } from "@/components/Modals/CategoryModal";
-import { UpdateFoodModal } from "@/components/Modals/UpdateFoodModal";
+import { FoodModal } from "@/components/modals/FoodModal";
+import { CategoryModal } from "@/components/modals/CategoryModal";
+import { UpdateFoodModal } from "@/components/modals/UpdateFoodModal";
+
+interface FoodItem {
+  name: string;
+  ingredient: string;
+  image: string;
+  _id: string;
+  price: string; 
+}
+
 export default function testing() {
   const [catopen, setcatopen] = useState(false);
   const [foodopen, setfoodopen] = useState(false);
   const [updateopen, setupdateopen] = useState(false);
-  const [foods, setFoods] = useState([]);
+  const [foods, setFoods] = useState<FoodItem[]>([]);
   const [currentId, setCurrentId] = useState("");
+
   function handleOpening(whatOpen: any) {
     whatOpen(true);
   }
+
   function handleClose(whatClose: any) {
     whatClose(false);
   }

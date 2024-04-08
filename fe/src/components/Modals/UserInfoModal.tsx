@@ -94,7 +94,7 @@ export const UserProfile = () => {
         const userData = await response.json();
         setUserData({
           name: { value: userData.name, isEditing: false },
-          phone: { value: userData.phone, isEditing: false },
+          phone: { value: userData.phoneNumber, isEditing: false },
           email: { value: userData.email, isEditing: false },
         });
       } catch (error) {

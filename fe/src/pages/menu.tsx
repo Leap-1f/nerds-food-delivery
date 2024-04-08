@@ -6,6 +6,15 @@ import Typography from "@mui/material/Typography";
 
 import { useState, useEffect } from "react";
 
+interface FoodItem {
+  category: string;
+  image: string;
+  name: string;
+  price: string;
+  dsprice: string;
+  discountedPrice?: string;
+}
+
 export default function Menu() {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -20,147 +29,13 @@ export default function Menu() {
         const data = await response.json();
         setFoodItems(data);
       } catch (error) {
-        console.error("Error fetching food items:", error.message);
+        console.error("Error fetching food items:", (error as Error).message);
       }
     };
 
     fetchFoodItems();
   }, []);
 
-  interface FoodItem {
-    category: string;
-  }
-
-  // const data = [
-  //   {
-  //     name: "Өглөөний хоол",
-  //     category: "Breakfast",
-  //     price: "14,000₮",
-  //     dsprice: "16,800₮",
-  //     discount: "20%",
-  //     img: "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg",
-  //   },
-  //   {
-  //     name: "Зайрмаг",
-  //     category: "Breakfast",
-  //     price: "4,000₮",
-  //     dsprice: "5,800₮",
-  //     discount: "20%",
-  //     img: "https://redroserestaurant.softinfinitytechnology.com/wp-content/uploads/2021/10/from-the-us-russia-to-india-an-ice-cream-bowl-has-a-long-political-history.jpg",
-  //   },
-  //   {
-  //     name: "Өглөөний хоол",
-  //     category: "Breakfast",
-  //     price: "24,000₮",
-  //     dsprice: "28,800₮",
-  //     discount: "20%",
-  //     img: "https://www.jigsawexplorer.com/puzzles/subjects/skillet-breakfast-436x300.jpg",
-  //   },
-
-  //   {
-  //     name: "Амттан",
-  //     category: "Breakfast",
-  //     price: "14,000₮",
-  //     dsprice: "16,800₮",
-  //     discount: "20%",
-  //     img: "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg",
-  //   },
-  //   {
-  //     name: "Aмттан",
-  //     category: "Dessert",
-  //     price: "12,000₮",
-  //     dsprice: "16,800₮",
-
-  //     img: "https://www.kateskitchenkc.com/wp-content/uploads/2023/10/traditional-full-american-breakfast-eggs-pancakes-with-bacon-and-toast.jpg_s1024x1024wisk20cz03ui5Oqyz8Ys_pG0bVWsgoz_v_E5Oct4x-0C-sAjME.jpg",
-  //   },
-  //   {
-  //     name: "Aмттан",
-  //     category: "Dessert",
-  //     price: "12,000₮",
-  //     dsprice: "16,800₮",
-
-  //     img: "https://www.foodandwine.com/thmb/ckc6L6xKox0WfpfO6dMkuVGPQOY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Angel-Food-Cake-with-Three-Berry-Compote-FT-RECIPE0323-541a780b871441e0ab14383ee38acc44.jpg",
-  //   },
-  //   {
-  //     name: "Aмттан",
-  //     category: "Dessert",
-  //     price: "12,000₮",
-  //     dsprice: "16,800₮",
-
-  //     img: "https://www.foodandwine.com/thmb/ckc6L6xKox0WfpfO6dMkuVGPQOY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Angel-Food-Cake-with-Three-Berry-Compote-FT-RECIPE0323-541a780b871441e0ab14383ee38acc44.jpg",
-  //   },
-  //   {
-  //     name: "Aмттан",
-  //     category: "Desert",
-  //     price: "24,000₮",
-  //     dsprice: "28,800₮",
-
-  //     img: "https://www.jigsawexplorer.com/puzzles/subjects/skillet-breakfast-436x300.jpg",
-  //   },
-  //   {
-  //     name: "Өглөөний хоол",
-  //     category: "Breakfast",
-  //     price: "14,000₮",
-  //     dsprice: "16,800₮",
-  //     img: "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg",
-  //   },
-  //   {
-  //     name: "Өглөөний хоол",
-  //     category: "Soup",
-  //     price: "14,000₮",
-  //     dsprice: "16,800₮",
-  //     discount: "20%",
-  //     img: "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg",
-  //   },
-  //   {
-  //     name: "Шөл",
-  //     category: "Soup",
-  //     price: "4,000₮",
-  //     dsprice: "5,800₮",
-  //     discount: "20%",
-  //     img: "https://redroserestaurant.softinfinitytechnology.com/wp-content/uploads/2021/10/from-the-us-russia-to-india-an-ice-cream-bowl-has-a-long-political-history.jpg",
-  //   },
-  //   {
-  //     name: "Өглөөний хоол",
-  //     category: "Soup",
-  //     price: "24,000₮",
-  //     dsprice: "28,800₮",
-  //     discount: "20%",
-  //     img: "https://www.jigsawexplorer.com/puzzles/subjects/skillet-breakfast-436x300.jpg",
-  //   },
-
-  //   {
-  //     name: "Шөл",
-  //     category: "Soup",
-  //     price: "14,000₮",
-  //     dsprice: "16,800₮",
-  //     img: "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg",
-  //   },
-  //   {
-  //     name: "Өглөөний хоол",
-  //     category: "MainFood",
-  //     price: "24,000₮",
-  //     dsprice: "28,800₮",
-  //     discount: "20%",
-  //     img: "https://www.jigsawexplorer.com/puzzles/subjects/skillet-breakfast-436x300.jpg",
-  //   },
-
-  //   {
-  //     name: "Шөл",
-  //     category: "MainFood",
-  //     price: "14,000₮",
-  //     dsprice: "16,800₮",
-  //     img: "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg",
-  //   },
-  //   {
-  //     name: "Шөл",
-  //     category: "MainFood",
-  //     price: "14,000₮",
-  //     dsprice: "16,800₮",
-  //     discount: "20%",
-  //     img: "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg",
-  //   },
-  // ];
   const saleMeals = [
     {
       category: "Breakfast",
@@ -180,8 +55,12 @@ export default function Menu() {
   };
 
   const filteredData = foodItems.filter(
-    (el) => selectedCategory === "" || el.category === selectedCategory
-  );
+    (el) => {
+      const foodItem = el as FoodItem;
+      return (selectedCategory === "" || foodItem.category === selectedCategory) && ('image' in foodItem) && foodItem.image !== undefined;
+    }
+  );  
+  
 
   return (
     <Box>
@@ -239,8 +118,9 @@ export default function Menu() {
           flexWrap: "wrap",
         }}
       >
-        {filteredData.map((el) => (
+        {filteredData.map((el: FoodItem) => (
           <Box
+          key = {el.name}
             sx={{
               display: "flex",
               flexDirection: "column",

@@ -7,7 +7,6 @@ import { Typography } from "@mui/material";
 import { useState, KeyboardEvent, MouseEvent, Fragment } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
-import PizzaPhoto from "../../../public/Pizza.png";
 
 type Anchor = "right";
 
@@ -68,7 +67,7 @@ export default function SideBarModal() {
           <Stack direction={"row"} sx={{ p: 2, gap: 2 }}>
             <Box sx={{ width: "50%" }}>
               <Image
-                src={PizzaPhoto}
+                src={"/pizza.png"}
                 alt="PizzaPhoto"
                 style={{ height: "100%" }}
               />

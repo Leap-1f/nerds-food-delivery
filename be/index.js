@@ -9,9 +9,9 @@ import { user } from "./src/router/user.js";
 import { v2 as cloudinary } from "cloudinary";
 import { category } from "./src/router/category.js";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import nodemailer from "nodemailer";
+import { User } from "./model/User.Model.js";
 
 const port = 8080;
 const app = express();
