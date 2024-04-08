@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Avatar,
@@ -15,6 +15,7 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import LogoutIcon from "@mui/icons-material/Logout";
 import RestoreIcon from "@mui/icons-material/Restore";
 import { Dialog, DialogTitle, DialogActions } from "@mui/material";
+import { jwtDecode } from "jwt-decode";
 import { useGlobalContext } from "../utils/Context";
 
 interface UserData {
@@ -23,16 +24,53 @@ interface UserData {
 }
 
 export const UserProfile = () => {
-  const { auth } = useGlobalContext();
+  const { auth, userId } = useGlobalContext();
   const [userData, setUserData] = useState<{
     name: UserData;
     phone: UserData;
     email: UserData;
   }>({
-    name: { value: "УгтахБаяр", isEditing: false },
-    phone: { value: 80234566, isEditing: false },
-    email: { value: "dashka.bagsh@gmail.com", isEditing: false },
+    name: { value: "", isEditing: false },
+    phone: { value: "", isEditing: false },
+    email: { value: "", isEditing: false },
   });
+
+  console.log(userId);
+  
+  useEffect(() => {
+    const userInfo = async () => {
+      if (userId) {
+        try {
+          const response = await fetch(`http://localhost:8080/user/info`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({userId})
+          });
+  
+          if (response.ok) {
+            const data = await response.json();
+            setUserData({
+              name: { value: data.name, isEditing: false },
+              phone: { value: data.phoneNumber, isEditing: false },
+              email: { value: data.email, isEditing: false },
+            });
+            console.log(data.name);
+            
+          } else {
+            console.error("Error parsing user info:", response.status);
+          }
+        } catch (error) {
+          console.error("Error fetching user info:", error);
+        }
+      }
+    };
+  
+    userInfo();
+  }, [userId]); 
+
+ 
 
   const [focusedField, setFocusedField] = useState<
     keyof typeof userData | null
@@ -41,6 +79,30 @@ export const UserProfile = () => {
   const [showSaveButton, setShowSaveButton] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [editedName, setEditedName] = useState<string | number>("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token: any = localStorage.getItem("token");
+        const decodedToken: any = jwtDecode(token);
+        const userId = decodedToken.userId;
+        const response = await fetch(`http://localhost:8080/user/${userId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+
+        const userData = await response.json();
+        setUserData({
+          name: { value: userData.name, isEditing: false },
+          phone: { value: userData.phone, isEditing: false },
+          email: { value: userData.email, isEditing: false },
+        });
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleEdit = (field: keyof typeof userData) => {
     setUserData((prevData) => ({
@@ -93,21 +155,7 @@ export const UserProfile = () => {
     const file = event.target.files && event.target.files[0];
   };
 
-
-
-
-
-  
-
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      height="93vh"
-      margin="auto"
-    >
       <>
         <Box
           display="flex"
@@ -166,7 +214,7 @@ export const UserProfile = () => {
             {userData.name.value}
           </Typography>
         </Box>
-        <Stack direction="column" mt={"40px"} alignItems={"center"}>
+        <Stack direction="column" my={"40px"} alignItems={"center"}>
           {/* Text input fields */}
           <Stack
             direction="column"
@@ -468,6 +516,5 @@ export const UserProfile = () => {
           </Stack>
         </Stack>
       </>
-    </Box>
   );
 };

@@ -60,7 +60,7 @@ async function getFoodCategory(/* foodId */) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      //    foodId: foodId,
+      //    foodId: foodId
     }),
   })
     .then((response) => response.json())

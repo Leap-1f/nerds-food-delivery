@@ -20,7 +20,7 @@ export function UpdateCategoryModal(
     setValid(false);
   }
   async function getCategoryName() {
-    let categoryName = await fetch("http://localhost:8080/getCatName", {
+    let categoryName = await fetch("http://localhost:8080/category/getname", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -37,7 +37,7 @@ export function UpdateCategoryModal(
     setCategoryName(categoryName);
   }
   async function sendCategoryInfo() {
-    let createCategory = await fetch("http://localhost:8080/updateCategory", {
+    let createCategory = await fetch("http://localhost:8080/category/update", {
       method: "POST",
       mode: "cors",
       headers: {
