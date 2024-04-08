@@ -1,7 +1,11 @@
 import { Box, Stack, TextField, Button, Typography, Fade } from "@mui/material";
 import { useState, useEffect } from "react";
 import XIcon from "../icons/Xicon";
-export function CategoryModal(modalClose: Function, closed: boolean) {
+export function UpdateCategoryModal(
+  modalClose: Function,
+  closed: boolean,
+  catId: string
+) {
   const [categoryName, setCategoryName] = useState("");
   const [valid, setValid] = useState(false);
   function validateName() {
@@ -15,18 +19,39 @@ export function CategoryModal(modalClose: Function, closed: boolean) {
     setCategoryName("");
     setValid(false);
   }
-  async function sendCategoryInfo() {
-    let createCategory = await fetch("http://localhost:8080/createCategory", {
+  async function getCategoryName() {
+    let categoryName = await fetch("http://localhost:8080/getCatName", {
       method: "POST",
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        id: catId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        return response;
+      });
+    setCategoryName(categoryName);
+  }
+  async function sendCategoryInfo() {
+    let createCategory = await fetch("http://localhost:8080/updateCategory", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: catId,
         name: categoryName,
       }),
     });
   }
+  useEffect(() => {
+    getCategoryName();
+  }, [closed]);
   useEffect(() => {
     validateName();
   }, [categoryName]);
@@ -62,7 +87,7 @@ export function CategoryModal(modalClose: Function, closed: boolean) {
             {XIcon()}
           </Button>
           <Typography variant="h4" sx={{ fontWeight: 700, fontSize: "24px" }}>
-            Create new category
+            Update category
           </Typography>
           <Button disabled></Button>
         </Box>
@@ -97,6 +122,7 @@ export function CategoryModal(modalClose: Function, closed: boolean) {
           >
             Clear
           </Button>
+
           <Button
             sx={{
               backgroundColor: "#393939",

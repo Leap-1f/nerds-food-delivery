@@ -1,20 +1,44 @@
-import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
+import React from "react";
+import {
+  Typography,
+  InputBase,
+  Box,
+  styled,
+  alpha,
+  Grid,
+  Stack,
+  Modal,
+  Fade,
+  Button,
+  Backdrop,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import BlockIcon from "../icons/BlockIcon";
 import BasketIcon from "../icons/BasketIcon";
 import VectorIcon from "../icons/VectorIcon";
-import { Grid, Stack } from "@mui/material";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { LoginModal } from "../modals";
 import { Interface } from "readline";
 import { tree } from "next/dist/build/templates/app-page";
 
+
 import { useGlobalContext } from "../utils/Context";
 import SideBarModal from "../modals/SidebarModal";
+import { useRouter } from "next/router";
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "40%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  maxWidth: 450,
+  maxHeight: 550,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  borderRadius: "12px",
+};
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -50,10 +74,26 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
-  const { color, setColor } = useGlobalContext();
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const router = useRouter();
 
+  // const [color, setColor] = useState({
+  //   nuur: false,
+  //   hool: false,
+  //   hurgelt: false,
+  //   sags: false,
+  //   newtreg: false,
+  // });
+  const { color, setColor, auth, searchQuery, setSearchQuery } = useGlobalContext();
+
+   const handleSearchChange = (event) => {
+     setSearchQuery(event.target.value);
+     
+   };
   return (
-    <Box sx={{ mx: "auto", width: "1248px" }}>
+    <Box sx={{ mx: "auto", maxWidth: "1248px" }}>
       <Grid
         container
         direction={"row"}
@@ -147,6 +187,7 @@ export default function Header() {
             <StyledInputBase
               placeholder="Хайх"
               inputProps={{ "aria-label": "search" }}
+              onChange={handleSearchChange}
             />
           </Search>
 
@@ -185,7 +226,6 @@ export default function Header() {
               <SideBarModal />
             </Typography>
           </Box>
-
           <Box
             sx={{
               display: "flex",
@@ -197,30 +237,51 @@ export default function Header() {
             }}
           >
             <VectorIcon />
-            <Link href="/login">
-              <Typography
-                onClick={() => {
-                  setColor((prevState: any) => ({
-                    ...prevState,
-                    nuur: false,
-                    hool: false,
-                    hurgelt: false,
-                    sags: false,
-                    newtreg: true,
-                  }));
-                }}
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{
-                  flexGrow: 1,
-                  display: { xs: "none", sm: "block" },
-                  color: color.newtreg ? "green" : "black",
-                }}
-              >
-                Нэвтрэх
-              </Typography>
-            </Link>
+            <Typography
+              onClick={() => {
+                auth.isLoggedIn ? router.push("/profile") : handleOpen();
+                setColor((prevState) => ({
+                  ...prevState,
+                  nuur: false,
+                  hool: false,
+                  hurgelt: false,
+                  sags: false,
+                  newtreg: true,
+                }));
+              }}
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{
+                flexGrow: 1,
+                display: { xs: "none", sm: "block" },
+                color: color.newtreg ? "green" : "black",
+                "&:hover": {
+                  cursor: "pointer",
+                },
+              }}
+            >
+              {auth.isLoggedIn ? "Профайл" : "Нэвтрэх"}
+            </Typography>
+            <Modal
+              aria-labelledby="transition-modal-title"
+              aria-describedby="transition-modal-description"
+              open={open}
+              onClose={handleClose}
+              closeAfterTransition
+              slots={{ backdrop: Backdrop }}
+              slotProps={{
+                backdrop: {
+                  timeout: 500,
+                },
+              }}
+            >
+              <Fade in={open}>
+                <Box sx={style}>
+                  <LoginModal></LoginModal>
+                </Box>
+              </Fade>
+            </Modal>
           </Box>
         </Box>
       </Grid>

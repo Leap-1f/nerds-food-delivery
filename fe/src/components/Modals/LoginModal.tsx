@@ -1,15 +1,38 @@
+import React, { useState } from "react";
 import {
   Container,
   Typography,
   Box,
-  Checkbox,
   Button,
   TextField,
 } from "@mui/material";
 import { useFormik } from "formik";
-import { signSchema } from "../utils/validation";
+import { loginSchema } from "../utils/validation";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useGlobalContext } from "../utils/Context";
 
-export const LoginModal = () => {
+
+
+interface FormValues {
+  email: string;
+  password: string;
+}
+
+export const LoginModal: React.FC = () => {
+  const router = useRouter();
+  const { auth } = useGlobalContext();
+  const [error, setError] = useState<string>("");
+  const [showModal, setShowModal] = useState(true);
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   const StyleText = {
     width: "100%",
@@ -26,22 +49,50 @@ export const LoginModal = () => {
       border: "none",
     },
   };
-  const formik = useFormik({
+
+  const formik = useFormik<FormValues>({
     initialValues: {
       email: "",
       password: "",
     },
-    validationSchema: signSchema,
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
+    validationSchema: loginSchema,
+    onSubmit: async (values) => {
+      console.log("hi");
+      
+
+      try {
+        const response = await fetch("http://localhost:8080/user/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          console.log("Login successful: ", data);
+          router.push("/");
+          setShowModal(false);
+          auth.setIsLoggedIn(true);
+          localStorage.setItem("token", data.token);
+        } else {
+          setError(data.error || "Failed to login");
+        }
+      } catch (err) {
+        console.error("Error logging in: ", err);
+        setError("Failed to login");
+      }
     },
   });
+
   return (
     <Container
       sx={{
         display: "flex",
         justifyContent: "center",
-        my: "10%",
+        mt: "4%",
+        mb: "5%",
       }}
     >
       <Box
@@ -51,11 +102,12 @@ export const LoginModal = () => {
           p: 4,
           display: "flex",
           flexDirection: "column",
-          rowGap: "7%",
-          border: "2px solid blue",
         }}
       >
-        <Typography variant="h5" sx={{ textAlign: "center", fontWeight: 700 }}>
+        <Typography
+          variant="h5"
+          sx={{ textAlign: "center", fontWeight: 700, mb: "9%" }}
+        >
           Нэвтрэх
         </Typography>
         <form onSubmit={formik.handleSubmit} className="flex flex-col gap-y-8 ">
@@ -65,7 +117,7 @@ export const LoginModal = () => {
               flexDirection: "column",
             }}
           >
-            <Box>
+            <Box sx={{ fontSize: "14px", fontWeight: 300, mb: "5%" }}>
               <Typography sx={{ fontSize: "14px", fontWeight: 300 }}>
                 И-мэйл
               </Typography>
@@ -115,16 +167,19 @@ export const LoginModal = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              rowGap: "11px",
+              rowGap: "20px",
             }}
           >
             <Button
               sx={{
-                width: "100%",
-                borderRadius: "4px",
-                height: "48px",
-                color: "#e0e0e0",
-                "&:hover": { color: "white", backgroundColor: "#18BA51" },
+                "&.MuiButton-contained": {
+                  width: "100%",
+                  borderRadius: "4px",
+                  height: "48px",
+                  backgroundColor: "#EEEFF2",
+                  color: "#1C20243D",
+                  "&:hover": { color: "white", backgroundColor: "#18BA51" },
+                },
               }}
               disableElevation
               variant="contained"
@@ -133,21 +188,23 @@ export const LoginModal = () => {
               Нэвтрэх
             </Button>
             <Typography>Эсвэл</Typography>
-            <Button
-              sx={{
-                width: "100%",
-                borderRadius: "4px",
-                height: "48px",
-                border: "1px solid #18BA51",
-                color: "#1C20243D",
-                "&:hover": { color: "white", background: "#18BA51" },
-              }}
-              className="flex"
-              variant="contained"
-              disableElevation
-            >
-              Бүртгүүлэх
-            </Button>
+            <Link href="./signup">
+              <Button
+                sx={{
+                  width: "380px",
+                  borderRadius: "4px",
+                  height: "48px",
+                  border: "1px solid #18BA51",
+                  color: "black",
+                  "&:hover": { color: "white", background: "#18BA51" },
+                }}
+                className="flex"
+                variant="contained"
+                disableElevation
+              >
+                Бүртгүүлэх
+              </Button>
+            </Link>
           </Box>
         </form>
       </Box>

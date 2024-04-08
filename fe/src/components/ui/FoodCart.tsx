@@ -1,8 +1,15 @@
 import Box from "@mui/material/Box";
 import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
+import Link from "next/link";
+import { useGlobalContext } from "../utils/Context";
+
+
 
 export const FoodCart = () => {
+  const {searchQuery, setSearchQuery} = useGlobalContext();
+  console.log(searchQuery);
+  
   const cart = [
     {
       name: "Өглөөний хоол",
@@ -64,6 +71,12 @@ export const FoodCart = () => {
       category: "Dessert",
     },
   ];
+const filteredCart = cart.filter((item) =>
+  searchQuery
+    ? item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    : true
+);
+
   return (
     <Box>
       <Box
@@ -120,31 +133,33 @@ export const FoodCart = () => {
                 >
                   {el.name}
                 </p>
-                <Box
-                  sx={{
-                    width: "8%",
-                    height: "10%",
-                    gap: "2px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <p
-                    style={{
-                      fontWeight: "500",
-                      fontSize: "14px",
-                      lineHeight: "16px",
-                      alignItems: "center",
-                      color: "#18BA51",
+                <Link href="/menu">
+                  <Box
+                    sx={{
+                      width: "8%",
+                      height: "10%",
+                      gap: "2px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      cursor: "pointer",
                     }}
                   >
-                    {el.seeAll}
-                  </p>
-                  <img src={el.img2} alt="" />
-                </Box>
+                    <p
+                      style={{
+                        fontWeight: "500",
+                        fontSize: "14px",
+                        lineHeight: "16px",
+                        alignItems: "center",
+                        color: "#18BA51",
+                      }}
+                    >
+                      {el.seeAll}
+                    </p>
+                    <img src={el.img2} alt="" />
+                  </Box>
+                </Link>
               </Box>
             </Box>
-
             <Box
               sx={{
                 display: "flex",
@@ -154,7 +169,7 @@ export const FoodCart = () => {
                 marginTop: "2%",
               }}
             >
-              {cart.map((el) => (
+              {filteredCart.map((el) => (
                 <Box
                   sx={{
                     display: "flex",
@@ -197,6 +212,7 @@ export const FoodCart = () => {
                       {el.discount}
                     </Typography>
                   </Box>
+
                   <Box>
                     <Typography
                       fontSize={16}

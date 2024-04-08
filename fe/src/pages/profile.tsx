@@ -1,9 +1,10 @@
 import { UserProfile } from "@/components/modals/index";
+import { Box } from "@mui/material";
 
 export default function Profile() {
   return (
-    <div>
+    <Box>
       <UserProfile></UserProfile>
-    </div>
+    </Box>
   );
 }

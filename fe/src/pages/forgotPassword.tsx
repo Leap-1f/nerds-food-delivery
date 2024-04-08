@@ -79,15 +79,12 @@ export default function ForgotPassword() {
       setFirst(false);
       setSecond(true);
       setDisabled(true);
-      console.log(forgotStage);
     } else if (forgotStage === 1) {
       changePassword();
       setSecond(false);
       setDisabled(true);
       setThird(true);
-      console.log(forgotStage);
     } else {
-      console.log(forgotStage);
     }
   }
   useEffect(() => {
