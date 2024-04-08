@@ -12,6 +12,7 @@ import { category } from "./src/router/category.js";
 import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
 import nodemailer from "nodemailer";
+import { User } from "./model/User.Model.js";
 
 const port = 8080;
 const app = express();
