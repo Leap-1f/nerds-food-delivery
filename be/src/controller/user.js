@@ -15,16 +15,29 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ error: "Invalid password" });
     }
 
-    const token = jwt.sign(
-      { userId: user._id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
     return res.status(200).json({ message: "Login successful", token });
   } catch (err) {
     console.error("Error finding user: ", err);
     return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getUserInfo = async (req, res) => {
+  const { userId } = req.body;
+  try {
+    const userData = await User.findById(userId);
+    if (userData) {
+      res.status(200).json(userData);
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  } catch (err) {
+    console.error("Error fetching user data: ", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 

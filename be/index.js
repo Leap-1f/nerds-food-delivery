@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import { Category } from "./model/Category.Model.js";
 import { Food } from "./model/Food.Model.js";
-
+import { food } from "./src/router/food.js";
 import dotenv from "dotenv";
 import { user } from "./src/router/user.js";
 import { v2 as cloudinary } from "cloudinary";
@@ -19,7 +19,9 @@ app.use(express.json());
 dotenv.config();
 
 app.use("/user", user);
-app.use("/category", category);
+app.use("/category", category)
+app.use("/food", food)
+
 
 let { USERNAME, PASSWORD, API_SECRET, API_KEY, CLOUD_NAME } = process.env;
 cloudinary.config({
@@ -72,105 +74,7 @@ const hashPassword = async () => {
 app.get("/", (request, response) => {
   response.send("Hello World!");
 });
-// food section V IMPORTANT: Add authentication verification.
-app.post("/createFood", async (request, response) => {
-  const stringified = JSON.stringify(request.body);
-  const parsed = JSON.parse(stringified);
-  if (
-    parsed.name != "" ||
-    parsed.img != "" ||
-    parsed.ingredient != "" ||
-    parsed.price != 0
-  ) {
-    const createFood = Food.create({
-      name: parsed.name,
-      image: parsed.img,
-      ingredient: parsed.ingredient,
-      category: breakFast,
-      price: parsed.price,
-      discountedPrice: parsed.discountedPrice,
-    });
 
-    (await createFood).save().then(async (a) => {
-      const updateCategoryItems = await Category.findOneAndUpdate(
-        { _id: parsed.catId },
-        { $push: { foodId: a.id } }
-      );
-    });
-    let output;
-    async () => {
-      output = await data.save();
-    };
-    response.status(200);
-    response.send("Created");
-  } else {
-    response.status(400);
-    response.send("Malformed Data");
-  }
-});
-app.post("/deleteFood", async (request, response) => {
-  const stringified = JSON.stringify(request.body);
-  const parsed = JSON.parse(stringified);
-  if (parsed.id != "") {
-    const deleteFood = await Food.findByIdAndDelete(parsed.id);
-    response.status(200);
-    response.send("deleted");
-    const category = await Category.updateMany(
-      {
-        foodId: { $in: [parsed.id] },
-      },
-      { $pull: { foodId: parsed.id } }
-    );
-  } else {
-    response.status(400);
-    response.send("Malformed Data");
-  }
-});
-// add edit food modal
-app.patch("/updateFood", async (request, response) => {
-  const stringified = JSON.stringify(request.body);
-  const parsed = JSON.parse(stringified);
-  const food = Food.findOneAndUpdate(
-    { _id: parsed.id },
-    {
-      name: parsed.name,
-      img: parsed.img,
-      ingredient: parsed.desc,
-      price: parsed.price,
-      discountedPrice: parsed.discountedPrice,
-    }
-  );
-  (await food).save().then(async (a) => {
-    const findAndDelete = await Category.findOneAndUpdate(
-      { _id: parsed.catId },
-      { $pull: { foodId: a.id } }
-    );
-    const updateCategoryItems = await Category.findOneAndUpdate(
-      { _id: parsed.newCatId },
-      { $push: { foodId: a.id } }
-    );
-  });
-});
-app.get("/getAllFood", async (request, response) => {
-  const food = await Food.find({});
-  const data = food.map((item) => ({
-    name: item.name,
-    price: item.price,
-    discountedPrice: item.discountedPrice,
-    id: item._id,
-    img: item.image,
-    ingredient: item.ingredient,
-  }));
-  response.status(200);
-  response.send(data);
-});
-app.get("/searchFood", async (request, response) => {
-  const stringified = JSON.stringify(request.body);
-  const parsed = JSON.parse(stringified);
-  const food = Food.find({ name: { $regex: parsed.name, $options: "i" } });
-  response.status(200);
-  response.send(food);
-});
 app.post("/getFoodById", async (request, response) => {
   const stringified = JSON.stringify(request.body);
   const parsed = JSON.parse(stringified);
@@ -209,86 +113,6 @@ app.post("/getFoodCategory", async (request, response) => {
   response.status(200);
   response.send(names);
 });
-app.post("/getFoodItemsByCategory", async (request, response) => {
-  const stringified = JSON.stringify(request.body);
-  const parsed = JSON.parse(stringified);
-  const foods = await Category.findById(parsed.id).populate("foodId");
-  var empty = [];
-  if (foods.foodId != undefined) {
-    const data = foods.foodId.map((item) => ({
-      name: item.name,
-      price: item.price,
-      discountedPrice: item.discountedPrice,
-      id: item._id,
-      img: item.image,
-      ingredient: item.ingredient,
-    }));
-    response.status(200);
-    response.send(data);
-  } else if (foods.foodId === empty) {
-    response.status(400);
-    response.send({ status: 400 });
-  }
-});
-// category section
-app.get("/getCategories", async (request, response) => {
-  const categories = await Category.find(
-    {},
-    {
-      _id: 1,
-      name: 1,
-      foodId: 1,
-    }
-  );
-  let names = categories.map((o) => ({ name: o.name, id: o.id }));
-  response.status(200);
-  response.send(names);
-});
-
-app.post("/createCategory", async (request, response) => {
-  const stringified = JSON.stringify(request.body);
-  const parsed = JSON.parse(stringified);
-  if (parsed.name != "") {
-    const category = await Category.create({
-      name: parsed.name,
-      foodId: [],
-    });
-    response.status(200);
-    response.send("Category Created.");
-  } else {
-    response.status(400);
-    response.send("Bad request.");
-  }
-});
-
-app.post("/getCatName", async (request, response) => {
-  const stringified = JSON.stringify(request.body);
-  const parsed = JSON.parse(stringified);
-  if (parsed.id != "") {
-    const findCategory = await Category.find({ _id: parsed.id }, { name: 1 });
-    let names = findCategory.map((o) => o.name);
-    response.status(200);
-    response.send(names);
-  } else {
-    response.status(400);
-    response.send("Bad request.");
-  }
-});
-app.post("/updateCategory", async (request, response) => {
-  const stringified = JSON.stringify(request.body);
-  const parsed = JSON.parse(stringified);
-  if (parsed.id != "") {
-    const updateCategory = await Category.findOneAndUpdate(
-      { _id: parsed.id },
-      { name: parsed.name }
-    );
-    response.status(200);
-    response.send("Updated.");
-  } else {
-    response.status(400);
-    response.send("Bad request.");
-  }
-});
 
 // POST REQUESTS
 
@@ -300,7 +124,7 @@ app.post("/", async (req, res) => {
       "https://res.cloudinary.com/dqjwd8g6x/image/upload/v1712143220/food%20image/yogurt.jpg",
     ingredient: "гүзээлзгэнэ, нэрс, бөөрөлзгөнө, ванилтай зайрмаг",
     price: 14800,
-    category: "660bebf2d003489b7ed68c67",
+    category: ""
   });
 
   res.send(food);

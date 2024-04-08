@@ -16,7 +16,7 @@ export default function testing() {
     whatClose(false);
   }
   async function getFood() {
-    const getAllFood = await fetch("http://localhost:8080/getAllFood", {
+    const getAllFood = await fetch("http://localhost:8080/food", {
       method: "GET",
       mode: "cors",
       headers: {

@@ -16,7 +16,7 @@ export function CategoryModal(modalClose: Function, closed: boolean) {
     setValid(false);
   }
   async function sendCategoryInfo() {
-    let createCategory = await fetch("http://localhost:8080/createCategory", {
+    let createCategory = await fetch("http://localhost:8080/category/create", {
       method: "POST",
       mode: "cors",
       headers: {

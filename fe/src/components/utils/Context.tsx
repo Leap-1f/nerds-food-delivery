@@ -7,7 +7,9 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
+import { jwtDecode } from "jwt-decode";
+
 
 interface DataType {
   nuur: boolean;
@@ -21,7 +23,9 @@ interface AuthData {
   isLoggedIn: boolean;
   setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
   logout: () => void;
+  
 }
+
 
 export interface GlobalContext {
   color: DataType;
@@ -29,6 +33,7 @@ export interface GlobalContext {
   auth: AuthData;
   searchQuery: string | null;
   setSearchQuery: Dispatch<SetStateAction<string | null>>;
+  userId: string | null;
 }
 
 type ContainerProps = {
@@ -52,20 +57,27 @@ export const MyGlobalContextProvider = ({ children }: ContainerProps) => {
   });
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [modal, setModal] = useState<Boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string | null>("");
+  const [modal, setModal] = useState<boolean>(false);
+  const [userId, setUserId] = useState<string |null>(null);
 
   const initializeApp = () => {
     const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
+      const decodedToken: any = jwtDecode(token);
+      
+      if (decodedToken) {
+        setUserId(decodedToken.userId)
+      }
     }
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
-    router.push("/");
+    setUserId(null);
+    router.push("/")
   };
 
   useEffect(() => {
@@ -87,7 +99,7 @@ export const MyGlobalContextProvider = ({ children }: ContainerProps) => {
         setColor,
         auth: { isLoggedIn, setIsLoggedIn, logout },
         searchQuery,
-        setSearchQuery
+        setSearchQuery, userId
       }}
     >
       {children}

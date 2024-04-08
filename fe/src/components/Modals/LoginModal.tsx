@@ -57,9 +57,7 @@ export const LoginModal: React.FC = () => {
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
-      console.log("hi");
       
-
       try {
         const response = await fetch("http://localhost:8080/user/login", {
           method: "POST",
