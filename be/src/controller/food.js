@@ -1,4 +1,4 @@
-import { Food } from "../../model/Food.Model";
+import { Food } from "../../model/Food.Model.js";
 
 export const createFood = async (request, response) => {
   const stringified = JSON.stringify(request.body);
