@@ -22,9 +22,12 @@ export default function Menu() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const foodResponse = await fetch("http://localhost:8080/getAllFood");
+        const foodResponse = await fetch("http://localhost:8080/food");
         const data = await foodResponse.json();
         console.log(data);
+        
+        setFoodItems(data);
+        
       } catch (error: any) {
         console.error("Error fetching data:", error);
       }
@@ -46,20 +49,22 @@ export default function Menu() {
       category: "Dessert",
     },
   ];
-  const handleCategorySelect = (foodId: any) => {
-    setSelectedCategory(foodId);
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category);
   };
 
-  const filteredData = foodItems
-    .concat(selectedCategory === "Breakfast" ? breakfast : [])
-    .filter(
-      (el) => selectedCategory === "" || el.category === selectedCategory
-    );
-  console.log(breakfast);
+  // const filteredData = foodItems.filter(
+  //     (el) => selectedCategory === "" || el.category === selectedCategory;
+  //     console.log(el.category);
+      
+  //   );
+
+  // const filteredData = foodItems.map((el) => console.log(el.category))
+  // console.log(breakfast);
 
   return (
     <Box>
-      {/* Updated maxWidth value */}
+     
       <Box
         sx={{
           maxWidth: "1248px",
@@ -112,7 +117,7 @@ export default function Menu() {
           rowGap: "35px",
         }}
       >
-        {filteredData.map((el) => (
+        {foodItems.map((el) => (
           <Box
             sx={{
               display: "flex",
@@ -129,7 +134,7 @@ export default function Menu() {
               }}
             >
               <img
-                src={el.image}
+                src={el.img}
                 style={{
                   objectFit: "cover",
                   height: "100%",

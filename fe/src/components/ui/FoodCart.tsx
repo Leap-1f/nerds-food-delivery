@@ -26,7 +26,7 @@ export const FoodCart = () => {
       img: "https://redroserestaurant.softinfinitytechnology.com/wp-content/uploads/2021/10/from-the-us-russia-to-india-an-ice-cream-bowl-has-a-long-political-history.jpg",
     },
     {
-      name: "Өглөөний хоол",
+      name: "Өдрийн хоол",
       price: "24,000₮",
       dsprice: "28,800₮",
       discount: "20%",
