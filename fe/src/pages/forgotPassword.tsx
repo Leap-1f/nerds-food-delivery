@@ -50,21 +50,73 @@ export default function ForgotPassword() {
       setDisabled(false);
     }
   }
-  function SendCode() {
-    /* add backend code here*/
-    setStage(1);
+  async function SendCode() {
+    const sendCode = await fetch("http://localhost:8080/forgotPassword", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+      }),
+    }).then((response) => {
+      if (response.status != 400) {
+        setStage(1);
+      } else {
+        // add error modal here. or maybe should not do anything.
+      }
+    });
   }
-  function changePassword() {
-    /* have code in here to verify code state at line 8. */
-    const returnedcode: number = 400;
+  async function checkCode() {
     const toMail = document.getElementById("ToEmail");
-    const code = document.getElementById("code");
-    if (returnedcode === 400) {
-      setTitle("Шинэ нууц үг зохиох ");
-      setStage(2);
-      code?.classList.add("hidden");
-      toMail?.setAttribute("hidden", "");
-    }
+    const codeEl = document.getElementById("code");
+    const checkCode = await fetch("http://localhost:8080/forgotPassword/code", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        code: code,
+      }),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.status != 400) {
+          localStorage.setItem("code", response.temp);
+          setTitle("Шинэ нууц үг зохиох ");
+          setStage(2);
+          codeEl?.classList.add("hidden");
+          toMail?.setAttribute("hidden", "");
+        } else {
+          // add error or snackbar here, i am too tired.
+        }
+      });
+  }
+  async function changePassword() {
+    const sendCode = await fetch(
+      "http://localhost:8080/forgotPassword/change",
+      {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          code: code,
+          pass: pass,
+        }),
+      }
+    ).then((response) => {
+      if (response.status != 400) {
+        // add success modal
+      } else {
+        // add error modal or somethign !!! help me!!!! aaaaaAAAAA
+      }
+    });
   }
   function validatePassword() {
     if (pass === confirmPass && pass != "") {
