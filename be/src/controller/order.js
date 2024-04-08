@@ -9,7 +9,6 @@ export const createOrder = async (request, response) => {
     orderNumber: orderNumber,
     foods: parsed.fId,
     totalPrice: parsed.totalPrice,
-    process: parsed.state,
     district: parsed.district,
     khoroo: parsed.khoroo,
     apartment: parsed.apartment,
