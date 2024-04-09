@@ -10,6 +10,8 @@ import { v2 as cloudinary } from "cloudinary";
 import { category } from "./src/router/category.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { v4 as uuidv4 } from "uuid";
+import nodemailer from "nodemailer";
 
 const port = 8080;
 const app = express();
@@ -19,11 +21,23 @@ app.use(express.json());
 dotenv.config();
 
 app.use("/user", user);
+<<<<<<< HEAD
 app.use("/category", category)
 app.use("/food", food)
 
+=======
+app.use("/category", category);
+>>>>>>> 2e6caae (added functionality to forgotPassword)
 
-let { USERNAME, PASSWORD, API_SECRET, API_KEY, CLOUD_NAME } = process.env;
+let {
+  USERNAME,
+  PASSWORD,
+  API_SECRET,
+  API_KEY,
+  CLOUD_NAME,
+  MAILAUTH,
+  MAILPASS,
+} = process.env;
 cloudinary.config({
   cloud_name: CLOUD_NAME,
   api_key: API_KEY,
@@ -54,7 +68,14 @@ cloudinary.api.resources(function (error, result) {
     const imageUrls = result.resources.map((resource) => resource.secure_url);
   }
 });
-
+var transport = nodemailer.createTransport({
+  service: "Mail.ru",
+  auth: {
+    user: "ivantheterrible1984@mail.ru",
+    pass: MAILAUTH,
+    auth: MAILPASS,
+  },
+});
 //password hash
 const saltRounds = 10;
 
@@ -74,7 +95,6 @@ const hashPassword = async () => {
 app.get("/", (request, response) => {
   response.send("Hello World!");
 });
-
 app.post("/getFoodById", async (request, response) => {
   const stringified = JSON.stringify(request.body);
   const parsed = JSON.parse(stringified);
@@ -129,7 +149,107 @@ app.post("/", async (req, res) => {
 
   res.send(food);
 });
+<<<<<<< HEAD
 
+=======
+app.post("/forgotPassword", async (request, response) => {
+  const stringified = JSON.stringify(request.body);
+  const parsed = JSON.parse(stringified);
+  const user = await User.find(
+    {
+      email: parsed.mail,
+    },
+    {
+      email: 1,
+      id: 1,
+    }
+  );
+  if (user.id != undefined) {
+    var code = Math.floor(1000 + Math.random() * 9000);
+    const users = await User.findByIdAndUpdate(user.id, {
+      code: code,
+    });
+    const mailOptions = {
+      from: "ivantheterrible1984@mail.ru", // sender address
+      to: parsed.email, // list of receivers
+      subject: "Password reset.", // Subject line
+      text: `Your reset password code is ${code}`, // plaintext body
+      html: `<b>Your reset password code is ${code}</b>`, // html body
+    };
+    transport.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        return console.log(error);
+      }
+      console.log("Message sent: " + info.response);
+    });
+    response.status(200);
+    response.send("Successfully sent email.");
+  } else {
+    response.status(400);
+    response.send("No such email found.");
+  }
+});
+app.post("/forgotPassword/code", async (request, response) => {
+  const stringified = JSON.stringify(request.body);
+  const parsed = JSON.parse(stringified);
+  const user = await User.find(
+    {
+      email: request.mail,
+    },
+    {
+      email: 1,
+      id: 1,
+      code: 1,
+    }
+  );
+  if (id != "") {
+    if (user.code === parseInt(parsed.code)) {
+      // change to jwt is possible.
+      var tempauth = uuidv4();
+      const users = await User.findByIdAndUpdate(user.id, {
+        code: tempauth,
+      });
+      response.status(200);
+      response.send({ temp: tempauth });
+    } else {
+      response.status(400);
+      response.send("Email is not correct.");
+    }
+  } else {
+    response.status(400);
+    response.send("Email is not correct.");
+  }
+});
+app.post("/forgotPassword/change", async (request, repsonse) => {
+  const stringified = JSON.stringify(request.body);
+  const parsed = JSON.parse(stringified);
+  const user = await User.find(
+    {
+      email: request.mail,
+    },
+    {
+      email: 1,
+      id: 1,
+      code: 1,
+    }
+  );
+  if (id != "") {
+    if (user.code === parseInt(parsed.code)) {
+      const users = await User.findByIdAndUpdate(user.id, {
+        password: parsed.pass,
+      });
+      response.status(200);
+      response.send("Code is correct.");
+    } else {
+      response.status(400);
+      response.send("Code is not correct.");
+    }
+  } else {
+    response.status(400);
+    response.send("Email is not correct.");
+  }
+});
+>>>>>>> 2e6caae (added functionality to forgotPassword)
 app.post("/category/add", async (req, res) => {
   const { categoryId } = req.params;
   const { name } = req.body;
