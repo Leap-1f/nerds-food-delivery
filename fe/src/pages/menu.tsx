@@ -53,11 +53,9 @@ export default function Menu() {
     setSelectedCategory(category);
   };
 
-  // const filteredData = foodItems.filter(
-  //     (el) => selectedCategory === "" || el.category === selectedCategory;
-  //     console.log(el.category);
-      
-  //   );
+  const filteredData = foodItems.filter(
+      (el) => selectedCategory === "" || el.category === selectedCategory 
+    );
 
   // const filteredData = foodItems.map((el) => console.log(el.category))
   // console.log(breakfast);
@@ -117,7 +115,7 @@ export default function Menu() {
           rowGap: "35px",
         }}
       >
-        {foodItems.map((el) => (
+        {filteredData.map((el) => (
           <Box
             sx={{
               display: "flex",
