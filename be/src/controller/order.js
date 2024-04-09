@@ -37,3 +37,15 @@ export const getOrders = async (request, response) => {
   response.status(200);
   response.send(order);
 };
+export const getOrderStatus = async (reqeust, response) => {
+  const stringified = JSON.stringify(request.body);
+  const parsed = JSON.parse(stringified);
+  const order = await Order.find(
+    { _id: parsed.id },
+    {
+      process: 1,
+    }
+  );
+  response.status(200);
+  response.send(order);
+};

@@ -108,7 +108,7 @@ export const FoodCart = () => {
                   alt=""
                   style={{ width: "32px", height: "32px" }}
                 />
-                <p
+                <Typography
                   style={{
                     width: "85%",
                     height: "10%",
@@ -119,7 +119,7 @@ export const FoodCart = () => {
                   }}
                 >
                   {el.name}
-                </p>
+                </Typography>
                 <Box
                   sx={{
                     width: "8%",

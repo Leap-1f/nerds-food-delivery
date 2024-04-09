@@ -4,11 +4,11 @@ import {
   editOrder,
   deleteOrder,
   getOrders,
-} from "../controller/order";
+} from "../controller/order.js";
 const order = Router();
 
 order.route("/create").post(createOrder);
 order.route("/edit").post(editOrder);
 order.route("/delete").post(deleteOrder);
-order.route("/get".get(getOrders));
+order.route("/get").get(getOrders);
 export { order };

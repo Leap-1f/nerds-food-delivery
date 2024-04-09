@@ -1,5 +1,5 @@
 import { Food } from "../../model/Food.Model.js";
-
+import { Category } from "../../model/Category.Model.js";
 export const createFood = async (request, response) => {
   const stringified = JSON.stringify(request.body);
   const parsed = JSON.parse(stringified);
@@ -96,7 +96,12 @@ export const getAllFood = async (request, response) => {
 export const searchFood = async (request, response) => {
   const stringified = JSON.stringify(request.body);
   const parsed = JSON.parse(stringified);
-  const food = Food.find({ name: { $regex: parsed.name, $options: "i" } });
+  console.log(parsed);
+
+  const food = await Food.find({
+    name: { $regex: parsed.name, $options: "i" },
+  });
+  console.log(food);
   response.status(200);
   response.send(food);
 };

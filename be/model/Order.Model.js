@@ -1,5 +1,5 @@
 import mongoose, { Schema, mongo } from "mongoose";
-import { ORDER_PROCESS } from "../constant/orderConstants";
+import { ORDER_PROCESS } from "../constant/orderConstants.js";
 
 const orderSchema = new mongoose.Schema({
   userId: {
@@ -13,12 +13,13 @@ const orderSchema = new mongoose.Schema({
     unique: true,
   },
   foods: [
-    { type: mongoose.Schema.Types.ObjectId, ref: "Food", required: true }
+    { type: mongoose.Schema.Types.ObjectId, ref: "Food", required: true },
   ],
   totalPrice: {
     type: Number,
     required: true,
-  }, process: {
+  },
+  process: {
     type: String,
     enum: Object.values(ORDER_PROCESS),
     default: ORDER_PROCESS.PENDING,
@@ -41,4 +42,4 @@ const orderSchema = new mongoose.Schema({
   },
 });
 
-export const Order = mongoose.model('Order', orderSchema)
+export const Order = mongoose.model("Order", orderSchema);

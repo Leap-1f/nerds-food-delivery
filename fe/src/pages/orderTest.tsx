@@ -2,8 +2,6 @@ import { OrderDetail } from "@/components/layout/OrderDetail";
 import { Box, Stack, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import { Address } from "@/components/ui/Address";
-import { DisabledByDefault, Info } from "@mui/icons-material";
-import { info } from "console";
 export default function testing() {
   const [orderStatus, setOrderStatus] = useState({
     status: "Хүлээгдэж байна",
@@ -13,6 +11,7 @@ export default function testing() {
     status: "Хүлээгдэж байна",
     color: "#0468C8",
   });
+  const [cart, setCart] = useState([{}]);
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [con, setCon] = useState(false);
   const [district, setDistrict] = useState("");
@@ -20,7 +19,28 @@ export default function testing() {
   const [apartment, setApartment] = useState("");
   const [description, setDescription] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [totalPrice, setTotalPrice] = useState(0);
   const [cardOrCredit, setCardOrCredit] = useState("");
+  async function sendOrder() {
+    const sendOrder = await fetch("http://localhost:8080/order/create", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({uId: localStorage.getItem("jwt"), fId: }),
+    });
+  }
+    function getTotal() {
+    let total = 0;
+    cart.forEach((obj) => {
+      total += obj.price;
+    });
+    setTotalPrice(total);
+  }
+  async function getCart() {
+    // add cart
+  }
   function validation() {
     if (
       phoneNumber.length != 8 ||

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Typography,
   InputBase,
@@ -21,9 +21,8 @@ import { useState } from "react";
 import { LoginModal } from "../modals";
 import { Interface } from "readline";
 import { tree } from "next/dist/build/templates/app-page";
-
 import { useGlobalContext } from "../utils/Context";
-import SideBarModal from "../modals/SidebarModal";
+import SideBarModal from "../Modals/SidebarModal";
 import { useRouter } from "next/router";
 
 const style = {
@@ -73,11 +72,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [searchPrompt, setSearchPrompt] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const router = useRouter();
-
   // const [color, setColor] = useState({
   //   nuur: false,
   //   hool: false,
@@ -86,7 +85,16 @@ export default function Header() {
   //   newtreg: false,
   // });
   const { color, setColor, auth } = useGlobalContext();
-
+  function handleKeyDown(event: any) {
+    if (event.keyCode === 13) {
+      if (localStorage.getItem("search") != undefined) {
+        window.location.href = "http://localhost:3000/search";
+      }
+    }
+  }
+  useEffect(() => {
+    localStorage.setItem("search", searchPrompt);
+  }, [handleKeyDown]);
   return (
     <Box sx={{ mx: "auto", maxWidth: "1248px" }}>
       <Grid
@@ -175,7 +183,13 @@ export default function Header() {
           </Stack>
         </Box>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-          <Search sx={{ border: "1px solid black" }}>
+          <Search
+            sx={{ border: "1px solid black" }}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              setSearchPrompt(event.target.value);
+            }}
+            onKeyDown={handleKeyDown}
+          >
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -234,7 +248,7 @@ export default function Header() {
             <VectorIcon />
             <Typography
               onClick={() => {
-                auth.isLoggedIn ? (router.push("/profile")) : (handleOpen());
+                auth.isLoggedIn ? router.push("/profile") : handleOpen();
                 setColor((prevState) => ({
                   ...prevState,
                   nuur: false,
@@ -251,8 +265,8 @@ export default function Header() {
                 flexGrow: 1,
                 display: { xs: "none", sm: "block" },
                 color: color.newtreg ? "green" : "black",
-                '&:hover': {
-                  cursor:'pointer'
+                "&:hover": {
+                  cursor: "pointer",
                 },
               }}
             >

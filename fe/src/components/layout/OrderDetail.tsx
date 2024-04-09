@@ -1,44 +1,20 @@
 import { Stack, Box, Typography, Button } from "@mui/material";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-export function OrderDetail(info: string, color: any, disabled: boolean) {
-  const [cart, setCart] = useState([
-    {
-      name: "Main Pizza",
-      price: 34800,
-      desc: "Хулуу, төмс, лууван , сонгино, цөцгийн тос, самрын үр",
-      img: "/image.png",
-    },
-    {
-      name: "Main Pizza",
-      price: 34800,
-      desc: "Хулуу, төмс, лууван , сонгино, цөцгийн тос, самрын үр",
-      img: "/image.png",
-    },
-    {
-      name: "Main Pizza",
-      price: 34800,
-      desc: "Хулуу, төмс, лууван , сонгино, цөцгийн тос, самрын үр",
-      img: "/image.png",
-    },
-  ]);
-  const [totalPrice, setTotalPrice] = useState(0);
-  function getCart() {
-    /* insert localstorage and stuff here */
-  }
+export function OrderDetail(
+  info: string,
+  color: any,
+  disabled: boolean,
+  submit: Function,
+  cart: Array<Object>,
+  setCart: Function,
+  totalPrice: Number,
+  setTotalPrice: Function
+) {
   function numberWithCommas(x: number) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
-  function getTotal() {
-    let total = 0;
-    cart.forEach((obj) => {
-      total += obj.price;
-    });
-    setTotalPrice(total);
-  }
-  useEffect(() => {
-    getTotal();
-  }, []);
+
   return (
     <Stack
       sx={{

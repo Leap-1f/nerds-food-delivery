@@ -34,18 +34,18 @@ let {
   MAILAUTH,
   MAILPASS,
 } = process.env;
-cloudinary.config({
-  cloud_name: CLOUD_NAME,
-  api_key: API_KEY,
-  api_secret: API_SECRET,
-});
+// cloudinary.config({
+//   cloud_name: CLOUD_NAME,
+//   api_key: API_KEY,
+//   api_secret: API_SECRET,
+// });
 
 // const MONGO_CONNECTION_STRING = `mongodb+srv://${USERNAME}:${PASSWORD}@free.7gtcecr.mongodb.net/`;
 
-const MONGO_CONNECTION_STRING = `mongodb+srv://haliukaaqua:${PASSWORD}@free.7gtcecr.mongodb.net/`;
+// const MONGO_CONNECTION_STRING = `mongodb+srv://haliukaaqua:${PASSWORD}@free.7gtcecr.mongodb.net/`;
 
-// const MONGO_CONNECTION_STRING =
-//   "mongodb+srv://zedv:zed@foodapp.pk3ugl6.mongodb.net/";
+const MONGO_CONNECTION_STRING =
+  "mongodb+srv://zedv:zed@foodapp.pk3ugl6.mongodb.net/";
 
 mongoose
   .connect(MONGO_CONNECTION_STRING)
@@ -57,13 +57,13 @@ mongoose
   });
 
 // cloudinary img URLs in an array
-cloudinary.api.resources(function (error, result) {
-  if (error) {
-    console.error("Error retrieving Cloudinary resources:", error);
-  } else {
-    const imageUrls = result.resources.map((resource) => resource.secure_url);
-  }
-});
+// cloudinary.api.resources(function (error, result) {
+//   if (error) {
+//     console.error("Error retrieving Cloudinary resources:", error);
+//   } else {
+//     const imageUrls = result.resources.map((resource) => resource.secure_url);
+//   }
+// });
 var transport = nodemailer.createTransport({
   service: "Mail.ru",
   auth: {
