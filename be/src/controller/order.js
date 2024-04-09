@@ -9,10 +9,7 @@ export const createOrder = async (request, response) => {
     orderNumber: orderNumber,
     foods: parsed.fId,
     totalPrice: parsed.totalPrice,
-<<<<<<< HEAD
-=======
     process: parsed.state,
->>>>>>> a040bea (Created order. Needs testing ASAP!)
     district: parsed.district,
     khoroo: parsed.khoroo,
     apartment: parsed.apartment,
