@@ -4,6 +4,7 @@ import cors from "cors";
 import { Category } from "./model/Category.Model.js";
 import { Food } from "./model/Food.Model.js";
 import { food } from "./src/router/food.js";
+import { order } from "./src/router/order.js";
 import dotenv from "dotenv";
 import { user } from "./src/router/user.js";
 import { v2 as cloudinary } from "cloudinary";
@@ -11,7 +12,6 @@ import { category } from "./src/router/category.js";
 import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
 import nodemailer from "nodemailer";
-import { User } from "./model/User.Model.js";
 
 const port = 8080;
 const app = express();
@@ -21,9 +21,9 @@ app.use(express.json());
 dotenv.config();
 
 app.use("/user", user);
-app.use("/category", category)
-app.use("/food", food)
-
+app.use("/category", category);
+app.use("/food", food);
+app.use("/order", order);
 
 let {
   USERNAME,
@@ -128,9 +128,6 @@ app.get("/user/:id", async (req, res) => {
   }
 });
 
-
-
-
 app.post("/getFoodCategory", async (request, response) => {
   const stringified = JSON.stringify(request.body);
   const parsed = JSON.parse(stringified);
@@ -155,7 +152,7 @@ app.post("/food", async (req, res) => {
       "https://res.cloudinary.com/dqjwd8g6x/image/upload/v1712143220/food%20image/yogurt.jpg",
     ingredient: "гүзээлзгэнэ, нэрс, бөөрөлзгөнө, ванилтай зайрмаг",
     price: 14800,
-    category: ""
+    category: "",
   });
 
   res.send(food);
