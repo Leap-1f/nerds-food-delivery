@@ -45,8 +45,6 @@ cloudinary.config({
 
 const MONGO_CONNECTION_STRING = `mongodb+srv://haliukaaqua:${PASSWORD}@free.7gtcecr.mongodb.net/`;
 
-// const MONGO_CONNECTION_STRING =
-//   "mongodb+srv://zedv:zed@foodapp.pk3ugl6.mongodb.net/";
 
 mongoose
   .connect(MONGO_CONNECTION_STRING)

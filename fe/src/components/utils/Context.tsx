@@ -18,12 +18,29 @@ interface AuthData {
   
 }
 
+export interface Meal {
+  img: string;
+  name: string;
+  price: number;
+  ingredient: string;
+}
+
 
 export interface GlobalContext {
   color: DataType;
   setColor: Dispatch<SetStateAction<DataType>>;
   auth: AuthData;
   userId: string | null;
+  food: any[];
+  setFood: React.Dispatch<React.SetStateAction<any[]>>;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  selectedMeal: Meal | null;
+  setSelectedMeal: Dispatch<SetStateAction<Meal | null>>;
+  quantity: number;
+  setQuantity: Dispatch<SetStateAction<number>>;
+  sideBarOpen: boolean;
+  setSideBarOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 type ContainerProps = {
@@ -47,6 +64,12 @@ export const MyGlobalContextProvider = ({ children }: ContainerProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
   const [userId, setUserId] = useState<string |null>(null);
+  const [food, setFood] = useState<any[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
+  const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
+  const [quantity, setQuantity] = useState<number>(0);
+  const [sideBarOpen, setSideBarOpen] = useState<boolean>(false);
+
 
   const initializeApp = () => {
     const token = localStorage.getItem("token");
@@ -80,7 +103,7 @@ export const MyGlobalContextProvider = ({ children }: ContainerProps) => {
   }, [isLoggedIn]); 
 
   return (
-    <MyGlobalContext.Provider value={{ color, setColor, auth: { isLoggedIn, setIsLoggedIn, logout }, userId }}>
+    <MyGlobalContext.Provider value={{ color, setColor, auth: { isLoggedIn, setIsLoggedIn, logout }, userId, food, setFood, open, setOpen, quantity, setQuantity, selectedMeal, setSelectedMeal, setSideBarOpen, sideBarOpen }}>
       {children}
     </MyGlobalContext.Provider>
   );

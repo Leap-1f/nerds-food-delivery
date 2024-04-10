@@ -1,39 +1,68 @@
 import Box from "@mui/material/Box";
 import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
+import { useEffect, useState } from "react";
+import { useGlobalContext } from "../utils/Context";
+import OrderModal from "../modals/OrderModal";
+import { Meal } from "../utils/Context";
+import SideBarModal from "../modals/SidebarModal";
 
 export const FoodCart = () => {
-  const cart = [
-    {
-      name: "Өглөөний хоол",
-      price: "14,000₮",
-      dsprice: "16,800₮",
-      discount: "20%",
-      img: "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg",
-    },
-    {
-      name: "Зайрмаг",
-      price: "4,000₮",
-      dsprice: "5,800₮",
-      discount: "20%",
-      img: "https://redroserestaurant.softinfinitytechnology.com/wp-content/uploads/2021/10/from-the-us-russia-to-india-an-ice-cream-bowl-has-a-long-political-history.jpg",
-    },
-    {
-      name: "Өглөөний хоол",
-      price: "24,000₮",
-      dsprice: "28,800₮",
-      discount: "20%",
-      img: "https://www.jigsawexplorer.com/puzzles/subjects/skillet-breakfast-436x300.jpg",
-    },
+  const { food, setFood, selectedMeal, setSelectedMeal, quantity, setQuantity, open, setOpen, sideBarOpen, setSideBarOpen } = useGlobalContext();
 
-    {
-      name: "Өглөөний хоол",
-      price: "14,000₮",
-      dsprice: "16,800₮",
-      discount: "20%",
-      img: "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg",
-    },
-  ];
+  const handleOpen = (meal: Meal) => {
+    setSelectedMeal(meal);
+    setOpen(true);
+    handleOpenSideBar();
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    handleCloseSideBar();
+  };
+
+  const handleIncrement = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleDecrement = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
+  const handleOpenSideBar = () => {
+    setSideBarOpen(true);
+  };
+
+  const handleCloseSideBar = () => {
+    setSideBarOpen(false);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/food/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch data from the server");
+        }
+
+        const data = await response.json();
+        setFood(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const saleMeals = [
     {
       img: "./star.svg",
@@ -64,6 +93,7 @@ export const FoodCart = () => {
       category: "Dessert",
     },
   ];
+
   return (
     <Box>
       <Box
@@ -71,157 +101,83 @@ export const FoodCart = () => {
           bgcolor: "white",
           gap: "24px",
           margin: "0px auto",
-          width: "100%",
-          maxWidth: "1250px",
+          maxWidth: "100%",
           marginTop: "5%",
         }}
       >
-        {saleMeals.map((el) => (
-          <Box
-            sx={{
-              height: "30%",
-              gap: "24px",
-              margin: "0px, auto",
-              marginTop: "3%",
-            }}
-          >
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "1rem",
+            justifyContent: "space-between",
+          }}
+        >
+          {food.map((el, i) => (
             <Box
+              key={i}
               sx={{
-                maxWidth: "1250px",
-                marginLeft: "auto",
-                marginRight: "auto",
-                gap: "26px",
+                display: "flex",
+                flexDirection: "column",
+                width: "20%",
+                "@media (max-width: 768px)": {
+                  width: "45%",
+                },
+                height: "250px",
               }}
+              onClick={() => handleOpen(el)}
             >
               <Box
                 sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  maxWidth: "1250px",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  marginTop: "2%",
+                  position: "relative",
+                  width: "100%",
+                  marginBottom: "0.5rem",
+                  height: "70%",
                 }}
               >
                 <img
                   src={el.img}
-                  alt=""
-                  style={{ width: "32px", height: "32px" }}
-                />
-                <p
                   style={{
-                    width: "85%",
-                    height: "10%",
-                    fontWeight: "700",
-                    fontSize: "22px",
-                    lineHeight: "33px",
-                    color: "#272727",
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "100%",
+                    maxWidth: "100%",
+                    borderRadius: "10px",
                   }}
+                />
+              </Box>
+              <Box style={{ height: "30%" }}>
+                <Typography
+                  variant="subtitle1"
+                  fontWeight="bold"
+                  color="text.primary"
+                  marginBottom="0.5rem"
                 >
                   {el.name}
-                </p>
-                <Box
-                  sx={{
-                    width: "8%",
-                    height: "10%",
-                    gap: "2px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <p
-                    style={{
-                      fontWeight: "500",
-                      fontSize: "14px",
-                      lineHeight: "16px",
-                      alignItems: "center",
-                      color: "#18BA51",
-                    }}
+                </Typography>
+                <CardActions sx={{ gap: 2, fontSize: 16, padding: 0 }}>
+                  <Typography color="green">{el.price}</Typography>
+                  <Typography
+                    sx={{ textDecoration: "line-through" }}
+                    color="text.secondary"
                   >
-                    {el.seeAll}
-                  </p>
-                  <img src={el.img2} alt="" />
-                </Box>
+                    {el.dsprice}
+                  </Typography>
+                </CardActions>
               </Box>
             </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: "2%",
-              }}
-            >
-              {cart.map((el) => (
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "20%",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      position: "relative",
-                      width: "100%",
-                      height: "60%",
-                    }}
-                  >
-                    <img
-                      src={el.img}
-                      style={{
-                        objectFit: "cover",
-                        height: "100%",
-                        width: "100%",
-                        maxHeight: "100%",
-                        maxWidth: "100%",
-                        border: "1px",
-                        borderRadius: "10px",
-                      }}
-                    />
-                    <Typography
-                      border={1}
-                      borderRadius={5}
-                      width={60}
-                      bgcolor="#18BA51"
-                      color={"white"}
-                      justifyContent={"center"}
-                      align="center"
-                      position={"absolute"}
-                      top="10%"
-                      right="5%"
-                      borderColor={"white"}
-                    >
-                      {el.discount}
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Typography
-                      fontSize={16}
-                      color={"black"}
-                      fontWeight={600}
-                      paddingTop={3}
-                    >
-                      {el.name}
-                    </Typography>
-                    <CardActions sx={{ gap: 2, fontSize: 16, padding: 0 }}>
-                      <Typography color="green">{el.price}</Typography>
-                      <Typography
-                        sx={{ textDecoration: "line-through" }}
-                        color="text.secondary"
-                      >
-                        {el.dsprice}
-                      </Typography>
-                    </CardActions>
-                  </Box>
-                </Box>
-              ))}
-            </Box>
-          </Box>
-        ))}
+          ))}
+        </Box>
       </Box>
+      <OrderModal
+        open={open}
+        onClose={handleClose}
+        meal={selectedMeal}
+        quantity={quantity}
+        onIncrement={handleIncrement}
+        onDecrement={handleDecrement}
+      />
+      <SideBarModal open={sideBarOpen} onClose={() => setSideBarOpen(false)} />
     </Box>
   );
 };

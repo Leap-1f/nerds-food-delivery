@@ -41,8 +41,9 @@ export const InfoCard = () => {
           marginRight: "auto",
         }}
       >
-        {card.map((Element) => (
+        {card.map((Element, i) => (
           <Box
+          key={i}
             sx={{
               width: "20%",
               height: "100%",

@@ -81,13 +81,15 @@ export const updateFood = async (request, response) => {
 
 export const getAllFood = async (request, response) => {
   const food = await Food.find({});
+  console.log(food);
   const data = food.map((item) => ({
     name: item.name,
     price: item.price,
-    discountedPrice: item.discountedPrice,
     id: item._id,
     img: item.image,
     ingredient: item.ingredient,
+    category: item.category,
+    discountedPrice: item.discountedPrice,
   }));
   response.status(200);
   response.send(data);
